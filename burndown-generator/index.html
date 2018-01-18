@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<head>
+<title>Policy Burndown</title>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="3600">
+<style type="text/css">
+  body {
+    font: 10px sans-serif;
+  }
+  .axis path,
+  .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+  }
+  .browser text {
+      text-anchor: end;
+  }
+  .todo {
+      font-size: 1.6em;
+  }
+  tr:nth-child(even) {
+      background-color: #eeeeee;
+  }
+
+  table.todo th {
+      background-color: #ccc;
+      padding: 0.5em;
+  }
+
+  table.todo td {
+      padding-left: 0.5em;
+  }
+</style>
+</head>
+<body>
+<p>Last updated: Thu Jan 18 16:33:28 UTC 2018
+</p>
+
+
+<div id="chart"></div>
+<table id="tables">
+<tr style="vertical-align: top;">
+<td id="changes">
+</td>
+<td id="not-started">
+</td>
+</tr>
+</table>
+</div>
+
+<script src="https://d3js.org/d3.v3.js"></script>
+<script language="javascript">
+  var margin = {top: 20, right: 40, bottom: 30, left: 50},
+       width = 960 - margin.left - margin.right,
+       height = 500 - margin.top - margin.bottom;
+  var x = d3.time.scale()
+      .range([0, width]);
+  var y = d3.scale.linear()
+      .range([height, 0]);
+  var color = d3.scale.category20();
+  var xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom");
+  var yAxis = d3.svg.axis()
+      .scale(y)
+      .orient("left");
+  var yAxisR = d3.svg.axis()
+      .scale(y)
+      .orient("right");
+
+  var area = d3.svg.area()
+      .x(function(d) { return x(d.date); })
+      .y0(function(d) { return y(d.y0); })
+      .y1(function(d) { return y(d.y0 + d.y); });
+  var stack = d3.layout.stack()
+      .values(function(d) { return d.values; });
+  var svg = d3.select("#chart").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+  var files = d3.select("body").append("div");
+
+  d3.csv("./data.csv", function(error, data) {
+      color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
+      data.forEach(function(d) {
+          d.date = new Date(d.date * 1000);
+      });
+      var browsers = stack(color.domain().map(function(name) {
+          return {
+              name: name,
+              values: data.map(function(d) {
+                  return {date: d.date, y: d[name] * 1};
+              })
+          };
+      }));
+      // Find the value of the day with highest total value
+      var maxDateVal = d3.max(data, function(d){
+          var vals = d3.keys(d).map(function(key){ return key !== "date" ? d[key] : 0 });
+          return d3.sum(vals);
+      });
+      // Set domains for axes
+      x.domain(d3.extent(data, function(d) { return d.date; }));
+      y.domain([0, maxDateVal])
+      var browser = svg.selectAll(".browser")
+          .data(browsers)
+          .enter().append("g")
+          .attr("class", "browser");
+      browser.append("path")
+          .attr("class", "area")
+          .attr("d", function(d) { return area(d.values); })
+          .style("fill", function(d) { return color(d.name); });
+      browser.append("text")
+          .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
+          .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.y0 + d.value.y / 2) + ")"; })
+          .attr("x", -40)
+          .attr("dy", ".35em")
+          .text(function(d) { return d.name; });
+      svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis);
+      svg.append("g")
+          .attr("class", "y axis")
+          .call(yAxis);
+      svg.append("g")
+          .attr("class", "y axis")
+          .attr("transform", "translate(" + width + " ,0)")
+          .attr("x", 20)
+          .call(yAxisR);
+  });
+
+  d3.json("data.json", function(data) {
+      function tabulate(data, columns) {
+          var table = d3.select('#changes').append('table').attr("class", "todo");
+          var thead = table.append('thead')
+          var tbody = table.append('tbody');
+
+          // append the header row
+          thead.append('tr')
+              .selectAll('th')
+              .data(columns).enter()
+              .append('th')
+              .text(function (column) { return column; });
+
+          // create a row for each object in the data
+          var rows = tbody.selectAll('tr')
+              .data(data)
+              .enter()
+              .append('tr');
+
+          // create a cell in each row for each column
+          var cells = rows.selectAll('td')
+              .data(function (row) {
+                  return columns.map(function (column) {
+                      return {column: column, value: row[column]};
+                  });
+              })
+              .enter()
+              .append('td')
+              .html(function (d) {
+                  return "<a href=https://review.openstack.org/#/q/is:open+topic:policy-and-docs-in-code+project:" + d.value + ">" + d.value + "</a>";
+              });
+
+          return table;
+	}
+      // render the table(s)
+      tabulate(data, ['Changes In Review']);
+  });
+
+  d3.json("notstarted.json", function(data) {
+      function tabulate(data, columns) {
+          var table = d3.select('#not-started').append('table').attr("class", "todo");
+          var thead = table.append('thead')
+          var tbody = table.append('tbody');
+
+          // append the header row
+          thead.append('tr')
+              .selectAll('th')
+              .data(columns).enter()
+              .append('th')
+              .text(function (column) { return column; });
+
+          // create a row for each object in the data
+          var rows = tbody.selectAll('tr')
+              .data(data)
+              .enter()
+              .append('tr');
+
+          // create a cell in each row for each column
+          var cells = rows.selectAll('td')
+              .data(function (row) {
+                  return columns.map(function (column) {
+                      return {column: column, value: row[column]};
+                  });
+              })
+              .enter()
+              .append('td')
+              .text(function (d) { return d.value; });
+
+          return table;
+	}
+      // render the table(s)
+      tabulate(data, ['Repos Not Started']);
+  });
+
+</script>
+</body>

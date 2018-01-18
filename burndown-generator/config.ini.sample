@@ -1,0 +1,5 @@
+# edit this file and copy it to config.ini to use the gen-burndown.py tool
+[default]
+user = <your gerrit http user>
+password = <your gerrit http password>
+gerrit-topic = <topic used to track reviews in gerrit>
