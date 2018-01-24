@@ -29,8 +29,40 @@ import yaml
 _DEFAULT_URL = 'https://storyboard.openstack.org/api/v1'
 _GOVERNANCE_PROJECT_ID = 923
 _STORY_URL_TEMPLATE = 'https://storyboard.openstack.org/#!/story/{}'
+_BOARD_URL_TEMPLATE = 'https://storyboard.openstack.org/#!/board/{}'
+_WORKLISTS = [
+    ('New', 'todo', 'Todo'),
+    ('Acknowledged', 'inprogress', 'In Progress'),
+    ('Development', 'review', 'Review'),
+    ('Completed', 'merged', 'Merged'),
+    ('Does Not Apply', 'invalid', 'Invalid'),
+]
 
 LOG = logging.getLogger()
+
+
+def _get_worklist_settings(story):
+    for title, status, status_title in _WORKLISTS:
+        yield {
+            'automatic': True,
+            'title': title,
+            'filters': [
+                {'type': 'Task',
+                 'filter_criteria': [
+                     {'value': str(story.id),
+                      'negative': False,
+                      'field': 'Story',
+                      'title': story.title,
+                     },
+                     {'value': status,
+                      'negative': False,
+                      'field': 'TaskStatus',
+                      'title': status_title,
+                     },
+                 ],
+                },
+            ],
+        }
 
 
 def _write_empty_config_file(filename):
@@ -165,6 +197,7 @@ def main():
         story = existing[0]
         LOG.info('found existing story {}'.format(story.id))
         print(story)
+    story_url = _STORY_URL_TEMPLATE.format(story.id)
 
     # NOTE(dhellmann): After we migrate all projects to storyboard we
     # can change this to look for tasks using the project id. Until
@@ -184,5 +217,32 @@ def main():
                 story_id=story.id,
             )
 
-    print(_STORY_URL_TEMPLATE.format(story.id))
+    existing = storyboard.boards.get_all(title=goal_info['title'])
+    if not existing:
+
+        lanes = []
+        for position, worklist_settings in enumerate(_get_worklist_settings(story)):
+            title = worklist_settings['title']
+            LOG.debug('creating {} worklist'.format(title))
+            new_worklist = storyboard.worklists.create(**worklist_settings)
+            lanes.append({
+                'position': position,
+                'list_id': str(new_worklist.id),
+            })
+
+        LOG.info('creating new board')
+        board = storyboard.boards.create(
+            title=goal_info['title'],
+            description=story.description,
+            lanes=lanes,
+        )
+        LOG.info('created board {}'.format(board.id))
+    else:
+        board = existing[0]
+        LOG.info('found existing board {}'.format(board.id))
+        print(board)
+    board_url = _BOARD_URL_TEMPLATE.format(board.id)
+
+    print(story_url)
+    print(board_url)
     return 0
