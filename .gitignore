@@ -1,1 +1,21 @@
-config.ini
+AUTHORS
+ChangeLog
+*~
+*.egg*
+*.swp
+*.pyc
+*.log
+.tox
+.coverage*
+cover
+*.egg-info/
+build/
+doc/build/
+doc/source/api/
+dist/
+.testrepository/
+.project
+.pydevproject
+
+# Files created by releasenotes build
+releasenotes/build
