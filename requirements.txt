@@ -1,1 +1,3 @@
-python-storyboardclient
+# the storyboardclient lib is not on PyPI yet
+# python-storyboardclient
+appdirs>=1.4.3
