@@ -27,7 +27,7 @@ from storyboardclient.v1 import client
 import yaml
 
 _DEFAULT_URL = 'https://storyboard.openstack.org/api/v1'
-_GOVERNANCE_PROJECT_ID = 923
+_GOVERNANCE_PROJECT_NAME = 'openstack/governance'
 _STORY_URL_TEMPLATE = 'https://storyboard.openstack.org/#!/story/{}'
 _BOARD_URL_TEMPLATE = 'https://storyboard.openstack.org/#!/board/{}'
 _WORKLISTS = [
@@ -143,7 +143,7 @@ def main():
 
     logging.basicConfig(level=args.log_level, format='%(message)s')
 
-    LOG.debug('loading config from {}'.format(args.config_file))
+    LOG.info('loading config from {}'.format(args.config_file))
     config = configparser.ConfigParser()
     found_config = config.read(args.config_file)
 
@@ -180,8 +180,16 @@ def main():
     except configparser.NoOptionError:
         storyboard_url = _DEFAULT_URL
 
-    print('Connecting to {}'.format(storyboard_url))
+    print('Connecting to storyboard at {}'.format(storyboard_url))
     storyboard = client.Client(storyboard_url, access_token)
+
+    governance_projects = storyboard.projects.get_all(name=_GOVERNANCE_PROJECT_NAME)
+    if governance_projects:
+        governance_project = governance_projects[0]
+    else:
+        parser.error('Could not find project {}'.format(_GOVERNANCE_PROJECT_NAME))
+    print('Governance project {} with id {}'.format(
+        governance_project.name, governance_project.id))
 
     print('Goal: {}\n\n{}\n'.format(goal_info['title'], goal_info['description']))
 
@@ -213,7 +221,7 @@ def main():
             LOG.info('adding task for %s', project_name)
             storyboard.tasks.create(
                 title=project_name,
-                project_id=_GOVERNANCE_PROJECT_ID,
+                project_id=governance_project.id,
                 story_id=story.id,
             )
 
