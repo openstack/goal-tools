@@ -53,10 +53,10 @@ def _parse_goal_page(html):
         'description': '',
     }
     bs = beautifulsoup.BeautifulSoup(html, 'html.parser')
-    data['title'] = bs.title.string
+    data['title'] = bs.title.string or ''
     if data['title'].endswith(_SITE_TITLE):
         data['title'] = data['title'][:-len(_SITE_TITLE)].strip()
-    data['description'] = bs.p.string
+    data['description'] = bs.p.text or bs.p.string or ''
     return data
 
 
@@ -150,6 +150,8 @@ def main():
 
     print('Connecting to {}'.format(storyboard_url))
     storyboard = client.Client(storyboard_url, access_token)
+
+    print('Goal: {}\n\n{}\n'.format(goal_info['title'], goal_info['description']))
 
     existing = storyboard.stories.get_all(title=goal_info['title'])
     if not existing:
