@@ -10,11 +10,18 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import collections
+import datetime
 import fileinput
 import logging
 import urllib.parse
 
+from goal_tools import apis
+
 LOG = logging.getLogger(__name__)
+
+# The base URL to Gerrit REST API
+GERRIT_API_URL = 'https://review.openstack.org/'
 
 
 def parse_review_lists(filenames):
@@ -42,3 +49,57 @@ def parse_review_lists(filenames):
         else:
             # https://review.openstack.org/555353/
             yield parsed.path.lstrip('/').partition('/')[0]
+
+
+def query_gerrit(method, params={}):
+    """Query the Gerrit REST API"""
+    url = GERRIT_API_URL + method
+    LOG.debug('fetching %s', url)
+    raw = apis.requester(
+        url, params=params,
+        headers={'Accept': 'application/json'})
+    return apis.decode_json(raw)
+
+
+def _to_datetime(s):
+    # Ignore the trailing decimal seconds.
+    s = s.rpartition('.')[0]
+    return datetime.datetime.strptime(s, '%Y-%m-%d %H:%M:%S')
+
+
+Participant = collections.namedtuple(
+    'Participant', ['role', 'name', 'email', 'date'])
+
+
+class Review:
+
+    def __init__(self, id, data):
+        self._id = id
+        self._data = data
+
+    @property
+    def url(self):
+        return GERRIT_API_URL + self._id + '/'
+
+    @property
+    def created(self):
+        return _to_datetime(self._data['created'])
+
+    @property
+    def participants(self):
+        yield self.owner
+
+    @property
+    def owner(self):
+        owner = self._data['owner']
+        return Participant(
+            'owner',
+            owner['name'],
+            owner['email'],
+            self.created,
+        )
+
+
+def fetch_review(review_id):
+    data = query_gerrit('changes/' + review_id + '/detail')
+    return Review(review_id, data)

@@ -1,0 +1,320 @@
+{
+  "id": "openstack%2Freleases~master~I08015ec6c5e0a0f3cd552c2b5a077c0fb86df148",
+  "project": "openstack/releases",
+  "branch": "master",
+  "hashtags": [],
+  "change_id": "I08015ec6c5e0a0f3cd552c2b5a077c0fb86df148",
+  "subject": "Change storlets release model to cycle-with-milestones",
+  "status": "MERGED",
+  "created": "2018-04-16 04:50:17.000000000",
+  "updated": "2018-04-19 12:57:36.000000000",
+  "submitted": "2018-04-19 12:57:36.000000000",
+  "submittable": false,
+  "insertions": 6,
+  "deletions": 1,
+  "_number": 561507,
+  "owner": {
+    "_account_id": 4608,
+    "name": "Kota Tsuyuzaki",
+    "email": "tsuyuzaki.kota@lab.ntt.co.jp",
+    "username": "tsuyuzaki-kota"
+  },
+  "labels": {
+    "Verified": {
+      "approved": {
+        "_account_id": 22348,
+        "name": "Zuul",
+        "username": "zuul"
+      },
+      "all": [
+        {
+          "value": 0,
+          "_account_id": 2472,
+          "name": "Doug Hellmann",
+          "email": "doug@doughellmann.com",
+          "username": "doug-hellmann"
+        },
+        {
+          "value": 0,
+          "_account_id": 9816,
+          "name": "Takashi Kajinami",
+          "email": "kajinamit@nttdata.co.jp",
+          "username": "kajinamit"
+        },
+        {
+          "value": 2,
+          "date": "2018-04-19 12:57:35.000000000",
+          "_account_id": 22348,
+          "name": "Zuul",
+          "username": "zuul"
+        },
+        {
+          "value": 0,
+          "_account_id": 308,
+          "name": "Thierry Carrez",
+          "email": "thierry@openstack.org",
+          "username": "ttx"
+        }
+      ],
+      "values": {
+        "-2": "Fails",
+        "-1": "Doesn\u0027t seem to work",
+        " 0": "No score",
+        "+1": "Works for me",
+        "+2": "Verified"
+      },
+      "default_value": 0
+    },
+    "Code-Review": {
+      "approved": {
+        "_account_id": 2472,
+        "name": "Doug Hellmann",
+        "email": "doug@doughellmann.com",
+        "username": "doug-hellmann"
+      },
+      "all": [
+        {
+          "value": 2,
+          "date": "2018-04-16 14:45:28.000000000",
+          "_account_id": 2472,
+          "name": "Doug Hellmann",
+          "email": "doug@doughellmann.com",
+          "username": "doug-hellmann"
+        },
+        {
+          "value": 1,
+          "date": "2018-04-16 07:13:17.000000000",
+          "_account_id": 9816,
+          "name": "Takashi Kajinami",
+          "email": "kajinamit@nttdata.co.jp",
+          "username": "kajinamit"
+        },
+        {
+          "value": 0,
+          "_account_id": 22348,
+          "name": "Zuul",
+          "username": "zuul"
+        },
+        {
+          "value": 2,
+          "date": "2018-04-18 10:27:59.000000000",
+          "_account_id": 308,
+          "name": "Thierry Carrez",
+          "email": "thierry@openstack.org",
+          "username": "ttx"
+        }
+      ],
+      "values": {
+        "-2": "Do not merge",
+        "-1": "This patch needs further work before it can be merged",
+        " 0": "No score",
+        "+1": "Looks good to me, but someone else must approve",
+        "+2": "Looks good to me (core reviewer)"
+      },
+      "default_value": 0
+    },
+    "Workflow": {
+      "approved": {
+        "_account_id": 2472,
+        "name": "Doug Hellmann",
+        "email": "doug@doughellmann.com",
+        "username": "doug-hellmann"
+      },
+      "all": [
+        {
+          "value": 1,
+          "date": "2018-04-19 12:49:44.000000000",
+          "_account_id": 2472,
+          "name": "Doug Hellmann",
+          "email": "doug@doughellmann.com",
+          "username": "doug-hellmann"
+        },
+        {
+          "value": 0,
+          "_account_id": 9816,
+          "name": "Takashi Kajinami",
+          "email": "kajinamit@nttdata.co.jp",
+          "username": "kajinamit"
+        },
+        {
+          "value": 0,
+          "_account_id": 22348,
+          "name": "Zuul",
+          "username": "zuul"
+        },
+        {
+          "value": 0,
+          "_account_id": 308,
+          "name": "Thierry Carrez",
+          "email": "thierry@openstack.org",
+          "username": "ttx"
+        }
+      ],
+      "values": {
+        "-1": "Work in progress",
+        " 0": "Ready for reviews",
+        "+1": "Approved"
+      },
+      "default_value": 0
+    }
+  },
+  "permitted_labels": {},
+  "removable_reviewers": [],
+  "reviewers": {
+    "REVIEWER": [
+      {
+        "_account_id": 308,
+        "name": "Thierry Carrez",
+        "email": "thierry@openstack.org",
+        "username": "ttx"
+      },
+      {
+        "_account_id": 2472,
+        "name": "Doug Hellmann",
+        "email": "doug@doughellmann.com",
+        "username": "doug-hellmann"
+      },
+      {
+        "_account_id": 9816,
+        "name": "Takashi Kajinami",
+        "email": "kajinamit@nttdata.co.jp",
+        "username": "kajinamit"
+      },
+      {
+        "_account_id": 22348,
+        "name": "Zuul",
+        "username": "zuul"
+      }
+    ]
+  },
+  "reviewer_updates": [],
+  "messages": [
+    {
+      "id": "9f6a8fd7_80b757d9",
+      "author": {
+        "_account_id": 4608,
+        "name": "Kota Tsuyuzaki",
+        "email": "tsuyuzaki.kota@lab.ntt.co.jp",
+        "username": "tsuyuzaki-kota"
+      },
+      "date": "2018-04-16 04:50:17.000000000",
+      "message": "Uploaded patch set 1.",
+      "_revision_number": 1
+    },
+    {
+      "id": "9f6a8fd7_8005177d",
+      "author": {
+        "_account_id": 22348,
+        "name": "Zuul",
+        "username": "zuul"
+      },
+      "date": "2018-04-16 04:57:28.000000000",
+      "message": "Patch Set 1: Verified-1\n\nBuild failed (check pipeline).  For information on how to proceed, see\nhttp://docs.openstack.org/infra/manual/developers.html#automated-testing\n\n\n- openstack-tox-validate http://logs.openstack.org/07/561507/1/check/openstack-tox-validate/5722934/ : FAILURE in 3m 01s\n- releases-tox-list-changes http://logs.openstack.org/07/561507/1/check/releases-tox-list-changes/61376fd/ : SUCCESS in 2m 30s\n- build-openstack-sphinx-docs http://logs.openstack.org/07/561507/1/check/build-openstack-sphinx-docs/db4fb75/html/ : SUCCESS in 6m 19s",
+      "_revision_number": 1
+    },
+    {
+      "id": "9f6a8fd7_e0ef33ae",
+      "author": {
+        "_account_id": 4608,
+        "name": "Kota Tsuyuzaki",
+        "email": "tsuyuzaki.kota@lab.ntt.co.jp",
+        "username": "tsuyuzaki-kota"
+      },
+      "date": "2018-04-16 05:00:21.000000000",
+      "message": "Uploaded patch set 2.",
+      "_revision_number": 2
+    },
+    {
+      "id": "9f6a8fd7_400dbf8e",
+      "author": {
+        "_account_id": 22348,
+        "name": "Zuul",
+        "username": "zuul"
+      },
+      "date": "2018-04-16 05:06:06.000000000",
+      "message": "Patch Set 2: Verified+1\n\nBuild succeeded (check pipeline).\n\n- openstack-tox-validate http://logs.openstack.org/07/561507/2/check/openstack-tox-validate/95549e4/ : SUCCESS in 3m 09s\n- releases-tox-list-changes http://logs.openstack.org/07/561507/2/check/releases-tox-list-changes/09f1182/ : SUCCESS in 3m 33s\n- build-openstack-sphinx-docs http://logs.openstack.org/07/561507/2/check/build-openstack-sphinx-docs/2e6c15e/html/ : SUCCESS in 5m 16s",
+      "_revision_number": 2
+    },
+    {
+      "id": "9f6a8fd7_9688fd71",
+      "author": {
+        "_account_id": 9816,
+        "name": "Takashi Kajinami",
+        "email": "kajinamit@nttdata.co.jp",
+        "username": "kajinamit"
+      },
+      "date": "2018-04-16 07:13:17.000000000",
+      "message": "Patch Set 2: Code-Review+1\n\nLGTM.\n\nCurrently, Swift, on which storlets depend on, follows cycle-with-intermediary.\nBut I know that they also have releases based on milestone, so I think that having milestone based release at least can work for us.",
+      "_revision_number": 2
+    },
+    {
+      "id": "9f6a8fd7_3824730d",
+      "author": {
+        "_account_id": 2472,
+        "name": "Doug Hellmann",
+        "email": "doug@doughellmann.com",
+        "username": "doug-hellmann"
+      },
+      "date": "2018-04-16 14:45:28.000000000",
+      "message": "Patch Set 2: Code-Review+2\n\nThis looks good. The deadline for the first milestone is in a few days, so I will leave this open in case you want to update the SHA to refer to a newer commit.",
+      "_revision_number": 2
+    },
+    {
+      "id": "9f6a8fd7_9741970e",
+      "author": {
+        "_account_id": 308,
+        "name": "Thierry Carrez",
+        "email": "thierry@openstack.org",
+        "username": "ttx"
+      },
+      "date": "2018-04-18 10:27:59.000000000",
+      "message": "Patch Set 2: Code-Review+2\n\nLooking good, leaving it open until Thursday for last-minute SHA updates.",
+      "_revision_number": 2
+    },
+    {
+      "id": "9f6a8fd7_5318d3d1",
+      "author": {
+        "_account_id": 2472,
+        "name": "Doug Hellmann",
+        "email": "doug@doughellmann.com",
+        "username": "doug-hellmann"
+      },
+      "date": "2018-04-19 12:49:44.000000000",
+      "message": "Patch Set 2: Workflow+1",
+      "_revision_number": 2
+    },
+    {
+      "id": "9f6a8fd7_f30ec78b",
+      "author": {
+        "_account_id": 22348,
+        "name": "Zuul",
+        "username": "zuul"
+      },
+      "date": "2018-04-19 12:49:56.000000000",
+      "message": "Patch Set 2: -Verified\n\nStarting gate jobs.",
+      "_revision_number": 2
+    },
+    {
+      "id": "9f6a8fd7_93550b20",
+      "author": {
+        "_account_id": 22348,
+        "name": "Zuul",
+        "username": "zuul"
+      },
+      "date": "2018-04-19 12:57:35.000000000",
+      "message": "Patch Set 2: Verified+2\n\nBuild succeeded (gate pipeline).\n\n- openstack-tox-validate http://logs.openstack.org/07/561507/2/gate/openstack-tox-validate/c2390b6/ : SUCCESS in 4m 49s\n- build-openstack-sphinx-docs http://logs.openstack.org/07/561507/2/gate/build-openstack-sphinx-docs/f632774/html/ : SUCCESS in 6m 13s",
+      "_revision_number": 2
+    },
+    {
+      "id": "9f6a8fd7_3332ff11",
+      "author": {
+        "_account_id": 22348,
+        "name": "Zuul",
+        "username": "zuul"
+      },
+      "date": "2018-04-19 12:57:36.000000000",
+      "message": "Change has been successfully merged by Zuul",
+      "_revision_number": 2
+    }
+  ]
+}

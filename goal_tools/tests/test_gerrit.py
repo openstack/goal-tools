@@ -10,7 +10,10 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import datetime
+import json
 import os.path
+import pkgutil
 import textwrap
 
 from goal_tools import gerrit
@@ -63,3 +66,32 @@ class TestParseReviewLists(base.TestCase):
         expected = ['561507', '555353']
         actual = list(gerrit.parse_review_lists([self.ids_name]))
         self.assertEqual(expected, actual)
+
+
+class TestReview(base.TestCase):
+
+    _data = json.loads(
+        pkgutil.get_data('goal_tools.tests', 'data/55535.json').decode('utf-8')
+    )
+
+    def setUp(self):
+        super().setUp()
+        self.rev = gerrit.Review('55535', self._data)
+
+    def test_url(self):
+        self.assertEqual('https://review.openstack.org/55535/', self.rev.url)
+
+    def test_created(self):
+        self.assertEqual(
+            datetime.datetime(2018, 3, 22, 16, 5, 45),
+            self.rev.created,
+        )
+
+    def test_owner(self):
+        owner = self.rev.owner
+        self.assertEqual('Doug Hellmann', owner.name)
+        self.assertEqual('doug@doughellmann.com', owner.email)
+        self.assertEqual(
+            datetime.datetime(2018, 3, 22, 16, 5, 45),
+            owner.date,
+        )
