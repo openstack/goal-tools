@@ -17,6 +17,7 @@ import logging
 from cliff import columns
 from cliff import lister
 
+from goal_tools import foundation
 from goal_tools import gerrit
 from goal_tools import utils
 
@@ -53,6 +54,7 @@ class ListContributors(lister.Lister):
     def take_action(self, parsed_args):
         columns = (
             'Review ID', 'Review URL', 'Role', 'Name', 'Email', 'Date',
+            'Organization',
         )
 
         def make_rows():
@@ -60,12 +62,23 @@ class ListContributors(lister.Lister):
                 gerrit.parse_review_lists(parsed_args.review_list)
             )
             roles = parsed_args.role
+            cache = self.app.cache
             for review_id in review_ids:
-                review = gerrit.fetch_review(review_id, self.app.cache)
+                review = gerrit.fetch_review(review_id, cache)
                 for participant in review.participants:
                     if roles and participant.role not in roles:
                         LOG.debug('filtered out %s based on role', participant)
                         continue
+
+                    # Figure out which organization they were
+                    # affiliated with at the time of the work.
+                    organization = None
+                    member = foundation.fetch_member(participant.email, cache)
+                    if member:
+                        affiliation = member.find_affiliation(participant.date)
+                        if affiliation:
+                            organization = affiliation.organization
+
                     yield (
                         review_id,
                         review.url,
@@ -73,6 +86,7 @@ class ListContributors(lister.Lister):
                         participant.name,
                         participant.email,
                         DateColumn(participant.date),
+                        organization,
                     )
 
         return (columns, make_rows())
