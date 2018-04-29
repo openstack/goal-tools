@@ -12,11 +12,15 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import logging
+
 from cliff import columns
 from cliff import lister
 
 from goal_tools import gerrit
 from goal_tools import utils
+
+LOG = logging.getLogger(__name__)
 
 
 class DateColumn(columns.FormattableColumn):
@@ -34,6 +38,12 @@ class ListContributors(lister.Lister):
     def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)
         parser.add_argument(
+            '--role',
+            default=[],
+            action='append',
+            help='filter to only include specific roles (may be repeated)',
+        )
+        parser.add_argument(
             'review_list',
             nargs='+',
             help='name(s) of files containing reviews to include in report',
@@ -49,9 +59,13 @@ class ListContributors(lister.Lister):
             review_ids = utils.unique(
                 gerrit.parse_review_lists(parsed_args.review_list)
             )
+            roles = parsed_args.role
             for review_id in review_ids:
                 review = gerrit.fetch_review(review_id, self.app.cache)
                 for participant in review.participants:
+                    if roles and participant.role not in roles:
+                        LOG.debug('filtered out %s based on role', participant)
+                        continue
                     yield (
                         review_id,
                         review.url,
