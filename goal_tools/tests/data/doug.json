@@ -1,0 +1,75 @@
+{
+  "id": 359,
+  "bio": "<p>Doug Hellmann is employed by Red Hat to work on OpenStack. He is currently serving on the Release Management and Oslo teams and is a member of the Technical Committee.</p>\n<p>He started contributing to OpenStack in 2012, just before the Folsom summit.\u00a0He is one of the founding members of the Ceilometer project, and a core reviewer for the requirements and unified command line interface projects. Doug served as PTL for the release management\u00a0team for the Mitaka, Newton, and Ocata release cycles. He is part of the team working on the Python 3 transition, and has contributed to several of the infrastructure projects. He also contributes to the\u00a0unified command line client and SDK projects.\u00a0Doug\u00a0served as the PTL for the Oslo project for the Icehouse, Juno, and Kilo releases and is still\u00a0active on the core review team.</p>\n<p>\u00a0</p>",
+  "email_verified": true,
+  "gender": "Male",
+  "active": true,
+  "github_user": "dhellmann",
+  "twitter": "doughellmann",
+  "last_name": "Hellmann",
+  "pic": "https://www.openstack.org/profile_images/members/359",
+  "linked_in": "https://www.linkedin.com/in/doughellmann",
+  "state": "GA",
+  "created": 1342873747,
+  "first_name": "Doug",
+  "ccla_teams": [],
+  "affiliations": [
+    {
+      "created": 1384269868,
+      "start_date": 1382313600,
+      "owner_id": 359,
+      "last_edited": 1407154267,
+      "id": 41093,
+      "is_current": false,
+      "job_title": "Senior Developer",
+      "organization": {
+        "id": 4,
+        "created": 1359485922,
+        "name": "DreamHost",
+        "last_edited": 1365012100
+      },
+      "end_date": 1406592000
+    },
+    {
+      "created": 1407154252,
+      "start_date": 1407110400,
+      "owner_id": 359,
+      "last_edited": 1458341450,
+      "id": 60695,
+      "is_current": false,
+      "job_title": null,
+      "organization": {
+        "id": 33,
+        "created": 1359485922,
+        "name": "Hewlett Packard Enterprise",
+        "last_edited": 1365013136
+      },
+      "end_date": 1458259200
+    },
+    {
+      "created": 1525022430,
+      "start_date": 1458518400,
+      "owner_id": 359,
+      "last_edited": 1525022430,
+      "id": 156410,
+      "is_current": true,
+      "job_title": "Senior Principal Software Engineer",
+      "organization": {
+        "id": 7297,
+        "created": 1422355350,
+        "name": "Red Hat, Inc",
+        "last_edited": 1422355350
+      },
+      "end_date": null
+    }
+  ],
+  "last_edited": 1525022292,
+  "groups": [
+    4,
+    5,
+    13,
+    8
+  ],
+  "irc": "dhellmann",
+  "country": "US"
+}
