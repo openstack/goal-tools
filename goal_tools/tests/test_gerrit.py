@@ -15,9 +15,15 @@ import json
 import os.path
 import pkgutil
 import textwrap
+from unittest import mock
 
 from goal_tools import gerrit
 from goal_tools.tests import base
+
+
+_data_55535 = json.loads(
+    pkgutil.get_data('goal_tools.tests', 'data/55535.json').decode('utf-8')
+)
 
 
 class TestParseReviewLists(base.TestCase):
@@ -70,13 +76,9 @@ class TestParseReviewLists(base.TestCase):
 
 class TestReview(base.TestCase):
 
-    _data = json.loads(
-        pkgutil.get_data('goal_tools.tests', 'data/55535.json').decode('utf-8')
-    )
-
     def setUp(self):
         super().setUp()
-        self.rev = gerrit.Review('55535', self._data)
+        self.rev = gerrit.Review('55535', _data_55535)
 
     def test_url(self):
         self.assertEqual('https://review.openstack.org/55535/', self.rev.url)
@@ -119,3 +121,25 @@ class TestReview(base.TestCase):
             ),
         ]
         self.assertEqual(expected, reviewers)
+
+
+class TestFetchReview(base.TestCase):
+
+    def test_not_in_cache(self):
+        cache = {}
+        with mock.patch('goal_tools.gerrit.query_gerrit') as f:
+            f.return_value = _data_55535
+            results = gerrit.fetch_review('55535', cache)
+        self.assertIn(('review', '55535'), cache)
+        self.assertEqual(_data_55535, results._data)
+        self.assertEqual(_data_55535, cache[('review', '55535')])
+
+    def test_in_cache(self):
+        cache = {
+            ('review', '55535'): _data_55535,
+        }
+        with mock.patch('goal_tools.gerrit.query_gerrit') as f:
+            f.side_effect = AssertionError('should not be called')
+            results = gerrit.fetch_review('55535', cache)
+        self.assertIn(('review', '55535'), cache)
+        self.assertEqual(_data_55535, results._data)

@@ -126,6 +126,12 @@ class Review:
             )
 
 
-def fetch_review(review_id):
-    data = query_gerrit('changes/' + review_id + '/detail')
+def fetch_review(review_id, cache):
+    key = ('review', review_id)
+    if key in cache:
+        LOG.debug('found %s cached', review_id)
+        data = cache[key]
+    else:
+        data = query_gerrit('changes/' + review_id + '/detail')
+        cache[key] = data
     return Review(review_id, data)
