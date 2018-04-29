@@ -17,7 +17,6 @@ import configparser
 import logging
 import os
 import os.path
-import re
 import textwrap
 
 import appdirs
@@ -52,21 +51,18 @@ def _get_worklist_settings(story):
                      {'value': str(story.id),
                       'negative': False,
                       'field': 'Story',
-                      'title': story.title,
-                     },
+                      'title': story.title},
                      {'value': status,
                       'negative': False,
                       'field': 'TaskStatus',
-                      'title': status_title,
-                     },
-                 ],
-                },
+                      'title': status_title},
+                 ]},
             ],
         }
 
 
 def _write_empty_config_file(filename):
-    log.info('creating {}'.format(filename))
+    LOG.info('creating {}'.format(filename))
     cfg_dir = os.path.dirname(filename)
     if cfg_dir and not os.path.exists(cfg_dir):
         os.makedirs(cfg_dir)
@@ -79,6 +75,8 @@ def _write_empty_config_file(filename):
 
 
 _SITE_TITLE = '— OpenStack Technical Committee Governance Documents'
+
+
 def _parse_goal_page(html):
     data = {
         'title': '',
@@ -116,7 +114,7 @@ def main():
     )
     parser.add_argument(
         '--project-list',
-        default='http://git.openstack.org/cgit/openstack/governance/plain/reference/projects.yaml',
+        default='http://git.openstack.org/cgit/openstack/governance/plain/reference/projects.yaml',  # noqa
         help='URL for projects.yaml',
     )
     group = parser.add_mutually_exclusive_group()
@@ -159,7 +157,8 @@ def main():
         access_token = ''
 
     if not access_token:
-        parser.error('Could not find access_token in {}'.format(args.config_file))
+        parser.error('Could not find access_token in {}'.format(
+            args.config_file))
 
     try:
         LOG.debug('reading goal info from {}'.format(args.goal_url))
@@ -183,15 +182,18 @@ def main():
     print('Connecting to storyboard at {}'.format(storyboard_url))
     storyboard = client.Client(storyboard_url, access_token)
 
-    governance_projects = storyboard.projects.get_all(name=_GOVERNANCE_PROJECT_NAME)
+    governance_projects = storyboard.projects.get_all(
+        name=_GOVERNANCE_PROJECT_NAME)
     if governance_projects:
         governance_project = governance_projects[0]
     else:
-        parser.error('Could not find project {}'.format(_GOVERNANCE_PROJECT_NAME))
+        parser.error('Could not find project {}'.format(
+            _GOVERNANCE_PROJECT_NAME))
     print('Governance project {} with id {}'.format(
         governance_project.name, governance_project.id))
 
-    print('Goal: {}\n\n{}\n'.format(goal_info['title'], goal_info['description']))
+    print('Goal: {}\n\n{}\n'.format(goal_info['title'],
+                                    goal_info['description']))
 
     existing = storyboard.stories.get_all(title=goal_info['title'])
     if not existing:
@@ -229,7 +231,8 @@ def main():
     if not existing:
 
         lanes = []
-        for position, worklist_settings in enumerate(_get_worklist_settings(story)):
+        for position, worklist_settings in enumerate(
+                _get_worklist_settings(story)):
             title = worklist_settings['title']
             LOG.debug('creating {} worklist'.format(title))
             new_worklist = storyboard.worklists.create(**worklist_settings)
