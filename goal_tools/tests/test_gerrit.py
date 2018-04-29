@@ -95,3 +95,27 @@ class TestReview(base.TestCase):
             datetime.datetime(2018, 3, 22, 16, 5, 45),
             owner.date,
         )
+
+    def test_reviewers(self):
+        reviewers = list(self.rev.reviewers)
+        expected = [
+            gerrit.Participant(
+                role='reviewer',
+                name='Masahito Muroi',
+                email='muroi.masahito@lab.ntt.co.jp',
+                date=datetime.datetime(2018, 4, 24, 10, 18, 51),
+            ),
+            gerrit.Participant(
+                role='reviewer',
+                name='Hiroaki Kobayashi',
+                email='kobayashi.hiroaki@lab.ntt.co.jp',
+                date=datetime.datetime(2018, 4, 24, 1, 32, 26),
+            ),
+            gerrit.Participant(
+                role='approver',
+                name='Masahito Muroi',
+                email='muroi.masahito@lab.ntt.co.jp',
+                date=datetime.datetime(2018, 4, 26, 6, 32, 1),
+            ),
+        ]
+        self.assertEqual(expected, reviewers)

@@ -88,6 +88,7 @@ class Review:
     @property
     def participants(self):
         yield self.owner
+        yield from self.reviewers
 
     @property
     def owner(self):
@@ -98,6 +99,31 @@ class Review:
             owner['email'],
             self.created,
         )
+
+    @property
+    def reviewers(self):
+        for label in self._data['labels']['Code-Review']['all']:
+            if label['value'] not in (2, -1):
+                # Only report reviewers with negative reviews or
+                # approvals to avoid counting anyone who is just
+                # leaving lots of +1 votes without actually providing
+                # feedback.
+                continue
+            yield Participant(
+                'reviewer',
+                label['name'],
+                label['email'],
+                _to_datetime(label['date']),
+            )
+        for label in self._data['labels']['Workflow']['all']:
+            if label.get('value', 0) != 1:
+                continue
+            yield Participant(
+                'approver',
+                label['name'],
+                label['email'],
+                _to_datetime(label['date']),
+            )
 
 
 def fetch_review(review_id):
