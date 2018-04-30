@@ -24,6 +24,9 @@ from goal_tools.tests import base
 _data_55535 = json.loads(
     pkgutil.get_data('goal_tools.tests', 'data/55535.json').decode('utf-8')
 )
+_data_561507 = json.loads(
+    pkgutil.get_data('goal_tools.tests', 'data/561507.json').decode('utf-8')
+)
 
 
 class TestParseReviewLists(base.TestCase):
@@ -79,6 +82,7 @@ class TestReview(base.TestCase):
     def setUp(self):
         super().setUp()
         self.rev = gerrit.Review('55535', _data_55535)
+        self.rev2 = gerrit.Review('561507', _data_561507)
 
     def test_url(self):
         self.assertEqual('https://review.openstack.org/55535/', self.rev.url)
@@ -88,6 +92,10 @@ class TestReview(base.TestCase):
             datetime.datetime(2018, 3, 22, 16, 5, 45),
             self.rev.created,
         )
+
+    def test_is_merged(self):
+        self.assertFalse(self.rev.is_merged)
+        self.assertTrue(self.rev2.is_merged)
 
     def test_owner(self):
         owner = self.rev.owner
@@ -125,21 +133,29 @@ class TestReview(base.TestCase):
 
 class TestFetchReview(base.TestCase):
 
-    def test_not_in_cache(self):
+    def test_not_in_cache_new(self):
         cache = {}
         with mock.patch('goal_tools.gerrit.query_gerrit') as f:
             f.return_value = _data_55535
             results = gerrit.fetch_review('55535', cache)
-        self.assertIn(('review', '55535'), cache)
+        self.assertNotIn(('review', '55535'), cache)
         self.assertEqual(_data_55535, results._data)
-        self.assertEqual(_data_55535, cache[('review', '55535')])
+
+    def test_not_in_cache_merged(self):
+        cache = {}
+        with mock.patch('goal_tools.gerrit.query_gerrit') as f:
+            f.return_value = _data_561507
+            results = gerrit.fetch_review('561507', cache)
+        self.assertIn(('review', '561507'), cache)
+        self.assertEqual(_data_561507, results._data)
+        self.assertEqual(_data_561507, cache[('review', '561507')])
 
     def test_in_cache(self):
         cache = {
-            ('review', '55535'): _data_55535,
+            ('review', '561507'): _data_561507,
         }
         with mock.patch('goal_tools.gerrit.query_gerrit') as f:
             f.side_effect = AssertionError('should not be called')
-            results = gerrit.fetch_review('55535', cache)
-        self.assertIn(('review', '55535'), cache)
-        self.assertEqual(_data_55535, results._data)
+            results = gerrit.fetch_review('561507', cache)
+        self.assertIn(('review', '561507'), cache)
+        self.assertEqual(_data_561507, results._data)

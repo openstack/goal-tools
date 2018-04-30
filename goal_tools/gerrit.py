@@ -88,6 +88,10 @@ class Review:
         return _to_datetime(self._data['created'])
 
     @property
+    def is_merged(self):
+        return self._data['status'] == 'MERGED'
+
+    @property
     def participants(self):
         yield self.owner
         yield from self.reviewers
@@ -131,6 +135,9 @@ class Review:
 def fetch_review(review_id, cache):
     """Find the review in the cache or look it up in the API.
 
+    Review data is only cached if the review is MERGED because
+    otherwise it is more likely to change.
+
     :param review_id: Review ID of the review to look for.
     :type review_id: str
     :param cache: Storage for repeated lookups.
@@ -140,8 +147,9 @@ def fetch_review(review_id, cache):
     key = ('review', review_id)
     if key in cache:
         LOG.debug('found %s cached', review_id)
-        data = cache[key]
-    else:
-        data = query_gerrit('changes/' + review_id + '/detail')
+        return Review(review_id, cache[key])
+    data = query_gerrit('changes/' + review_id + '/detail')
+    response = Review(review_id, data)
+    if response.is_merged:
         cache[key] = data
-    return Review(review_id, data)
+    return response
