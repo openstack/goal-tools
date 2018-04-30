@@ -19,8 +19,16 @@ LOG = logging.getLogger(__name__)
 
 
 def requester(url, params={}, headers={}):
-    """A requests wrapper to consistently retry HTTPS queries"""
+    """A requests wrapper to consistently retry HTTPS queries
 
+    :param url: The URL to get.
+    :type url: str
+    :param params: Additional parameters to provide.
+    :type params: dict(str, str)
+    :param headers: Additional headers to set.
+    :type params: dict(str, str)
+
+    """
     # Try up to 3 times
     retry = requests.Session()
     retry.mount("https://", requests.adapters.HTTPAdapter(max_retries=3))
@@ -28,7 +36,15 @@ def requester(url, params={}, headers={}):
 
 
 def decode_json(raw):
-    """Trap JSON decoding failures and provide more detailed errors"""
+    """Trap JSON decoding failures and provide more detailed errors
+
+    Remove ')]}' XSS prefix from data if it is present, then decode it
+    as JSON and return the results.
+
+    :param raw: Response text from API
+    :type raw: str
+
+    """
 
     # Gerrit's REST API prepends a JSON-breaker to avoid XSS vulnerabilities
     if raw.text.startswith(")]}'"):

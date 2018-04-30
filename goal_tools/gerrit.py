@@ -62,6 +62,7 @@ def query_gerrit(method, params={}):
 
 
 def _to_datetime(s):
+    "Convert a string to a datetime.datetime instance"
     # Ignore the trailing decimal seconds.
     s = s.rpartition('.')[0]
     return datetime.datetime.strptime(s, '%Y-%m-%d %H:%M:%S')
@@ -72,6 +73,7 @@ Participant = collections.namedtuple(
 
 
 class Review:
+    "The history of one code review"
 
     def __init__(self, id, data):
         self._id = id
@@ -127,6 +129,14 @@ class Review:
 
 
 def fetch_review(review_id, cache):
+    """Find the review in the cache or look it up in the API.
+
+    :param review_id: Review ID of the review to look for.
+    :type review_id: str
+    :param cache: Storage for repeated lookups.
+    :type cache: goal_tools.cache.Cache
+
+    """
     key = ('review', review_id)
     if key in cache:
         LOG.debug('found %s cached', review_id)

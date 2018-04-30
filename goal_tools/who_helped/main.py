@@ -23,6 +23,8 @@ from goal_tools import caching
 
 
 class WhoHelped(app.App):
+    """Tool for extracting data and statistics about contributors to projects.
+    """
 
     def __init__(self):
         version_info = pbr.version.VersionInfo('goal-tools')

@@ -22,20 +22,24 @@ MEMBER_LOOKUP_URL = 'https://openstackid-resources.openstack.org/'
 
 
 class Affiliation:
+    "A Foundation member relationship to an employer"
 
     def __init__(self, data):
         self._data = data
 
     @property
     def organization(self):
+        "The name of the employer"
         return self._data['organization']['name']
 
     @property
     def is_current(self):
+        "Boolean indicating if the affiliation is set to be current"
         return self._data.get('is_current', False)
 
     @property
     def start_date(self):
+        "Start date of affiliation, if given"
         start = self._data['start_date']
         if start:
             return datetime.datetime.utcfromtimestamp(start)
@@ -43,16 +47,32 @@ class Affiliation:
 
     @property
     def end_date(self):
+        "End date of affiliation, if given"
         end = self._data['end_date']
         if end:
             return datetime.datetime.utcfromtimestamp(end)
         return None
 
     def active(self, when):
+        """Is the affiliation was in effect on the date specified.
+
+        If we have a current affiliation without start and end dates,
+        assume it is active.
+
+        Otherwise the start date and end dates are compared to the
+        date provided to determine if it falls within the inclusive
+        range.
+
+        Although the argument needs to be a datetime instance, only
+        the date portion is used for comparison. We assume that
+        someone does not change affiliations on the same day.
+
+        :param when: The date to check for active status
+        :type when: datetime.datetime
+
+        """
         if not self.start_date and not self.end_date and self.is_current:
             return True
-        # Compare only the date portion so we don't have to worry
-        # about the time of day.
         if self.start_date and self.start_date.date() > when.date():
             return False
         if self.end_date and self.end_date.date() < when.date():
@@ -61,6 +81,7 @@ class Affiliation:
 
 
 class Member:
+    "A person who is a member of the Foundation"
 
     def __init__(self, email, data):
         self.email = email
@@ -68,6 +89,7 @@ class Member:
 
     @property
     def name(self):
+        "The person's full name"
         return ' '.join([self._data['first_name'], self._data['last_name']])
 
     @property
@@ -100,11 +122,18 @@ def lookup_member(email):
         },
         headers={'Accept': 'application/json'},
     )
-
     return apis.decode_json(raw)['data'][0]
 
 
 def fetch_member(email, cache):
+    """Find the member in the cache or look it up in the API.
+
+    :param email: Email address of the member to look for.
+    :type email: str
+    :param cache: Storage for repeated lookups.
+    :type cache: goal_tools.cache.Cache
+
+    """
     key = ('member', email)
     if key in cache:
         LOG.debug('found %s cached', email)

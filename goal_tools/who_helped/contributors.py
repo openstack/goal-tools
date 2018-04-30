@@ -25,6 +25,7 @@ LOG = logging.getLogger(__name__)
 
 
 class DateColumn(columns.FormattableColumn):
+    "Format a datetime.datetime to make it serializable."
 
     def human_readable(self):
         return str(self._value)

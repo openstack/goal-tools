@@ -16,6 +16,7 @@ from goal_tools import foundation
 
 
 class ShowMember(show.ShowOne):
+    "Show a Foundation member's basic information."
 
     def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)

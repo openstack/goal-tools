@@ -14,6 +14,16 @@ import shelve
 
 
 class Cache:
+    """Data cache with transparent key management
+
+    Keys passed to methods are expected to be tuples of strings but
+    are converted to something the underlying implementation can
+    store and retrieve.
+
+    Values stored in the cache are pickled before being written and
+    unpickled before being returned.
+
+    """
 
     def __init__(self, filename):
         self._shelf = shelve.open(filename)
