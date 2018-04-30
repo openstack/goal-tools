@@ -49,6 +49,11 @@ class Organizations:
             str(entry['company_name']).lower(): entry['company_name']
             for entry in self._data
         })
+        self._domains = {
+            domain.lower(): entry['company_name']
+            for entry in self._data
+            for domain in entry.get('domains', [])
+        }
 
     @functools.lru_cache(maxsize=1024)
     def __getitem__(self, name):
@@ -64,3 +69,8 @@ class Organizations:
             if name.endswith(end):
                 name = name[:-1 * len(end)]
         return name
+
+    @functools.lru_cache(maxsize=1024)
+    def from_email(self, email):
+        domain = email.partition('@')[-1].lower()
+        return self._domains.get(domain)

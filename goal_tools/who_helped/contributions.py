@@ -108,13 +108,18 @@ class ListContributions(lister.Lister):
 
                     # Figure out which organization the user was
                     # affiliated with at the time of the work.
-                    organization = "*unknown"
+                    organization = None
                     member = member_factory.fetch(participant.email)
                     if member:
                         affiliation = member.find_affiliation(participant.date)
                         if affiliation:
                             organization = canonical_orgs[
                                 affiliation.organization]
+                    else:
+                        organization = canonical_orgs.from_email(
+                            participant.email)
+                    if not organization:
+                        organization = "*unknown"
 
                     yield (
                         review_id,

@@ -6,7 +6,6 @@
     - .
     - 1
     - aaa
-    - '-'
     - dsadsadsadsad
     - 'I dont have one'
     - company
@@ -20,7 +19,7 @@
     - Independant
     - MyHome
     - 'my self'
-    - 'myself'
+    - myself
     - HomeOffice
     - 'Self Employeed'
     - 'Self Employed'
@@ -30,7 +29,7 @@
     - 'Individual Contributor'
     - Unaffiliated
     - 没有
-    - Null
+    - null
     - Univerisity
     - fsfsf
     - xxx
@@ -76,14 +75,43 @@
     - 'Not Affiliated'
     - Unaffilited
   company_name: '*independent'
-- aliases:
-    - '4Loops Solutions pvt ltd'
-  company_name: 'Four Loops Solutions'
+- company_name: 21viacloud
+  domains:
+    - 21viacloud.com
+- company_name: 6WIND
+  domains:
+    - 6wind.com
+- company_name: 99cloud
+  domains:
+    - 99cloud.net
+- company_name: 'A10 Networks'
+  domains:
+    - a10networks.com
+- company_name: Accenture
+  domains:
+    - accenture.com
+- company_name: Acelio
+  domains:
+    - acelio.com
+- company_name: 'ACTAR Tech'
+  domains:
+    - actar.com.br
+- company_name: 'ADOC International'
+  domains:
+    - adoc.co.jp
+- company_name: 'AFour Technologies'
+  domains:
+    - afourtech.com
+- company_name: Akanda
+  domains:
+    - akanda.io
 - aliases:
     - 灵雀云
     - 'Alauda, Inc.'
     - Alauda.io
   company_name: Alauda
+  domains:
+    - alauda.io
 - aliases:
     - 'Alcatel Lucent'
     - 'Alcatel-Lucent, Nuage Networks'
@@ -91,10 +119,14 @@
     - 'Alcatel-Lucent Austria'
     - 'Alcatel-Lucent Bell Labs France'
   company_name: Alcatel-Lucent
+  domains:
+    - alcatel-lucent.com
 - aliases:
     - 'Alchemy Solutions'
     - 'Alchemy Lab'
   company_name: 'Alchemy Solutions Group'
+  domains:
+    - alchemy.solutions
 - aliases:
     - Alibaba
     - 'Alibaba Group'
@@ -105,67 +137,277 @@
     - 阿里云计算有限公司
     - 阿里云
   company_name: Alibaba
+  domains:
+    - alibaba.com
+    - alibabacloud.com
+    - aliyun.com
+    - taobao.com
 - aliases:
     - 'Allegro Group'
     - 'Grupa Allegro'
     - 'Grupa Allegro Sp. z o.o.'
   company_name: Allegro
+  domains:
+    - allegrogroup.com
+    - allegro.pl
+- company_name: Altiscale
+  domains:
+    - altiscale.com
+- company_name: Alyseo
+  domains:
+    - alyseo.com
+- company_name: Amadeus
+  domains:
+    - amadeus.com
 - aliases:
     - 'Ammeon Ltd.'
   company_name: Ammeon
+  domains:
+    - ammeon.com
+- company_name: Ampliphae
+  domains:
+    - ampliphae.com
+- company_name: Anchor
+  domains:
+    - anchor.com.au
+    - anchor.net.au
+    - anchor.hosting
+- company_name: Ansible
+  domains:
+    - ansible.com
+- company_name: Apalia
+  domains:
+    - apalia.net
+- company_name: 'Apple, Inc.'
+  domains:
+    - apple.com
+- company_name: Apprenda
+  domains:
+    - apprenda.com
+- company_name: Aptira
+  domains:
+    - aptira.com
+- company_name: 'Argonne National Laboratory'
+  domains:
+    - anl.gov
+- company_name: Aricent
+  domains:
+    - aricent.com
+- company_name: 'Arista Networks'
+  domains:
+    - aristanetworks.com
+- company_name: ARM
+  domains:
+    - arm.com
+- company_name: 'Aruba Networks'
+  domains:
+    - arubanetworks.com
+- company_name: Askbot
+  domains:
+    - askbot.com
 - aliases:
     - 'AT&T Mobility'
     - 'AT&T Services'
   company_name: AT&T
+  domains:
+    - att.com
+    - attinteractive.com
+    - research.att.com
+- company_name: Atomia
+  domains:
+    - atomia.com
+- company_name: Avaya
+  domains:
+    - avaya.com
+- company_name: 'Avi Networks'
+  domains:
+    - avinetworks.com
+- company_name: Awcloud
+  domains:
+    - awcloud.com
 - aliases:
     - 'Awnix, Inc.'
   company_name: Awnix
+  domains:
+    - awnix.com
+- company_name: Axway
+  domains:
+    - axway.com
+- company_name: 'B1 Systems GmbH'
+  domains:
+    - b1-systems.de
+- company_name: 'B3IT Management AB'
+  domains:
+    - b3it.se
 - aliases:
     - 'IRT B<>COM'
     - B-COM
   company_name: B<>COM
+  domains:
+    - b-com.com
+- company_name: 'Bacoosta IT Services'
+  domains:
+    - bacoosta.com
+- company_name: BBVA
+  domains:
+    - bbva.com
 - aliases:
     - 'Business Connexion'
   company_name: BCX
+  domains:
+    - bcx.com
+    - bcx.co.za
+- aliases:
+    - GDT
+  company_name: 'Beijing GuoDianTong Network Technology'
+  domains:
+    - sgitg.sgcc.com.cn
+- company_name: 'Best Buy'
+  domains:
+    - bestbuy.com
 - aliases:
     - 'Big Switch'
   company_name: 'Big Switch Networks'
+  domains:
+    - bigswitch.com
+- company_name: Binero
+  domains:
+    - binero.se
+- company_name: 'Bit-isle Inc.'
+  domains:
+    - bit-isle.co.jp
+- company_name: Bitergia
+  domains:
+    - bitergia.com
+- company_name: 'Blizzard Entertainment'
+  domains:
+    - blizzard.com
 - aliases:
     - 'Blue Box Group'
   company_name: 'Blue Box'
+  domains:
+    - bluebox.net
+- company_name: Bluehost
+  domains:
+    - bluehost.com
 - aliases:
     - beyondcent
     - 博云
     - 苏州博纳讯动软件有限公司
     - 博纳讯动
   company_name: BoCloud
+  domains:
+    - bocloud.com.cn
+- company_name: Boeing
+  domains:
+    - boeing.com
+- company_name: 'Boston University'
+  domains:
+    - bu.edu
 - aliases:
     - 'Bright Computing, BV'
   company_name: 'Bright Computing'
+  domains:
+    - brightcomputing.com
 - aliases:
     - 'Brinkster Communications'
   company_name: Brinkster
+  domains:
+    - brinkster.com
+- company_name: Broadcom
+  domains:
+    - broadcom.com
 - aliases:
     - 'Brocade Communication'
     - 'Brocade Communications'
     - 'Brocade Communications Systems'
   company_name: Brocade
+  domains:
+    - brocade.com
 - aliases:
     - 'Bull SAS'
   company_name: Bull
+  domains:
+    - bull.net
 - aliases:
     - Toutiao
     - 北京字节跳动科技有限公司
     - 今日头条
   company_name: Bytedance
+  domains:
+    - bytedance.com
+- company_name: Caicloud
+  domains:
+    - caicloud.io
+- company_name: Calsoft
+  domains:
+    - calsoftinc.com
+- company_name: Calxeda
+  domains:
+    - calxeda.com
 - aliases:
     - 'Canonical, Ltd.'
     - 'Ubuntu Canonical'
   company_name: Canonical
+  domains:
+    - canonical.com
+- company_name: 'Catalyst IT'
+  domains:
+    - catalyst.net.nz
+- company_name: 'Central Desktop'
+  domains:
+    - centraldesktop.com
+- company_name: CenturyLink
+  domains:
+    - centurylink.com
+- company_name: CERN
+  domains:
+    - cern.ch
+- company_name: CertusNet
+  domains:
+    - certusnet.com
+- company_name: Charter
+  domains:
+    - charter.com
+    - twcable.com
+- company_name: Chef
+  domains:
+    - getchef.com
+    - opscode.com
 - aliases:
     - Chelsio
     - 'Chelsio Communications Inc.'
   company_name: 'Chelsio Communications'
+  domains:
+    - chelsio.com
+- company_name: 'China Cloud'
+  domains:
+    - chinacloud.com.cn
+- company_name: 'China Mobile'
+  domains:
+    - chinamobile.com
+    - cmss.chinamobile.com
+- aliases:
+    - 中国铁路信息技术中心
+  company_name: 'China Railway ITC'
+  domains:
+    - critc.cn
+- company_name: 'China Telecom'
+  domains:
+    - chinatelecom.cn
+- aliases:
+    - 'China Unicom Cloud Data Co. Ltd.'
+    - 联通云数据有限公司
+    - 'China Unicom'
+  company_name: 'China Unicom'
+  domains:
+    - chinaunicom.cn
+- company_name: 'China UnionPay'
+  domains:
+    - unionpay.com
+- company_name: Chinac
+  domains:
+    - chinac.com
 - aliases:
     - 'ChinaNetCenter Cloud'
     - 'ChinaNetCenter CDN'
@@ -173,11 +415,11 @@
     - 'China Cache'
     - 'ChinaNetCenter USA'
   company_name: ChinaNetCenter
-- aliases:
-    - 'China Unicom Cloud Data Co. Ltd.'
-    - 联通云数据有限公司
-    - 'China Unicom'
-  company_name: 'China Unicom'
+  domains:
+    - chinanetcenter.com
+- company_name: 'CIeNET Technologies'
+  domains:
+    - cienet.com.cn
 - aliases:
     - 'Cisco System'
     - 'Cisco Systems Inc., Intel, Microsoft, Dorkbotz'
@@ -189,42 +431,147 @@
     - 'Cisco APAC'
     - 'Cisco Systems India'
   company_name: 'Cisco Systems'
+  domains:
+    - cisco.com
+    - noironetworks.com
+- company_name: Citrix
+  domains:
+    - citrix.com
+- company_name: 'Citrix Systems'
+  domains:
+    - cloud.com
+- company_name: 'Cloud Foundry'
+  domains:
+    - cloudfoundry.org
+- company_name: 'Cloud Technology Partners'
+  domains:
+    - cloudtp.com
 - aliases:
     - Cloudbase
   company_name: 'Cloudbase Solutions'
+  domains:
+    - cloudbasesolutions.com
+- company_name: Cloudbau
+  domains:
+    - cloudbau.de
+- company_name: CloudDC
+  domains:
+    - clouddc.ru
 - aliases:
     - 'CD Cloudenablers'
   company_name: Cloudenablers
+  domains:
+    - cloudenablers.com
+- company_name: CloudFounders
+  domains:
+    - cloudfounders.com
+- company_name: Cloudin
+  domains:
+    - cloudin.cn
+    - cloudin.ren
+- company_name: Cloudscaling
+  domains:
+    - cloudscaling.com
+- company_name: CloudVPS
+  domains:
+    - cloudvps.com
+- company_name: Cloudwatt
+  domains:
+    - cloudwatt.com
 - aliases:
     - 'China Minsheng Bank'
   company_name: CMBC
+  domains:
+    - cmbc.com.cn
+- company_name: Codethink
+  domains:
+    - codethink.co.uk
 - aliases:
     - 'Cognizant Technology Solutions'
   company_name: Cognizant
+  domains:
+    - cognizant.com
+- company_name: 'Coho Data'
+  domains:
+    - cohodata.com
+- company_name: 'CollabNet, Inc'
+  domains:
+    - collab.net
 - aliases:
     - 'Colt Technology Services'
     - KVH
     - 'KVH Co., Ltd.'
   company_name: Colt
+  domains:
+    - colt.net
+- company_name: Comcast
+  domains:
+    - cable.comcast.com
+- company_name: Coraid
+  domains:
+    - coraid.com
+- company_name: CoreOS
+  domains:
+    - coreos.com
 - aliases:
     - 'Corvisa Services'
   company_name: Corvisa
-- aliases:
-    - 中国铁路信息技术中心
-  company_name: 'China Railway ITC'
+  domains:
+    - corvisa.com
+- company_name: Cray
+  domains:
+    - cray.com
+- company_name: CREATE-NET
+  domains:
+    - create-net.org
+- company_name: CRS4
+  domains:
+    - crs4.it
 - aliases:
     - CS2C
   company_name: cs2c
+  domains:
+    - cs2c.com.cn
 - aliases:
-    - 湖南大学超级计算与云计算研究所
-  company_name: 'Hunan University, Institution of Supercomputing and Cloud Computing'
+    - 'Spanish National Research Council'
+    - 'CSIC - Spanish National Research Council'
+  company_name: CSIC
+  domains:
+    - ifca.unican.es
+- company_name: Cybera
+  domains:
+    - cybera.ca
+- company_name: Cybercom
+  domains:
+    - cybercom.fi
+    - cybercom.com
+- company_name: 'Daikanyama RED'
+  domains:
+    - d-red.jp
+- company_name: DaoCloud
+  domains:
+    - daocloud.io
+- company_name: 'Dassault Systèmes'
+  domains:
+    - 3ds.com
+- company_name: DataCentred
+  domains:
+    - datacentred.co.uk
+    - datacentred.io
+- company_name: 'DBLink Consult'
+  domains:
+    - dblinkconsult.com.br
 - aliases:
     - debian.org
   company_name: Debian
+  domains:
+    - debian.org
 - aliases:
     - 'DEK Technologies'
     - DEK
   company_name: 'DEK Technologies'
+  domains:
+    - dektech.com.au
 - aliases:
     - Dell
     - 'Dell EMC'
@@ -246,12 +593,75 @@
     - 'Office of The CTO EMC Corporation'
     - 'VCE - EMC'
   company_name: 'Dell EMC'
+  domains:
+    - dell.com
+    - emc.com
+    - software.dell.com
+- company_name: 'Denali Systems'
+  domains:
+    - denali-systems.com
+- company_name: 'Deutsche Telekom'
+  domains:
+    - telekom.de
+- company_name: Devoteam
+  domains:
+    - devoteam.com
+- company_name: 'Digital Pacific'
+  domains:
+    - digitalpacific.com.au
+- company_name: Digiware
+  domains:
+    - digiware.nl
+- company_name: 'DMM.com Labo'
+  domains:
+    - dmm.com
+- company_name: Docker
+  domains:
+    - docker.com
+- company_name: dotCloud
+  domains:
+    - dotcloud.com
 - aliases:
     - 'DreamHost, Inktank'
   company_name: DreamHost
+  domains:
+    - dreamhost.com
+- company_name: 'Dt Dream'
+  domains:
+    - dtdream.com
+- company_name: Earthlink
+  domains:
+    - earthlink.net
+- company_name: EasyStack
+  domains:
+    - easystack.cn
 - aliases:
     - 'Eayun, Inc.'
   company_name: Eayun
+  domains:
+    - eayun.com
+- company_name: eBay
+  domains:
+    - ebay.com
+    - ebaysf.com
+- company_name: EISOO
+  domains:
+    - eisoo.com
+- company_name: Ellucian
+  domains:
+    - ellucian.com
+- company_name: Embrane
+  domains:
+    - embrane.com
+- company_name: 'Endurance Wind Power'
+  domains:
+    - endurancewindpower.com
+- company_name: 'Entry Point Networks'
+  domains:
+    - entpnt.com
+- company_name: 'EPAM Systems'
+  domains:
+    - epam.com
 - aliases:
     - 'Ericsson AB'
     - 'Ericsson Research'
@@ -264,52 +674,129 @@
     - 'Ericsson Canada'
     - 'Ericsson India Global Services'
   company_name: Ericsson
+  domains:
+    - ericsson.com
+- company_name: evoila
+  domains:
+    - evoila.de
+- company_name: FathomDB
+  domains:
+    - fathomdb.com
+- company_name: Fermilab
+  domains:
+    - fnal.gov
 - aliases:
     - 'Fiberhome Telecommunication Technologies Co.,LTD'
   company_name: Fiberhome
-- aliases:
-    - 'Seznam.cz, a.s.'
-  company_name: Seznam.cz
+  domains:
+    - fiberhome.com
 - aliases:
     - FIT
   company_name: 'FIT Instituto de Tecnologia'
+  domains:
+    - fit-tecnologia.org.br
 - aliases:
     - 'florath nanosystems & telecommunications'
   company_name: flonatel
+  domains:
+    - florath.net
 - aliases:
     - 'Fortinet Inc'
   company_name: Fortinet
+  domains:
+    - fortinet.com
+- aliases:
+    - '4Loops Solutions pvt ltd'
+  company_name: 'Four Loops Solutions'
+  domains:
+    - 4loops.com
 - aliases:
     - 'Freescale (I) Pvt Ltd'
     - 'Freescale Semiconductors'
   company_name: Freescale
+  domains:
+    - freescale.com
 - aliases:
     - 'FUJITSU HOKURIKU SYSTEMS LIMITED'
   company_name: Fujitsu
+  domains:
+    - fujitsu.com
 - aliases:
     - Ghostcloud
     - 精灵云科技有限公司
   company_name: Ghostcloud
+  domains:
+    - ghostcloud.cn
+- company_name: GigaSpaces
+  domains:
+    - gigaspaces.com
+- company_name: GlobalLogic
+  domains:
+    - globallogic.com
+- company_name: GoDaddy
+  domains:
+    - godaddy.com
+- company_name: GohighSec
+  domains:
+    - gohighsec.com
+- company_name: Google
+  domains:
+    - google.com
+- company_name: GPLHost
+  domains:
+    - gplhost.com
 - aliases:
     - 'GS Lab'
   company_name: 'Great Software Laboratory'
+  domains:
+    - gslab.com
+- company_name: 'Grid Dynamics'
+  domains:
+    - griddynamics.com
+    - griddynamics.net
+- company_name: Gridcentric
+  domains:
+    - gridcentric.ca
+    - gridcentric.com
+- company_name: GRNET
+  domains:
+    - grnet.gr
+- company_name: Harmonic
+  domains:
+    - harmonicinc.com
+- company_name: HarmonyCloud
+  domains:
+    - harmonycloud.cn
 - aliases:
     - 'hastexo Professional Services GmbH'
   company_name: Hastexo
+  domains:
+    - hastexo.com
 - aliases:
     - 'HCL Technologies'
   company_name: HCL
-- aliases:
-    - 'Hitachi Data Systems'
-    - 'Hitachi India'
-  company_name: Hitachi
+  domains:
+    - hcl.com
+- company_name: Heroku
+  domains:
+    - heroku.com
 - aliases:
     - 'Hengfeng Bank'
     - 'Hengfeng Bank Co.,Ltd.'
   company_name: HFBank
+  domains:
+    - hfbank.com.cn
 - aliases:
-    - 'Huron Technologies'
-  company_name: Huron
+    - 'Hitachi Data Systems'
+    - 'Hitachi India'
+  company_name: Hitachi
+  domains:
+    - hds.com
+    - hitachi.com
+    - hitachi.co.in
+- company_name: Hortonworks
+  domains:
+    - hortonworks.com
 - aliases:
     - 'Hewlett Packard'
     - 'Hewlett-Packard Company'
@@ -320,6 +807,8 @@
     - Hewlett-Pack
     - Hewlitt-Packard
   company_name: HP
+  domains:
+    - hp.com
 - aliases:
     - 'HP Cloud'
     - 'HP ES GD China'
@@ -346,6 +835,8 @@
     - 'HP Costa Rica'
     - 'China HP'
   company_name: HPE
+  domains:
+    - hpe.com
 - aliases:
     - 'Huawei Technologies'
     - 'Huawei Technology'
@@ -363,15 +854,37 @@
     - 'Huawei Technolgies'
     - '"Huawei  Technologies Co., Limitied"'
   company_name: Huawei
+  domains:
+    - huawei.com
+- aliases:
+    - 湖南大学超级计算与云计算研究所
+  company_name: 'Hunan University, Institution of Supercomputing and Cloud Computing'
+  domains:
+    - csee.hnu.edu.cn
+- aliases:
+    - 'Huron Technologies'
+  company_name: Huron
+  domains:
+    - hihuron.com
 - aliases:
     - 'Huazhong University of Science and Technology'
     - 华中科技大学
   company_name: HUST
+  domains:
+    - hust.edu.cn
 - aliases:
     - 'Guizhou HXT Semiconductor Technology Co., Ltd.'
     - 贵州华芯通半导体技术有限公司
     - 华芯通半导体
   company_name: 'HXT Semiconductor'
+  domains:
+    - hxt-semitech.com
+- company_name: HyperHQ
+  domains:
+    - hyper.sh
+- company_name: Hystax
+  domains:
+    - hystax.com
 - aliases:
     - 'IBM Australia'
     - 'IBM Canada'
@@ -397,52 +910,145 @@
     - 'IBM Malaysia Sdn Bhd'
     - 'IBM India Private'
   company_name: IBM
+  domains:
+    - ibm.com
+    - linux.vnet.ibm.com
 - aliases:
     - 'Institute of Computing Technology of the Chinese Academy of Sciences'
     - 中科院计算所
   company_name: ICT
-- aliases:
-    - 'Spanish National Research Council'
-    - 'CSIC - Spanish National Research Council'
-  company_name: CSIC
+  domains:
+    - ict.ac.cn
 - aliases:
     - 'IGBMC biological research lab'
   company_name: IGBMC
+  domains:
+    - igbmc.fr
+- company_name: 'Imaginea Technologies Inc.'
+  domains:
+    - imaginea.com
+- company_name: 'In August'
+  domains:
+    - inaugust.com
+- company_name: 'Industrial Technology Research Institute'
+  domains:
+    - itri.org.tw
+- aliases:
+    - 'INESA, 上海仪电'
+  company_name: inesa
+  domains:
+    - inesa.com
+- company_name: INFINIDAT
+  domains:
+    - infinidat.com
+- aliases:
+    - 'Infinite Computer Solutions India Ltd'
+  company_name: Infinite
+  domains:
+    - infinite.com
+- company_name: Infoblox
+  domains:
+    - infoblox.com
+- company_name: 'Information Sciences Institute'
+  domains:
+    - isi.edu
+- company_name: Infracloud
+  domains:
+    - infracloud.io
+- company_name: 'Ingenious Software Pty Ltd'
+  domains:
+    - ingenious.com.au
+- company_name: Inktank
+  domains:
+    - inktank.com
+- company_name: InMon
+  domains:
+    - inmon.com
+- aliases:
+    - INRIA
+  company_name: Inria
+  domains:
+    - inria.fr
+- company_name: Inspur
+  domains:
+    - inspur.com
 - aliases:
     - III
     - 'III IDEAS'
   company_name: 'Institute for Information Industry'
-- aliases:
-    - 'INESA, 上海仪电'
-  company_name: inesa
-- aliases:
-    - 'Infinite Computer Solutions India Ltd'
-  company_name: Infinite
-- aliases:
-    - INRIA
-  company_name: Inria
+  domains:
+    - iii.org.tw
+- company_name: 'Instituto de Telecomunicacoes'
+  domains:
+    - it.pt
+    - av.it.pt
+    - lx.it.pt
+    - co.it.pt
 - aliases:
     - 'Intel Media'
     - 'Intel OTC'
     - 'Intern at intel'
     - 'Intel Security'
   company_name: Intel
+  domains:
+    - intel.com
+- company_name: InterhostAS
+  domains:
+    - interhost.no
+- company_name: Internap
+  domains:
+    - internap.com
+- company_name: 'Internet Solutions'
+  domains:
+    - is.co.za
+- company_name: 'Intracom Telecom'
+  domains:
+    - intracom-telecom.com
+- company_name: Intralinks
+  domains:
+    - intralinks.com
+- company_name: inwinSTACK
+  domains:
+    - inwinstack.com
 - aliases:
     - 'iomart group'
   company_name: iomart
+  domains:
+    - iomart.com
+- company_name: IroquoiSystems
+  domains:
+    - iroquoisystems.com
 - aliases:
     - 'Institute of Software, Chinese Academy of Sciences'
     - 中国科学院软件研究所
     - 中科院软件所
   company_name: ISCAS
+  domains:
+    - iscas.ac.cn
+- company_name: 'ISP RAS'
+  domains:
+    - ispras.ru
+- company_name: 'IT Synergy'
+  domains:
+    - itsyn.com
 - aliases:
     - ITKey
   company_name: itkey
+  domains:
+    - itkey.com
+- company_name: iWeb
+  domains:
+    - iweb.com
 - aliases:
     - iweb.co.uk
     - iwebsolutions.co.uk
     - nuisoft.com
   company_name: iWebSolutions
+  domains:
+    - iweb.co.uk
+- company_name: 'Izel Technologies'
+  domains:
+    - izeltech.com
 - aliases:
     - JD
     - JD.COM
@@ -450,68 +1056,194 @@
     - '360buy Ltd.'
     - 京东
   company_name: JD.COM
+  domains:
+    - jd.com
 - aliases:
     - 'Johns Hopkins University Applied Physics Lab'
     - 'Johns Hopkins University Applied Physics Laboratory'
     - JHU/APL
   company_name: 'Johns Hopkins University Applied Physics Laboratory'
+  domains:
+    - jhuapl.edu
+- company_name: 'JP Berlin'
+  domains:
+    - jpberlin.de
 - aliases:
     - 'Juniper Networks'
     - 'Juniper Networks Inc.'
     - 'Juniper Networks India'
     - 'Juniper India'
   company_name: Juniper
+  domains:
+    - juniper.com
+    - juniper.net
+- company_name: 'Karlstad Universitet'
+  domains:
+    - kau.se
 - aliases:
     - KDDI
     - 'KDDI R&D Laboratories'
   company_name: KDDI
-- aliases:
-    - 'University of Kent'
-  company_name: 'University of Kent'
+  domains:
+    - kddi.com
+    - kddilabs.jp
 - aliases:
     - 'Kinvolk GmbH'
   company_name: Kinvolk
+  domains:
+    - kinvolk.io
 - aliases:
     - Kionetworks
     - KIO
     - 'Kio operaciones'
     - KIO-Networks
   company_name: 'KIO Networks'
+  domains:
+    - kionetworks.com
 - aliases:
     - 'Kontron Inc'
   company_name: Kontron
+  domains:
+    - kontron.com
+- company_name: 'KT Corporation'
+  domains:
+    - kt.com
+- company_name: 'Kungliga Tekniska högskolan'
+  domains:
+    - kth.se
+- company_name: 'Kylin Cloud'
+  domains:
+    - kylin-cloud.com
 - aliases:
     - 'La Honda Research Center'
   company_name: 'La Honda Research'
+  domains:
+    - lahondaresearch.org
+- company_name: Lavabit
+  domains:
+    - lavabit.com
+- company_name: Lenovo
+  domains:
+    - lenovo.com
+- company_name: 'Letv Cloud Computing'
+  domains:
+    - letv.com
+    - le.com
 - aliases:
     - 'LG CNS'
   company_name: 'LG CNS'
+  domains:
+    - lgcns.com
+- company_name: Limilo
+  domains:
+    - limilo.com
+- company_name: Linagora
+  domains:
+    - linagora.com
+- company_name: Linaro
+  domains:
+    - linaro.org
 - aliases:
     - linuxacademy.com
   company_name: 'Linux Academy'
+  domains:
+    - linuxacademy.com
+- company_name: LIP
+  domains:
+    - lip.pt
+- company_name: 'Lithium Technologies'
+  domains:
+    - lithium.com
+- company_name: Locaweb
+  domains:
+    - locaweb.com.br
+- company_name: M3S
+  domains:
+    - m3s.it
+- company_name: Maginatics
+  domains:
+    - maginatics.com
+- company_name: Mail.Ru
+  domains:
+    - corp.mail.ru
+- company_name: 'Managed IT'
+  domains:
+    - managedit.ie
+- company_name: Maplelabs
+  domains:
+    - maplelabs.com
+- company_name: MapR
+  domains:
+    - maprtech.com
+    - mapr.com
 - aliases:
     - 'Mellanox Technologies'
     - Mellanox.com
   company_name: Mellanox
+  domains:
+    - mellanox.com
+    - mellanox.co.il
+- company_name: Memset
+  domains:
+    - memset.com
+- company_name: Metacloud
+  domains:
+    - metacloud.com
 - aliases:
     - 'Metaswitch Networks'
   company_name: Metaswitch
+  domains:
+    - metaswitch.com
+- company_name: 'Metsi Technologies'
+  domains:
+    - metsi.co.uk
+- company_name: Microsoft
+  domains:
+    - microsoft.com
 - aliases:
     - 'Midokura Japan'
   company_name: Midokura
+  domains:
+    - midokura.com
+    - midokura.jp
+- company_name: Mirantis
+  domains:
+    - mirantis.com
+    - mirantis.ru
+- company_name: MIT
+  domains:
+    - mit.edu
+- company_name: 'MIT CSAIL'
+  domains:
+    - csail.mit.edu
 - aliases:
     - 'MomentumSI, Transcend Computing'
   company_name: MomentumSI
+  domains:
+    - momentumsi.com
 - aliases:
     - MontaVista
   company_name: 'MontaVista Software'
+  domains:
+    - mvista.com
 - aliases:
     - 'MYNETWORK TECHNOLOGY'
   company_name: myNET
+  domains:
+    - mynet.at
+- company_name: NASA
+  domains:
+    - nasa.gov
+- company_name: NAVER
+  domains:
+    - navercorp.com
 - aliases:
     - 'Nebula, Inc. ; CFO Tools'
     - Nebulaworks
   company_name: Nebula
+  domains:
+    - nebula.com
+    - ansolabs.com
 - aliases:
     - 'NEC Europe Ltd.'
     - 'NEC Soft, Ltd.'
@@ -521,10 +1253,60 @@
     - 'NEC Solution Innovators'
     - 'NEC Corporation of America'
   company_name: NEC
+  domains:
+    - nec.com
+    - nec.co.jp
+    - nectechnologies.in
+    - neclab.eu
+    - necam.com
+- company_name: NetApp
+  domains:
+    - netapp.com
+- company_name: NetEase
+  domains:
+    - netease.com
+- company_name: Netmarble
+  domains:
+    - netmarble.com
+- company_name: 'NetOne Systems'
+  domains:
+    - netone.co.jp
+- company_name: Netronome
+  domains:
+    - netronome.com
+- company_name: Neunn
+  domains:
+    - neunn.com
+- company_name: Nexenta
+  domains:
+    - nexenta.com
+- company_name: NextGrail
+  domains:
+    - nextgrail.com
+- company_name: 'Nimbis Services'
+  domains:
+    - nimbisservices.com
+- company_name: 'Nimble Engineering AS'
+  domains:
+    - nimbleengineering.io
+- company_name: 'Nimble Storage'
+  domains:
+    - nimblestorage.com
+- company_name: Nimbula
+  domains:
+    - nimbula.com
+- company_name: 'Nine Internet Solutions AG'
+  domains:
+    - nine.ch
+- company_name: Nitrous
+  domains:
+    - nitrous.io
 - aliases:
     - 'Nokia Solutions and Networks'
     - 'Nokia Networks'
   company_name: Nokia
+  domains:
+    - nokia.com
 - aliases:
     - 'NTT CORPORATION'
     - 'NTT DATA'
@@ -533,57 +1315,185 @@
     - 'NTT Communications'
     - 'NTT Comware Corporation'
   company_name: NTT
+  domains:
+    - ntt.com
+    - nttmcl.com
+    - nttdata.co.jp
+    - ntt.co.jp
+    - nttdata.com
+    - vertex.co.in
+    - ntts.co.jp
+    - ntt-tx.co.jp
+    - njk.co.jp
+    - nttcom.co.jp
+- company_name: 'Nuage Networks'
+  domains:
+    - nuagenetworks.net
+- company_name: Numergy
+  domains:
+    - numergy.com
+    - numergy.fr
+- company_name: NUST
+  domains:
+    - nust.edu.pk
 - aliases:
     - 'NXP (I) Pvt Ltd'
     - NXP
   company_name: NXP
+  domains:
+    - nxp.com
+- aliases:
+    - Yahoo
+    - 'Oath Inc Formerly Yahoo'
+  company_name: Oath
+  domains:
+    - oath.com
+- company_name: 'Objectif Libre'
+  domains:
+    - objectif-libre.com
+- company_name: 'OCF plc'
+  domains:
+    - ocf.co.uk
 - aliases:
     - 'One Convergence Devices Pvt. Ltd'
     - 'Oneconvergence Devices Pvt Ltd'
     - 'One Convergence Devices'
   company_name: 'One Convergence'
+  domains:
+    - oneconvergence.com
+- company_name: OP5
+  domains:
+    - op5.com
+- company_name: 'Opcito Technologies'
+  domains:
+    - opcito.com
+- company_name: OpenNext
+  domains:
+    - opennext.io
+- company_name: Optiflows
+  domains:
+    - optiflows.com
 - aliases:
     - 'Oracle America Inc.'
     - 'Oracle India Pvt. Ltd'
   company_name: Oracle
+  domains:
+    - oracle.com
 - aliases:
     - 'Orange Labs'
     - 'Orange Polska S.A.'
   company_name: Orange
+  domains:
+    - orange.com
+- company_name: Ormuco
+  domains:
+    - ormuco.com
+- company_name: Osones
+  domains:
+    - osones.com
+    - osones.io
+    - osones.fr
 - aliases:
     - 'OVH Group'
     - RunAbove
   company_name: OVH
+  domains:
+    - ovh.com
+- company_name: Parallels
+  domains:
+    - parallels.com
+- company_name: Percona
+  domains:
+    - percona.com
 - aliases:
     - 'Persistent System Limited'
     - 'persistent sys limited'
     - 'Persistent Ltd'
   company_name: 'Persistent Systems'
+  domains:
+    - persistent.co.in
 - aliases:
     - 'Piston Cloud Computing, Inc.'
     - Piston
   company_name: 'Piston Cloud'
+  domains:
+    - pistoncloud.com
+- company_name: Pivotal
+  domains:
+    - pivotal.io
+    - gopivotal.com
+    - pivotallabs.com
 - aliases:
     - 'Platform9 Systems'
     - 'Platform9 Systems, Inc.'
   company_name: Platform9
+  domains:
+    - platform9.com
+    - platform9.net
+- company_name: PlayHaven
+  domains:
+    - playhaven.com
+- company_name: PLCloud
+  domains:
+    - plcloud.com
+- company_name: PLUMgrid
+  domains:
+    - plumgrid.com
+- company_name: 'Pluribus Networks'
+  domains:
+    - pluribusnetworks.com
+- company_name: PoleX
+  domains:
+    - polex.com.cn
+- company_name: 'Portland State University'
+  domains:
+    - pdx.edu
+- company_name: 'PowerTech Information Systems AS'
+  domains:
+    - powertech.no
 - aliases:
     - Calico
   company_name: 'Project Calico'
+  domains:
+    - projectcalico.org
 - aliases:
     - PropheTech.cn
   company_name: 'Prophet Technology'
+  domains:
+    - prophetech.cn
+- company_name: Pubyun
+  domains:
+    - pubyun.com
+- company_name: 'Puppet Labs'
+  domains:
+    - puppetlabs.com
+- company_name: 'Pure Storage'
+  domains:
+    - purestorage.com
+- company_name: 'Qihoo 360 Technology Co'
+  domains:
+    - 360.cn
 - aliases:
     - 'Qiniu Limited'
     - 'Shanghai Qiniu Information Technology Co., Ltd.'
     - 'Qiniu Storage'
     - 上海七牛信息技术有限公司
   company_name: Qiniu
+  domains:
+    - qiniu.com
+- company_name: QIYI
+  domains:
+    - qiyi.com
+- company_name: 'Quanta Research Cambridge'
+  domains:
+    - qrclab.com
 - aliases:
     - Quobyte
     - quobyte
     - 'Quobyte GmbH'
   company_name: 'Quobyte Inc.'
+  domains:
+    - quobyte.com
 - aliases:
     - 'Rackspace, Cloudscaling, Korea Telcom, friends with lots of people'
     - Rackspace.com
@@ -591,6 +1501,27 @@
     - Rackspce
     - 'Rackspace Hosting; Tunnel Vision Laboratories LLC'
   company_name: Rackspace
+  domains:
+    - rackspace.co.uk
+    - rackspace.com
+    - slicehost.com
+    - mailtrust.com
+- company_name: Rackware
+  domains:
+    - rackwareinc.com
+- company_name: Radisys
+  domains:
+    - radisys.com
+- company_name: Radware
+  domains:
+    - radware.com
+- company_name: Rakuten
+  domains:
+    - rakuten.com
+    - rakops.com
+- company_name: 'Ravello Systems'
+  domains:
+    - ravellosystems.com
 - aliases:
     - 'Red Hat Canada, Inc'
     - 'Red Hat Czech, s.r.o.'
@@ -601,154 +1532,540 @@
     - 'Red Hat, Inc.'
     - 'Red Hat, Inc'
   company_name: 'Red Hat'
+  domains:
+    - redhat.com
+    - gluster.com
+    - enovance.com
 - aliases:
     - 'Redpill Linpro AS'
     - 'Redpill Linpro AB'
   company_name: 'Redpill Linpro'
+  domains:
+    - redpill-linpro.com
+- company_name: Reduxio
+  domains:
+    - reduxio.com
+- company_name: Reliance
+  domains:
+    - ril.com
+- company_name: Rightscale
+  domains:
+    - rightscale.com
+- company_name: Rizumu
+  domains:
+    - rizu.mu
 - aliases:
     - Salesforce.com
   company_name: Salesforce
+  domains:
+    - salesforce.com
 - aliases:
     - 'Samsung SDS'
     - 'Samsung Electronics'
     - 'Samsung India Software Operations'
   company_name: Samsung
+  domains:
+    - samsung.com
+- company_name: 'San Diego Supercomputer Center'
+  domains:
+    - sdsc.edu
+- company_name: SanDisk
+  domains:
+    - sandisk.com
 - aliases:
     - 'SAP SE'
   company_name: SAP
+  domains:
+    - sap.com
 - aliases:
     - SBERBANK
     - 'Sberbank Technologies'
   company_name: Sberbank
+  domains:
+    - sberbank.ru
 - aliases:
     - Scality.com
   company_name: Scality
+  domains:
+    - scality.com
 - aliases:
     - 'Seagate Technology'
   company_name: Seagate
+  domains:
+    - seagate.com
+- company_name: Selectel
+  domains:
+    - selectel.com
+    - selectel.ru
+- company_name: Servionica
+  domains:
+    - servionica.ru
+- company_name: Servosity
+  domains:
+    - servosity.com
+- aliases:
+    - 'Seznam.cz, a.s.'
+  company_name: Seznam.cz
+  domains:
+    - firma.seznam.cz
 - aliases:
     - 'Beijing China-Power Information Technology CO.,LTD'
     - 'NO.15,Xiaoying Rd(E),Qinghe,Haidian District'
     - zhongdianpuhua
   company_name: SG.Cloud
-- aliases:
-    - GDT
-  company_name: 'Beijing GuoDianTong Network Technology'
+  domains:
+    - sgcc.com.cn
+- company_name: Siaras
+  domains:
+    - siaras.com
+- company_name: SimpliVity
+  domains:
+    - simplivity.com
 - aliases:
     - 'SINA Weibo Fund'
   company_name: SINA
+  domains:
+    - sina.com
 - aliases:
     - SKT
     - SKTelecom
   company_name: 'SK telecom'
+  domains:
+    - sktelecom.com
+- company_name: Snabb
+  domains:
+    - snabb.co
 - aliases:
     - 'SoftLayer, an IBM Company'
   company_name: SoftLayer
+  domains:
+    - softlayer.com
+- company_name: SolidFire
+  domains:
+    - solidfire.com
+- company_name: Solinea
+  domains:
+    - solinea.com
+- company_name: Sonian
+  domains:
+    - sonian.net
+- company_name: 'Sony Mobile Communications'
+  domains:
+    - sonymobile.com
+- company_name: 'Southern Illinois University'
+  domains:
+    - siu.edu
+- company_name: 'Space Telescope Science Institute'
+  domains:
+    - stsci.edu
+- company_name: 'Spil Games'
+  domains:
+    - spilgames.com
+- company_name: StackHPC
+  domains:
+    - stackhpc.com
+- company_name: Stackinsider
+  domains:
+    - stackinsider.com
+- company_name: Stackmasters
+  domains:
+    - stackmasters.eu
+- company_name: StackOps
+  domains:
+    - stackops.com
+- company_name: StackStorm
+  domains:
+    - stackstorm.com
+- company_name: 'State Farm Insurance'
+  domains:
+    - statefarm.com
+- company_name: StorPool
+  domains:
+    - storpool.com
+- company_name: Stratoscale
+  domains:
+    - stratoscale.com
+- company_name: 'Suranaree University of Technology'
+  domains:
+    - ac.th
 - aliases:
     - 'SUSE Linux GmbH'
   company_name: SUSE
+  domains:
+    - suse.cz
+    - suse.de
+    - suse.com
 - aliases:
     - 'SwifStack Ancestry.com'
   company_name: SwiftStack
+  domains:
+    - swiftstack.com
+- company_name: Swisscom
+  domains:
+    - swisscom.com
+- company_name: Switch
+  domains:
+    - switch.ch
 - aliases:
     - 'Symantec Software and Services'
   company_name: Symantec
+  domains:
+    - symantec.com
 - aliases:
     - SZZT
     - 深圳市证通电子股份有限公司
   company_name: 'SZZT Electronics.'
+  domains:
+    - szzt.com.cn
 - aliases:
     - T2Cloud
     - 云图腾
     - 北京云途腾科技有限责任公司
   company_name: t2cloud
-- aliases:
-    - 'Tata Communications Limited'
-  company_name: 'Tata Communications'
-- aliases:
-    - 'tcp cloud a.s.'
-  company_name: 'tcp cloud'
+  domains:
+    - t2cloud.net
+- company_name: Tail-f
+  domains:
+    - tail-f.com
+- company_name: Taobao
+  domains:
+    - taobao.com
 - aliases:
     - 'Tata Consultancy Services'
     - 'Tata Consultancy Services Limited'
   company_name: Tata
+  domains:
+    - tcs.com
+- aliases:
+    - 'Tata Communications Limited'
+  company_name: 'Tata Communications'
+  domains:
+    - tatacommunications.com
+- aliases:
+    - 'tcp cloud a.s.'
+  company_name: 'tcp cloud'
+  domains:
+    - tcpcloud.eu
+- company_name: 'Tegile Systems'
+  domains:
+    - tegile.com
+- company_name: 'Telefonica I+D'
+  domains:
+    - telefonica.com
+- company_name: Tencent
+  domains:
+    - tencent.com
 - aliases:
     - 时速云
     - 'TenxCloud Inc.'
   company_name: TenxCloud
+  domains:
+    - tenxcloud.com
+- company_name: Teradata
+  domains:
+    - teradata.com
+- company_name: Tesla
+  domains:
+    - tesla.com
 - aliases:
     - 'ParElastic Corp'
     - ParElastic
     - 'Tesora Inc'
   company_name: Tesora
+  domains:
+    - tesora.com
+    - parelastic.com
+- company_name: Thales
+  domains:
+    - thalesgroup.com
+    - mythalesgroup.com
+- company_name: 'The Apache Software Foundation'
+  domains:
+    - apache.org
+- company_name: 'The Guardian'
+  domains:
+    - guardian.co.uk
+    - theguardian.com
+- company_name: ThoughtWorks
+  domains:
+    - thoughtworks.com
+- company_name: TiCOMM
+  domains:
+    - ticomm.cn
+- company_name: Tieto
+  domains:
+    - tieto.com
+- company_name: Tigera
+  domains:
+    - tigera.io
 - aliases:
     - 钛马信息网络技术有限公司
   company_name: timanetworks
-- aliases:
-    - SZTE
-  company_name: 'University of Szeged'
+  domains:
+    - timanetworks.com
+- company_name: 'Time Warner Cable'
+  domains:
+    - timewarnercable.com
+- company_name: Tintri
+  domains:
+    - tintri.com
+- company_name: 'TOKYO SYSTEM HOUSE'
+  domains:
+    - tsh-world.co.jp
+- company_name: TUBITAK
+  domains:
+    - tubitak.gov.tr
+- company_name: 'Tunnel Vision Laboratories'
+  domains:
+    - tunnelvisionlabs.com
 - aliases:
     - 'Ubisoft Entertainment'
   company_name: Ubisoft
+  domains:
+    - ubisoft.com
+- company_name: UKCloud
+  domains:
+    - ukcloud.com
+- company_name: 'Ultimum Technologies'
+  domains:
+    - ultimum.io
+    - ultimumtechnologies.com
+- company_name: UMCloud
+  domains:
+    - umcloud.com
+- company_name: UnitedStack
+  domains:
+    - ustack.com
+    - unitedstack.com
+- company_name: 'Universidade Federal de Campina Grande'
+  domains:
+    - lsd.ufcg.edu.br
+- company_name: 'Universidade Federal de São Carlos'
+  domains:
+    - ufscar.br
 - aliases:
     - 'University of California Riverside'
     - 'UC Riverside'
     - UCR
   company_name: 'University of California Riverside'
+  domains:
+    - ucr.edu
+- aliases:
+    - 'University of Kent'
+  company_name: 'University of Kent'
+  domains:
+    - kent.ac.uk
+- company_name: 'University of Maryland'
+  domains:
+    - umd.edu
 - aliases:
     - 'The University of Melbourne'
   company_name: 'University of Melbourne'
+  domains:
+    - unimelb.edu.au
+- company_name: 'University of Minnesota'
+  domains:
+    - umn.edu
+- aliases:
+    - SZTE
+  company_name: 'University of Szeged'
+  domains:
+    - u-szeged.hu
+- company_name: 'University of Toronto'
+  domains:
+    - toronto.edu
+- company_name: 'University of Würzburg'
+  domains:
+    - uni-wuerzburg.de
+- company_name: UPV
+  domains:
+    - upv.es
+- company_name: 'US Navy'
+  domains:
+    - navy.mil
+- company_name: UShareSoft
+  domains:
+    - usharesoft.com
 - aliases:
     - 'VA Linux Systems Japan K.K.'
   company_name: 'VA Linux'
+  domains:
+    - valinux.co.jp
 - aliases:
     - 'vArmour Networks'
   company_name: vArmour
+  domains:
+    - varmour.com
+- company_name: VCCloud
+  domains:
+    - vccloud.vn
+- company_name: VCE
+  domains:
+    - vce.com
+- company_name: Verilume
+  domains:
+    - verilume.com
+- company_name: Veritas
+  domains:
+    - veritas.com
+- company_name: 'Verizon Digital Media'
+  domains:
+    - verizondigitalmedia.com
+    - vdms.io
 - aliases:
     - 'Verizon Cloud Platform VCP - Verizon Wireless'
   company_name: 'Verizon Wireless'
+  domains:
+    - verizonwireless.com
+    - vzw.com
+- company_name: 'Versa Networks'
+  domains:
+    - versa-networks.com
+- company_name: VexxHost
+  domains:
+    - vexxhost.com
 - aliases:
     - 'Viettel Group'
   company_name: Viettel
+  domains:
+    - viettel.com.vn
+    - vietteltelecom.vn
+    - viettelidc.com.vn
+- company_name: 'Vilnius University'
+  domains:
+    - vu.lt
+- company_name: VirtualBridges
+  domains:
+    - vbridges.com
 - aliases:
     - 'VirtualTech Japan Inc.'
   company_name: Virtualtech
+  domains:
+    - virtualtech.jp
 - aliases:
     - OpenVZ
   company_name: Virtuozzo
+  domains:
+    - virtuozzo.com
+    - openvz.org
 - aliases:
     - VMTurbo
   company_name: 'VMTurbo Inc.'
+  domains:
+    - vmturbo.com
 - aliases:
     - 'CYSO VMWARE DHPA'
     - 'VMware, Nicira, Telstra, Accenture'
     - 'VMware Software'
   company_name: VMware
+  domains:
+    - vmware.com
+    - nicira.com
+- company_name: Walmart
+  domains:
+    - walmart.com
+    - walmartlabs.com
+- company_name: Wanclouds
+  domains:
+    - wanclouds.net
+- company_name: 'Western Digital'
+  domains:
+    - wdc.com
+- company_name: 'Wikimedia Foundation'
+  domains:
+    - wikimedia.org
 - aliases:
     - 'Wind River Systems'
     - 'WindRiver System'
     - WindRiver
   company_name: 'Wind River'
+  domains:
+    - windriver.com
 - aliases:
     - 'winhong Technology'
     - www.winhong.com
   company_name: winhong
+  domains:
+    - winhong.com
 - aliases:
     - 'Wipro Infotech'
     - 'Wipro Technologies'
     - 'Wipro Arabia Ltd'
     - 'Wipro Technoligies'
   company_name: Wipro
+  domains:
+    - wipro.com
+- company_name: Wise2c
+  domains:
+    - wise2c.com
+- company_name: Workday
+  domains:
+    - workday.com
+- company_name: 'X-IO Technologies'
+  domains:
+    - x-io.com
+    - xiostorage.com
+- company_name: x-ion
+  domains:
+    - x-ion.de
+- company_name: Xerox
+  domains:
+    - xerox.com
+- company_name: XiangCloud
+  domains:
+    - xiangcloud.com.cn
+- company_name: Xlab
+  domains:
+    - xlab.si
+- company_name: XSky
+  domains:
+    - xsky.io
+    - xsky.com
+- company_name: Yahoo!
+  domains:
+    - yahoo-inc.com
+- company_name: 'Yahoo! JAPAN'
+  domains:
+    - yahoo-corp.jp
+- company_name: Yandex
+  domains:
+    - yandex-team.ru
+- company_name: Yovole
+  domains:
+    - yovole.com
+- company_name: Ysance
+  domains:
+    - ysance.com
+- company_name: 'Yunrong Technology'
+  domains:
+    - yunrongtech.com
+- company_name: 'Zadara Storage'
+  domains:
+    - zadarastorage.com
 - aliases:
     - zelin.io
   company_name: Zelin
+  domains:
+    - zelin.io
 - aliases:
     - Zetta.IO
   company_name: 'Zetta.IO Technology AS'
+  domains:
+    - zetta.io
+- company_name: 'Zhejiang University'
+  domains:
+    - zju.edu.cn
 - aliases:
     - ZinuX
   company_name: Zinux
-- aliases:
-    - Yahoo
-    - "Oath Inc Formerly Yahoo"
-  company_name: Oath
+  domains:
+    - zinux.com
+- company_name: Zmanda
+  domains:
+    - zmanda.com
+- company_name: 'ZTE Corporation'
+  domains:
+    - zte.com.cn
+- company_name: 'Zurich University of Applied Sciences'
+  domains:
+    - zhaw.ch

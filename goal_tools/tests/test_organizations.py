@@ -23,6 +23,8 @@ class TestOrganizations(base.TestCase):
                          'Red Hat Czech, s.r.o.',
                          'Red Hat Software'],
              'company_name': 'Red Hat'},
+            {'domains': ['doughellmann.com', 'pymotw.com'],
+             'company_name': 'PyMOTW'},
         ])
 
     def test_with_alias(self):
@@ -63,4 +65,15 @@ class TestOrganizations(base.TestCase):
         self.assertEqual(
             'Company',
             self.o["'Company, Inc.'"],
+        )
+
+    def test_from_email(self):
+        self.assertEqual(
+            'PyMOTW',
+            self.o.from_email('doug@doughellmann.com')
+        )
+
+    def test_from_email_not_there(self):
+        self.assertIsNone(
+            self.o.from_email('dhellmann@redhat.com')
         )
