@@ -1,0 +1,743 @@
+---
+- aliases:
+    - None
+    - Non
+    - l-
+    - .
+    - 1
+    - aaa
+    - '-'
+    - dsadsadsadsad
+    - 'I dont have one'
+    - company
+    - n/a
+    - Self
+    - Student
+    - home
+    - 'Home Based'
+    - Independent
+    - Independen
+    - Independant
+    - MyHome
+    - HomeOffice
+    - 'Self Employeed'
+    - 'Self Employed'
+    - myself
+    - Self-employeed
+    - individual
+    - 'Individual Contributor'
+    - Unaffiliated
+    - 没有
+    - Null
+    - Univerisity
+    - fsfsf
+    - xxx
+    - 'no job'
+    - Freelancer
+    - free
+    - Freelance
+    - 'Freelance IT Specialist'
+    - 'No Affiliation'
+    - 'Not applicable'
+    - Unaffilliated
+    - Unaffiliate
+    - Unafilliated
+    - Unaffliated
+    - test
+    - Unffiliated
+    - 'independent user'
+    - me
+    - my
+    - unaffeliated
+    - Unaffilaited
+    - Unaffiliaited
+    - Unaffilated
+    - 'Personal user'
+    - 'independent user - Unaffiliated'
+    - Unaffliliated
+    - dummy
+    - unaffillated
+    - Unafflicated
+    - Unafiliated
+    - Unaffialiated
+    - Unaffiliation
+    - Unaffilicated
+    - Unaffilinated
+    - indepedent
+    - Unaffiliatd
+    - Anonomous
+    - 'unaffiliated student'
+    - Personal
+    - Unalliliated
+    - Unafillated
+    - 'Not Affiliated'
+    - Unaffilited
+  company_name: '*independent'
+- aliases:
+    - '4Loops Solutions pvt ltd'
+  company_name: 'Four Loops Solutions'
+- aliases:
+    - 灵雀云
+    - 'Alauda, Inc.'
+    - Alauda.io
+  company_name: Alauda
+- aliases:
+    - 'Alcatel Lucent'
+    - 'Alcatel-Lucent, Nuage Networks'
+    - Alcatel-Lcuent
+    - 'Alcatel-Lucent Austria'
+    - 'Alcatel-Lucent Bell Labs France'
+  company_name: Alcatel-Lucent
+- aliases:
+    - 'Alchemy Solutions'
+    - 'Alchemy Lab'
+  company_name: 'Alchemy Solutions Group'
+- aliases:
+    - Alibaba
+    - 'Alibaba Group'
+    - 'Alibaba Group Holding Limited'
+    - 'Alibaba.com Limited'
+    - 'Alibaba.com Inc.'
+    - 'Alibaba Cloud'
+    - 阿里云计算有限公司
+    - 阿里云
+  company_name: Alibaba
+- aliases:
+    - 'Allegro Group'
+    - 'Grupa Allegro'
+    - 'Grupa Allegro Sp. z o.o.'
+  company_name: Allegro
+- aliases:
+    - 'Ammeon Ltd.'
+  company_name: Ammeon
+- aliases:
+    - 'AT&T Mobility'
+    - 'AT&T Services'
+  company_name: AT&T
+- aliases:
+    - 'Awnix, Inc.'
+  company_name: Awnix
+- aliases:
+    - 'IRT B<>COM'
+    - B-COM
+  company_name: B<>COM
+- aliases:
+    - 'Business Connexion'
+  company_name: BCX
+- aliases:
+    - 'Big Switch'
+  company_name: 'Big Switch Networks'
+- aliases:
+    - 'Blue Box Group'
+  company_name: 'Blue Box'
+- aliases:
+    - beyondcent
+    - 博云
+    - 苏州博纳讯动软件有限公司
+    - 博纳讯动
+  company_name: BoCloud
+- aliases:
+    - 'Bright Computing, BV'
+  company_name: 'Bright Computing'
+- aliases:
+    - 'Brinkster Communications'
+  company_name: Brinkster
+- aliases:
+    - 'Brocade Communication'
+    - 'Brocade Communications'
+    - 'Brocade Communications Systems'
+  company_name: Brocade
+- aliases:
+    - 'Bull SAS'
+  company_name: Bull
+- aliases:
+    - Toutiao
+    - 北京字节跳动科技有限公司
+    - 今日头条
+  company_name: Bytedance
+- aliases:
+    - 'Canonical, Ltd.'
+    - 'Ubuntu Canonical'
+  company_name: Canonical
+- aliases:
+    - Chelsio
+    - 'Chelsio Communications Inc.'
+  company_name: 'Chelsio Communications'
+- aliases:
+    - 'ChinaNetCenter Cloud'
+    - 'ChinaNetCenter CDN'
+    - 'ChinaNetCenter IDC'
+    - 'China Cache'
+    - 'ChinaNetCenter USA'
+  company_name: ChinaNetCenter
+- aliases:
+    - 'China Unicom Cloud Data Co. Ltd.'
+    - 联通云数据有限公司
+    - 'China Unicom'
+  company_name: 'China Unicom'
+- aliases:
+    - 'Cisco System'
+    - 'Cisco Systems Inc., Intel, Microsoft, Dorkbotz'
+    - 'Cisco System, Inc., Nebula, Inc.'
+    - Cisco
+    - 'Cisco Inc'
+    - 'Cisco Hong Kong'
+    - 'Cisco Canada'
+    - 'Cisco APAC'
+    - 'Cisco Systems India'
+  company_name: 'Cisco Systems'
+- aliases:
+    - Cloudbase
+  company_name: 'Cloudbase Solutions'
+- aliases:
+    - 'CD Cloudenablers'
+  company_name: Cloudenablers
+- aliases:
+    - 'China Minsheng Bank'
+  company_name: CMBC
+- aliases:
+    - 'Cognizant Technology Solutions'
+  company_name: Cognizant
+- aliases:
+    - 'Colt Technology Services'
+    - KVH
+    - 'KVH Co., Ltd.'
+  company_name: Colt
+- aliases:
+    - 'Corvisa Services'
+  company_name: Corvisa
+- aliases:
+    - 中国铁路信息技术中心
+  company_name: 'China Railway ITC'
+- aliases:
+    - CS2C
+  company_name: cs2c
+- aliases:
+    - 湖南大学超级计算与云计算研究所
+  company_name: 'Hunan University, Institution of Supercomputing and Cloud Computing'
+- aliases:
+    - debian.org
+  company_name: Debian
+- aliases:
+    - 'DEK Technologies'
+    - DEK
+  company_name: 'DEK Technologies'
+- aliases:
+    - Dell
+    - 'Dell EMC'
+    - 'Dell EMC - previously Cloudscaling'
+    - 'Dell ESG Open Source Solutions'
+    - 'Dell International Services'
+    - 'Dell Services'
+    - 'Dell Services Tata Consultancy Services Deutsche Bank'
+    - 'Dell Software Zhuhai'
+    - 'Dell Support Number'
+    - DellEMC
+    - 'dell computer company'
+    - EMC
+    - 'EMC - ETD'
+    - 'EMC - ScaleIO'
+    - 'EMC IT Solutions Ltd'
+    - 'EMC {code}'
+    - EMC.com
+    - 'Office of The CTO EMC Corporation'
+    - 'VCE - EMC'
+  company_name: 'Dell EMC'
+- aliases:
+    - 'DreamHost, Inktank'
+  company_name: DreamHost
+- aliases:
+    - 'Eayun, Inc.'
+  company_name: Eayun
+- aliases:
+    - 'Ericsson AB'
+    - 'Ericsson Research'
+    - 'Ericcson AB'
+    - 'Ericsson Eurolab Deutschland GmbH'
+    - 'Ericsson India'
+    - 'Ericsson Montreal'
+    - 'Ericsson Hungary'
+    - 'Ericsson China'
+    - 'Ericsson Canada'
+    - 'Ericsson India Global Services'
+  company_name: Ericsson
+- aliases:
+    - 'Fiberhome Telecommunication Technologies Co.,LTD'
+  company_name: Fiberhome
+- aliases:
+    - 'Seznam.cz, a.s.'
+  company_name: Seznam.cz
+- aliases:
+    - FIT
+  company_name: 'FIT Instituto de Tecnologia'
+- aliases:
+    - 'florath nanosystems & telecommunications'
+  company_name: flonatel
+- aliases:
+    - 'Fortinet Inc'
+  company_name: Fortinet
+- aliases:
+    - 'Freescale (I) Pvt Ltd'
+    - 'Freescale Semiconductors'
+  company_name: Freescale
+- aliases:
+    - 'FUJITSU HOKURIKU SYSTEMS LIMITED'
+  company_name: Fujitsu
+- aliases:
+    - Ghostcloud
+    - 精灵云科技有限公司
+  company_name: Ghostcloud
+- aliases:
+    - 'GS Lab'
+  company_name: 'Great Software Laboratory'
+- aliases:
+    - 'hastexo Professional Services GmbH'
+  company_name: Hastexo
+- aliases:
+    - 'HCL Technologies'
+  company_name: HCL
+- aliases:
+    - 'Hitachi Data Systems'
+    - 'Hitachi India'
+  company_name: Hitachi
+- aliases:
+    - 'Hengfeng Bank'
+    - 'Hengfeng Bank Co.,Ltd.'
+  company_name: HFBank
+- aliases:
+    - 'Huron Technologies'
+  company_name: Huron
+- aliases:
+    - 'Hewlett Packard'
+    - 'Hewlett-Packard Company'
+    - Hewlett-Packard
+    - Hewllet-Packard
+    - 'hewelett-packard company'
+    - HewlettPackard
+    - Hewlett-Pack
+    - Hewlitt-Packard
+  company_name: HP
+- aliases:
+    - 'HP Cloud'
+    - 'HP ES GD China'
+    - 'HP, IBM'
+    - 'HP Software'
+    - 'HP Storage Division'
+    - 'HP R and D'
+    - 'HP Cloud OS'
+    - 'HP Networking'
+    - 'Hewlett-PackardHP India Software Operations'
+    - 'HP cloud services'
+    - 'HP India software Operation'
+    - 'HP Labs'
+    - 'Hewlett-Packard Helion'
+    - 'Hewlett-Packard India Software Operations'
+    - 'Hewlett Packard Enterprise'
+    - 'Hewlett-Packard Enterprise'
+    - 'Hewlett-Packard Singapore Pte'
+    - 'Hewlett Packard Romania'
+    - 'HP Helion Public Cloud'
+    - 'HP Japan'
+    - 'HP Korea'
+    - 'HP Helion'
+    - 'HP Costa Rica'
+    - 'China HP'
+  company_name: HPE
+- aliases:
+    - 'Huawei Technologies'
+    - 'Huawei Technology'
+    - 'Huawei Technologies Co. Limitied'
+    - 'Huawei Technologies Düsseldorf'
+    - 'Huawei Technologies India Private Limited'
+    - 'Huawei china'
+    - 'Huawei Tech'
+    - 'Huawei Enterprise Business Group'
+    - 'huawei technical'
+    - 'Huawei Technologies India'
+    - 'huawei storage system'
+    - 华为技术有限公司
+    - 华为
+    - 'Huawei Technolgies'
+  company_name: Huawei
+- aliases:
+    - 'Huazhong University of Science and Technology'
+    - 华中科技大学
+  company_name: HUST
+- aliases:
+    - 'Guizhou HXT Semiconductor Technology Co., Ltd.'
+    - 贵州华芯通半导体技术有限公司
+    - 华芯通半导体
+  company_name: 'HXT Semiconductor'
+- aliases:
+    - 'IBM Australia'
+    - 'IBM Canada'
+    - 'IBM Canada Ltd'
+    - 'IBM China'
+    - 'IBM Corporation'
+    - 'IBM India'
+    - 'IBM Japan'
+    - 'IBM Research'
+    - 'IBM Research - China'
+    - 'IBM Research Lab, India'
+    - 'IBM Deutschland Research & Development GmbH'
+    - 'International Business Machines Corporation'
+    - 'IBM UK Ltd'
+    - 'IBM Ireland'
+    - 'IBM Cloud Infrastructure Services'
+    - 'IBM Deutschland'
+    - 'IBM Malaysia'
+    - 'IBM Haifa'
+    - 'IBM Global Services'
+    - 'IBM Softlayer'
+    - 'IBM Cloud Division'
+    - 'IBM Malaysia Sdn Bhd'
+    - 'IBM India Private'
+  company_name: IBM
+- aliases:
+    - 'Institute of Computing Technology of the Chinese Academy of Sciences'
+    - 中科院计算所
+  company_name: ICT
+- aliases:
+    - 'Spanish National Research Council'
+    - 'CSIC - Spanish National Research Council'
+  company_name: CSIC
+- aliases:
+    - 'IGBMC biological research lab'
+  company_name: IGBMC
+- aliases:
+    - III
+    - 'III IDEAS'
+  company_name: 'Institute for Information Industry'
+- aliases:
+    - 'INESA, 上海仪电'
+  company_name: inesa
+- aliases:
+    - 'Infinite Computer Solutions India Ltd'
+  company_name: Infinite
+- aliases:
+    - INRIA
+  company_name: Inria
+- aliases:
+    - 'Intel Media'
+    - 'Intel OTC'
+    - 'Intern at intel'
+    - 'Intel Security'
+  company_name: Intel
+- aliases:
+    - 'iomart group'
+  company_name: iomart
+- aliases:
+    - 'Institute of Software, Chinese Academy of Sciences'
+    - 中国科学院软件研究所
+    - 中科院软件所
+  company_name: ISCAS
+- aliases:
+    - ITKey
+  company_name: itkey
+- aliases:
+    - iweb.co.uk
+    - iwebsolutions.co.uk
+    - nuisoft.com
+  company_name: iWebSolutions
+- aliases:
+    - JD
+    - JD.COM
+    - 'JD.COM Inc.'
+    - '360buy Ltd.'
+    - 京东
+  company_name: JD.COM
+- aliases:
+    - 'Johns Hopkins University Applied Physics Lab'
+    - 'Johns Hopkins University Applied Physics Laboratory'
+    - JHU/APL
+  company_name: 'Johns Hopkins University Applied Physics Laboratory'
+- aliases:
+    - 'Juniper Networks'
+    - 'Juniper Networks Inc.'
+    - 'Juniper Networks India'
+    - 'Juniper India'
+  company_name: Juniper
+- aliases:
+    - KDDI
+    - 'KDDI R&D Laboratories'
+  company_name: KDDI
+- aliases:
+    - 'University of Kent'
+  company_name: 'University of Kent'
+- aliases:
+    - 'Kinvolk GmbH'
+  company_name: Kinvolk
+- aliases:
+    - Kionetworks
+    - KIO
+    - 'Kio operaciones'
+    - KIO-Networks
+  company_name: 'KIO Networks'
+- aliases:
+    - 'Kontron Inc'
+  company_name: Kontron
+- aliases:
+    - 'La Honda Research Center'
+  company_name: 'La Honda Research'
+- aliases:
+    - 'LG CNS'
+  company_name: 'LG CNS'
+- aliases:
+    - linuxacademy.com
+  company_name: 'Linux Academy'
+- aliases:
+    - 'Mellanox Technologies'
+    - Mellanox.com
+  company_name: Mellanox
+- aliases:
+    - 'Metaswitch Networks'
+  company_name: Metaswitch
+- aliases:
+    - 'Midokura Japan'
+  company_name: Midokura
+- aliases:
+    - 'MomentumSI, Transcend Computing'
+  company_name: MomentumSI
+- aliases:
+    - MontaVista
+  company_name: 'MontaVista Software'
+- aliases:
+    - 'MYNETWORK TECHNOLOGY'
+  company_name: myNET
+- aliases:
+    - 'Nebula, Inc. ; CFO Tools'
+    - Nebulaworks
+  company_name: Nebula
+- aliases:
+    - 'NEC Europe Ltd.'
+    - 'NEC Soft, Ltd.'
+    - 'NEC Technologies India Ltd.'
+    - 'NEC Technlogies India Ltd'
+    - 'NEC Laboratories Europe'
+    - 'NEC Solution Innovators'
+    - 'NEC Corporation of America'
+  company_name: NEC
+- aliases:
+    - 'Nokia Solutions and Networks'
+    - 'Nokia Networks'
+  company_name: Nokia
+- aliases:
+    - 'NTT CORPORATION'
+    - 'NTT DATA'
+    - 'NTT DATA INTELLILINK CORPORATION'
+    - 'NTT DATA INTELLILINK Corpration'
+    - 'NTT Communications'
+    - 'NTT Comware Corporation'
+  company_name: NTT
+- aliases:
+    - 'NXP (I) Pvt Ltd'
+    - NXP
+  company_name: NXP
+- aliases:
+    - 'One Convergence Devices Pvt. Ltd'
+    - 'Oneconvergence Devices Pvt Ltd'
+    - 'One Convergence Devices'
+  company_name: 'One Convergence'
+- aliases:
+    - 'Oracle America Inc.'
+    - 'Oracle India Pvt. Ltd'
+  company_name: Oracle
+- aliases:
+    - 'Orange Labs'
+    - 'Orange Polska S.A.'
+  company_name: Orange
+- aliases:
+    - 'OVH Group'
+    - RunAbove
+  company_name: OVH
+- aliases:
+    - 'Persistent System Limited'
+    - 'persistent sys limited'
+    - 'Persistent Ltd'
+  company_name: 'Persistent Systems'
+- aliases:
+    - 'Piston Cloud Computing, Inc.'
+    - Piston
+  company_name: 'Piston Cloud'
+- aliases:
+    - 'Platform9 Systems'
+    - 'Platform9 Systems, Inc.'
+  company_name: Platform9
+- aliases:
+    - Calico
+  company_name: 'Project Calico'
+- aliases:
+    - PropheTech.cn
+  company_name: 'Prophet Technology'
+- aliases:
+    - 'Qiniu Limited'
+    - 'Shanghai Qiniu Information Technology Co., Ltd.'
+    - 'Qiniu Storage'
+    - 上海七牛信息技术有限公司
+  company_name: Qiniu
+- aliases:
+    - Quobyte
+    - quobyte
+    - 'Quobyte GmbH'
+  company_name: 'Quobyte Inc.'
+- aliases:
+    - 'Rackspace, Cloudscaling, Korea Telcom, friends with lots of people'
+    - Rackspace.com
+    - 'Rackspace Hosting'
+    - Rackspce
+    - 'Rackspace Hosting; Tunnel Vision Laboratories LLC'
+  company_name: Rackspace
+- aliases:
+    - 'Red Hat Canada, Inc'
+    - 'Red Hat Czech, s.r.o.'
+    - 'Red Hat, Inc., Bloomberg L.P.'
+    - 'Red Hat India Pvt. Ltd.'
+    - 'Red Hat Software'
+    - eNovance
+    - 'Red Hat, Inc.'
+    - 'Red Hat, Inc'
+  company_name: 'Red Hat'
+- aliases:
+    - 'Redpill Linpro AS'
+    - 'Redpill Linpro AB'
+  company_name: 'Redpill Linpro'
+- aliases:
+    - Salesforce.com
+  company_name: Salesforce
+- aliases:
+    - 'Samsung SDS'
+    - 'Samsung Electronics'
+    - 'Samsung India Software Operations'
+  company_name: Samsung
+- aliases:
+    - 'SAP SE'
+  company_name: SAP
+- aliases:
+    - SBERBANK
+    - 'Sberbank Technologies'
+  company_name: Sberbank
+- aliases:
+    - Scality.com
+  company_name: Scality
+- aliases:
+    - 'Seagate Technology'
+  company_name: Seagate
+- aliases:
+    - 'Beijing China-Power Information Technology CO.,LTD'
+    - 'NO.15,Xiaoying Rd(E),Qinghe,Haidian District'
+    - zhongdianpuhua
+  company_name: SG.Cloud
+- aliases:
+    - GDT
+  company_name: 'Beijing GuoDianTong Network Technology'
+- aliases:
+    - 'SINA Weibo Fund'
+  company_name: SINA
+- aliases:
+    - SKT
+    - SKTelecom
+  company_name: 'SK telecom'
+- aliases:
+    - 'SoftLayer, an IBM Company'
+  company_name: SoftLayer
+- aliases:
+    - 'SUSE Linux GmbH'
+  company_name: SUSE
+- aliases:
+    - 'SwifStack Ancestry.com'
+  company_name: SwiftStack
+- aliases:
+    - 'Symantec Software and Services'
+  company_name: Symantec
+- aliases:
+    - SZZT
+    - 深圳市证通电子股份有限公司
+  company_name: 'SZZT Electronics.'
+- aliases:
+    - T2Cloud
+    - 云图腾
+    - 北京云途腾科技有限责任公司
+  company_name: t2cloud
+- aliases:
+    - 'Tata Communications Limited'
+  company_name: 'Tata Communications'
+- aliases:
+    - 'tcp cloud a.s.'
+  company_name: 'tcp cloud'
+- aliases:
+    - 'Tata Consultancy Services'
+    - 'Tata Consultancy Services Limited'
+  company_name: Tata
+- aliases:
+    - 时速云
+    - 'TenxCloud Inc.'
+  company_name: TenxCloud
+- aliases:
+    - 'ParElastic Corp'
+    - ParElastic
+    - 'Tesora Inc'
+  company_name: Tesora
+- aliases:
+    - 钛马信息网络技术有限公司
+  company_name: timanetworks
+- aliases:
+    - SZTE
+  company_name: 'University of Szeged'
+- aliases:
+    - 'Ubisoft Entertainment'
+  company_name: Ubisoft
+- aliases:
+    - 'University of California Riverside'
+    - 'UC Riverside'
+    - UCR
+  company_name: 'University of California Riverside'
+- aliases:
+    - 'The University of Melbourne'
+  company_name: 'University of Melbourne'
+- aliases:
+    - 'VA Linux Systems Japan K.K.'
+  company_name: 'VA Linux'
+- aliases:
+    - 'vArmour Networks'
+  company_name: vArmour
+- aliases:
+    - 'Viettel Group'
+  company_name: Viettel
+- aliases:
+    - 'VirtualTech Japan Inc.'
+  company_name: Virtualtech
+- aliases:
+    - OpenVZ
+  company_name: Virtuozzo
+- aliases:
+    - VMTurbo
+  company_name: 'VMTurbo Inc.'
+- aliases:
+    - 'CYSO VMWARE DHPA'
+    - 'VMware, Nicira, Telstra, Accenture'
+    - 'VMware Software'
+  company_name: VMware
+- aliases:
+    - 'Wind River Systems'
+    - 'WindRiver System'
+    - WindRiver
+  company_name: 'Wind River'
+- aliases:
+    - 'winhong Technology'
+    - www.winhong.com
+  company_name: winhong
+- aliases:
+    - 'Wipro Infotech'
+    - 'Wipro Technologies'
+    - 'Wipro Arabia Ltd'
+    - 'Wipro Technoligies'
+  company_name: Wipro
+- aliases:
+    - zelin.io
+  company_name: Zelin
+- aliases:
+    - Zetta.IO
+  company_name: 'Zetta.IO Technology AS'
+- aliases:
+    - ZinuX
+  company_name: Zinux

@@ -20,6 +20,7 @@ from cliff import lister
 from goal_tools import foundation
 from goal_tools import gerrit
 from goal_tools import governance
+from goal_tools import organizations
 from goal_tools import utils
 
 LOG = logging.getLogger(__name__)
@@ -79,6 +80,7 @@ class ListContributions(lister.Lister):
             include_unofficial = parsed_args.include_unofficial
             member_factory = foundation.MemberFactory(self.app.cache)
             review_factory = gerrit.ReviewFactory(self.app.cache)
+            canonical_orgs = organizations.Organizations()
 
             review_ids = utils.unique(
                 gerrit.parse_review_lists(parsed_args.review_list)
@@ -111,7 +113,8 @@ class ListContributions(lister.Lister):
                     if member:
                         affiliation = member.find_affiliation(participant.date)
                         if affiliation:
-                            organization = affiliation.organization
+                            organization = canonical_orgs[
+                                affiliation.organization]
 
                     yield (
                         review_id,
