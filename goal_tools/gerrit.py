@@ -23,6 +23,15 @@ LOG = logging.getLogger(__name__)
 # The base URL to Gerrit REST API
 GERRIT_API_URL = 'https://review.openstack.org/'
 
+QUERY_OPTIONS = [
+    'ALL_REVISIONS',
+    'REVIEWER_UPDATES',
+    'DETAILED_ACCOUNTS',
+    'CURRENT_COMMIT',
+    'LABELS',
+    'DETAILED_LABELS',
+]
+
 
 def parse_review_lists(filenames):
     """Generator that produces review IDs as strings.
@@ -152,7 +161,12 @@ def fetch_review(review_id, cache):
     if key in cache:
         LOG.debug('found %s cached', review_id)
         return Review(review_id, cache[key])
-    data = query_gerrit('changes/' + review_id + '/detail')
+    data = query_gerrit(
+        'changes/' + review_id + '/detail',
+        params={
+            'o': QUERY_OPTIONS,
+        },
+    )
     response = Review(review_id, data)
     if response.is_merged:
         cache[key] = data
