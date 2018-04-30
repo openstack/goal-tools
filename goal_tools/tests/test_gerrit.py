@@ -97,6 +97,9 @@ class TestReview(base.TestCase):
         self.assertFalse(self.rev.is_merged)
         self.assertTrue(self.rev2.is_merged)
 
+    def test_project(self):
+        self.assertEqual('openstack/blazar-dashboard', self.rev.project)
+
     def test_owner(self):
         owner = self.rev.owner
         self.assertEqual('Doug Hellmann', owner.name)

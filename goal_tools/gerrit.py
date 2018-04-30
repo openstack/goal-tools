@@ -92,6 +92,10 @@ class Review:
         return self._data['status'] == 'MERGED'
 
     @property
+    def project(self):
+        return self._data['project']
+
+    @property
     def participants(self):
         yield self.owner
         yield from self.reviewers

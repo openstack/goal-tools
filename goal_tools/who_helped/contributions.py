@@ -54,7 +54,8 @@ class ListContributions(lister.Lister):
 
     def take_action(self, parsed_args):
         columns = (
-            'Review ID', 'Review URL', 'Role', 'Name', 'Email', 'Date',
+            'Review ID', 'Review URL', 'Project',
+            'Role', 'Name', 'Email', 'Date',
             'Organization',
         )
 
@@ -83,6 +84,7 @@ class ListContributions(lister.Lister):
                     yield (
                         review_id,
                         review.url,
+                        review.project,
                         participant.role,
                         participant.name,
                         participant.email,
