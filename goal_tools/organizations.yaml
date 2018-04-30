@@ -354,6 +354,9 @@
 - company_name: 'Catalyst IT'
   domains:
     - catalyst.net.nz
+- company_name: 'CEE Corporation'
+  aliases:
+    - 'CEE Corporation From 2014-03-15. Current Statement of Interest: I am Founder, President and CEO of CEE Corporation. My company is developing OpenStack based technology solutions.'
 - company_name: 'Central Desktop'
   domains:
     - centraldesktop.com
