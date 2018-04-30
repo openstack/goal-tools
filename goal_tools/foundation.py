@@ -111,6 +111,7 @@ class Member:
 def lookup_member(email):
     "A requests wrapper to querying the OSF member directory API"
     # URL pattern for querying foundation members by E-mail address
+    LOG.debug('looking up %s', email)
     raw = apis.requester(
         MEMBER_LOOKUP_URL + '/api/public/v1/members',
         params={
@@ -122,7 +123,11 @@ def lookup_member(email):
         },
         headers={'Accept': 'application/json'},
     )
-    return apis.decode_json(raw)['data'][0]
+    decoded = apis.decode_json(raw)
+    try:
+        return decoded['data'][0]
+    except (KeyError, IndexError):
+        return None
 
 
 def fetch_member(email, cache):
@@ -140,7 +145,8 @@ def fetch_member(email, cache):
         data = cache[key]
     else:
         data = lookup_member(email)
-        cache[key] = data
+        if data:
+            cache[key] = data
     if data:
         return Member(email, data)
     return None
