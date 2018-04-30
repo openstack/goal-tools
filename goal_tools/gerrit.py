@@ -108,6 +108,7 @@ class Review:
     def participants(self):
         yield self.owner
         yield from self.reviewers
+        yield from self.uploaders
 
     @property
     def owner(self):
@@ -118,6 +119,39 @@ class Review:
             owner['email'],
             self.created,
         )
+
+    @property
+    def uploaders(self):
+        known_uploaders = set()
+
+        # Record the owner of the patch as a known uploader so we do
+        # not emit their information again. This means someone with
+        # the "uploader" role can be counted as someone taking over a
+        # patch created by someone else to fix it in some way.
+        owner_email = self._data['owner']['email']
+        known_uploaders.add(owner_email)
+
+        # The revision data is stored in a mapping keyed by the SHA,
+        # so in order to be consistent with how we return the
+        # uploaders we sort the revisions based on the number before
+        # we process them.
+        revisions = sorted(
+            self._data['revisions'].values(),
+            key=lambda x: x['_number'],
+        )
+
+        for revision in revisions:
+            uploader = revision['uploader']
+            if uploader['email'] in known_uploaders:
+                # Ignore duplicates
+                continue
+            known_uploaders.add(uploader['email'])
+            yield Participant(
+                'uploader',
+                uploader['name'],
+                uploader['email'],
+                _to_datetime(revision['created']),
+            )
 
     @property
     def reviewers(self):

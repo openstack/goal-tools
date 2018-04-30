@@ -133,6 +133,24 @@ class TestReview(base.TestCase):
         ]
         self.assertEqual(expected, reviewers)
 
+    def test_uploaders(self):
+        uploaders = list(self.rev.uploaders)
+        expected = [
+            gerrit.Participant(
+                role='uploader',
+                name='Hiroaki Kobayashi',
+                email='kobayashi.hiroaki@lab.ntt.co.jp',
+                date=datetime.datetime(2018, 4, 10, 6, 7, 47),
+            ),
+            gerrit.Participant(
+                role='uploader',
+                name='Akihiro Motoki',
+                email='amotoki@gmail.com',
+                date=datetime.datetime(2018, 4, 22, 2, 28, 56),
+            ),
+        ]
+        self.assertEqual(expected, uploaders)
+
 
 class TestFetchReview(base.TestCase):
 
