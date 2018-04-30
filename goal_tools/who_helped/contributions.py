@@ -34,8 +34,8 @@ class DateColumn(columns.FormattableColumn):
         return str(self._value)
 
 
-class ListContributors(lister.Lister):
-    "List the contributors to a set of reviews."
+class ListContributions(lister.Lister):
+    "List the contributions to a set of reviews."
 
     def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)
