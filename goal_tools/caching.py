@@ -39,3 +39,8 @@ class Cache:
 
     def __getitem__(self, key):
         return self._shelf[self._mk_key(key)]
+
+    def __delitem__(self, key):
+        real_key = self._mk_key(key)
+        if real_key in self._shelf:
+            del self._shelf[real_key]
