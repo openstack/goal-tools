@@ -19,6 +19,7 @@ from cliff import lister
 
 from goal_tools import foundation
 from goal_tools import gerrit
+from goal_tools import governance
 from goal_tools import utils
 
 LOG = logging.getLogger(__name__)
@@ -46,6 +47,11 @@ class ListContributions(lister.Lister):
             help='filter to only include specific roles (may be repeated)',
         )
         parser.add_argument(
+            '--governance-project-list',
+            default=governance.PROJECTS_LIST,
+            help='location of governance project list',
+        )
+        parser.add_argument(
             'review_list',
             nargs='+',
             help='name(s) of files containing reviews to include in report',
@@ -54,25 +60,36 @@ class ListContributions(lister.Lister):
 
     def take_action(self, parsed_args):
         columns = (
-            'Review ID', 'Review URL', 'Project',
+            'Review ID', 'Review URL', 'Project', 'Team',
             'Role', 'Name', 'Email', 'Date',
             'Organization',
         )
 
         def make_rows():
+            team_data = governance.get_team_data(
+                parsed_args.governance_project_list)
+
+            roles = parsed_args.role
+            cache = self.app.cache
+
             review_ids = utils.unique(
                 gerrit.parse_review_lists(parsed_args.review_list)
             )
-            roles = parsed_args.role
-            cache = self.app.cache
+
             for review_id in review_ids:
+
                 review = gerrit.fetch_review(review_id, cache)
+
                 for participant in review.participants:
+
                     if roles and participant.role not in roles:
                         LOG.debug('filtered out %s based on role', participant)
                         continue
 
-                    # Figure out which organization they were
+                    team_name = governance.get_repo_owner(
+                        team_data, review.project)
+
+                    # Figure out which organization the user was
                     # affiliated with at the time of the work.
                     organization = None
                     member = foundation.fetch_member(participant.email, cache)
@@ -85,6 +102,7 @@ class ListContributions(lister.Lister):
                         review_id,
                         review.url,
                         review.project,
+                        team_name,
                         participant.role,
                         participant.name,
                         participant.email,
