@@ -43,4 +43,4 @@ def get_repo_owner(team_data, repo_name):
         for dname, dinfo in info.get('deliverables', {}).items():
             if repo_name in dinfo.get('repos', []):
                 return team
-    raise ValueError('Repository %s not found in governance list' % repo_name)
+    return None

@@ -70,9 +70,9 @@ class TestGetRepoOwner(base.TestCase):
         self.assertEqual('Release Management', owner)
 
     def test_no_such_repo(self):
-        self.assertRaises(
-            ValueError,
-            governance.get_repo_owner,
-            TEAM_DATA,
-            'openstack/no-such-repo',
+        self.assertIsNone(
+            governance.get_repo_owner(
+                TEAM_DATA,
+                'openstack/no-such-repo',
+            ),
         )
