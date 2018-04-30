@@ -19,6 +19,8 @@
     - Independen
     - Independant
     - MyHome
+    - 'my self'
+    - 'myself'
     - HomeOffice
     - 'Self Employeed'
     - 'Self Employed'
@@ -54,6 +56,7 @@
     - Unaffilated
     - 'Personal user'
     - 'independent user - Unaffiliated'
+    - '*independent user - Unaffiliated'
     - Unaffliliated
     - dummy
     - unaffillated
@@ -358,6 +361,7 @@
     - 华为技术有限公司
     - 华为
     - 'Huawei Technolgies'
+    - '"Huawei  Technologies Co., Limitied"'
   company_name: Huawei
 - aliases:
     - 'Huazhong University of Science and Technology'
@@ -700,6 +704,9 @@
 - aliases:
     - 'vArmour Networks'
   company_name: vArmour
+- aliases:
+    - 'Verizon Cloud Platform VCP - Verizon Wireless'
+  company_name: 'Verizon Wireless'
 - aliases:
     - 'Viettel Group'
   company_name: Viettel
