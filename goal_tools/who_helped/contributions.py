@@ -52,6 +52,12 @@ class ListContributions(lister.Lister):
             help='location of governance project list',
         )
         parser.add_argument(
+            '--include-unofficial',
+            default=False,
+            action='store_true',
+            help='include projects not under governance in the output',
+        )
+        parser.add_argument(
             'review_list',
             nargs='+',
             help='name(s) of files containing reviews to include in report',
@@ -71,6 +77,7 @@ class ListContributions(lister.Lister):
 
             roles = parsed_args.role
             cache = self.app.cache
+            include_unofficial = parsed_args.include_unofficial
 
             review_ids = utils.unique(
                 gerrit.parse_review_lists(parsed_args.review_list)
@@ -88,6 +95,13 @@ class ListContributions(lister.Lister):
 
                     team_name = governance.get_repo_owner(
                         team_data, review.project)
+
+                    if not team_name and not include_unofficial:
+                        LOG.debug(
+                            'filtered out %s based on repo governance status',
+                            review.project,
+                        )
+                        continue
 
                     # Figure out which organization the user was
                     # affiliated with at the time of the work.
