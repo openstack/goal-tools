@@ -145,6 +145,24 @@ class Review:
             )
 
 
+def cache_review(review_id, data, cache):
+    """Add a review to the cache.
+
+    Review data is only cached if the review is MERGED because
+    otherwise it is more likely to change.
+
+    :param review_id: Review ID of the review to look for.
+    :type review_id: str
+    :param data: Data structure returned by query_gerrit
+    :type data: dict
+    :param cache: Storage for repeated lookups.
+    :type cache: goal_tools.cache.Cache
+
+    """
+    if data['status'] == 'MERGED':
+        cache[('review', str(review_id))] = data
+
+
 def fetch_review(review_id, cache):
     """Find the review in the cache or look it up in the API.
 
@@ -157,7 +175,7 @@ def fetch_review(review_id, cache):
     :type cache: goal_tools.cache.Cache
 
     """
-    key = ('review', review_id)
+    key = ('review', str(review_id))
     if key in cache:
         LOG.debug('found %s cached', review_id)
         return Review(review_id, cache[key])
@@ -168,6 +186,5 @@ def fetch_review(review_id, cache):
         },
     )
     response = Review(review_id, data)
-    if response.is_merged:
-        cache[key] = data
+    cache_review(review_id, data, cache)
     return response
