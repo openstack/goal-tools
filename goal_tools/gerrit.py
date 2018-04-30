@@ -13,6 +13,7 @@
 import collections
 import datetime
 import fileinput
+import functools
 import logging
 import urllib.parse
 
@@ -113,6 +114,8 @@ class Review:
     @property
     def owner(self):
         owner = self._data['owner']
+        if 'email' not in owner:
+            owner['email'] = owner.get('email', 'no-reply@openstack.org')
         return Participant(
             'owner',
             owner['name'],
@@ -142,6 +145,8 @@ class Review:
 
         for revision in revisions:
             uploader = revision['uploader']
+            if 'email' not in uploader:
+                uploader['email'] = 'no-reply@openstack.org'
             if uploader['email'] in known_uploaders:
                 # Ignore duplicates
                 continue
@@ -202,28 +207,34 @@ def cache_review(review_id, data, cache):
         cache[('review', str(review_id))] = data
 
 
-def fetch_review(review_id, cache):
-    """Find the review in the cache or look it up in the API.
+class ReviewFactory:
 
-    Review data is only cached if the review is MERGED because
-    otherwise it is more likely to change.
+    def __init__(self, cache):
+        self._cache = cache
 
-    :param review_id: Review ID of the review to look for.
-    :type review_id: str
-    :param cache: Storage for repeated lookups.
-    :type cache: goal_tools.cache.Cache
+    @functools.lru_cache(maxsize=1024)
+    def fetch(self, review_id):
+        """Find the review in the cache or look it up in the API.
 
-    """
-    key = ('review', str(review_id))
-    if key in cache:
-        LOG.debug('found %s cached', review_id)
-        return Review(review_id, cache[key])
-    data = query_gerrit(
-        'changes/' + review_id + '/detail',
-        params={
-            'o': QUERY_OPTIONS,
-        },
-    )
-    response = Review(review_id, data)
-    cache_review(review_id, data, cache)
-    return response
+        Review data is only cached if the review is MERGED because
+        otherwise it is more likely to change.
+
+        :param review_id: Review ID of the review to look for.
+        :type review_id: str
+        :param cache: Storage for repeated lookups.
+        :type cache: goal_tools.cache.Cache
+
+        """
+        key = ('review', str(review_id))
+        if key in self._cache:
+            LOG.debug('found %s cached', review_id)
+            return Review(review_id, self._cache[key])
+        data = query_gerrit(
+            'changes/' + review_id + '/detail',
+            params={
+                'o': QUERY_OPTIONS,
+            },
+        )
+        response = Review(review_id, data)
+        cache_review(review_id, data, self._cache)
+        return response

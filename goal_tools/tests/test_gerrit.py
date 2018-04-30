@@ -154,29 +154,30 @@ class TestReview(base.TestCase):
 
 class TestFetchReview(base.TestCase):
 
+    def setUp(self):
+        super().setUp()
+        self.cache = {}
+        self.f = gerrit.ReviewFactory(self.cache)
+
     def test_not_in_cache_new(self):
-        cache = {}
         with mock.patch('goal_tools.gerrit.query_gerrit') as f:
             f.return_value = _data_55535
-            results = gerrit.fetch_review('55535', cache)
-        self.assertNotIn(('review', '55535'), cache)
+            results = self.f.fetch('55535')
+        self.assertNotIn(('review', '55535'), self.cache)
         self.assertEqual(_data_55535, results._data)
 
     def test_not_in_cache_merged(self):
-        cache = {}
         with mock.patch('goal_tools.gerrit.query_gerrit') as f:
             f.return_value = _data_561507
-            results = gerrit.fetch_review('561507', cache)
-        self.assertIn(('review', '561507'), cache)
+            results = self.f.fetch('561507')
+        self.assertIn(('review', '561507'), self.cache)
         self.assertEqual(_data_561507, results._data)
-        self.assertEqual(_data_561507, cache[('review', '561507')])
+        self.assertEqual(_data_561507, self.cache[('review', '561507')])
 
     def test_in_cache(self):
-        cache = {
-            ('review', '561507'): _data_561507,
-        }
+        self.cache[('review', '561507')] = _data_561507
         with mock.patch('goal_tools.gerrit.query_gerrit') as f:
             f.side_effect = AssertionError('should not be called')
-            results = gerrit.fetch_review('561507', cache)
-        self.assertIn(('review', '561507'), cache)
+            results = self.f.fetch('561507')
+        self.assertIn(('review', '561507'), self.cache)
         self.assertEqual(_data_561507, results._data)

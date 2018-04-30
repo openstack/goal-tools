@@ -11,6 +11,7 @@
 # under the License.
 
 import datetime
+import functools
 import logging
 
 from goal_tools import apis
@@ -130,23 +131,29 @@ def lookup_member(email):
         return None
 
 
-def fetch_member(email, cache):
-    """Find the member in the cache or look it up in the API.
+class MemberFactory:
 
-    :param email: Email address of the member to look for.
-    :type email: str
-    :param cache: Storage for repeated lookups.
-    :type cache: goal_tools.cache.Cache
+    def __init__(self, cache):
+        self._cache = cache
 
-    """
-    key = ('member', email)
-    if key in cache:
-        LOG.debug('found %s cached', email)
-        data = cache[key]
-    else:
-        data = lookup_member(email)
+    @functools.lru_cache(maxsize=1024)
+    def fetch(self, email):
+        """Find the member in the cache or look it up in the API.
+
+        :param email: Email address of the member to look for.
+        :type email: str
+        :param cache: Storage for repeated lookups.
+        :type cache: goal_tools.cache.Cache
+
+        """
+        key = ('member', email)
+        if key in self._cache:
+            LOG.debug('found %s cached', email)
+            data = self._cache[key]
+        else:
+            data = lookup_member(email)
+            if data:
+                self._cache[key] = data
         if data:
-            cache[key] = data
-    if data:
-        return Member(email, data)
-    return None
+            return Member(email, data)
+        return None

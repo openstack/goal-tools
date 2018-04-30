@@ -76,8 +76,9 @@ class ListContributions(lister.Lister):
                 parsed_args.governance_project_list)
 
             roles = parsed_args.role
-            cache = self.app.cache
             include_unofficial = parsed_args.include_unofficial
+            member_factory = foundation.MemberFactory(self.app.cache)
+            review_factory = gerrit.ReviewFactory(self.app.cache)
 
             review_ids = utils.unique(
                 gerrit.parse_review_lists(parsed_args.review_list)
@@ -85,7 +86,7 @@ class ListContributions(lister.Lister):
 
             for review_id in review_ids:
 
-                review = gerrit.fetch_review(review_id, cache)
+                review = review_factory.fetch(review_id)
 
                 for participant in review.participants:
 
@@ -106,7 +107,7 @@ class ListContributions(lister.Lister):
                     # Figure out which organization the user was
                     # affiliated with at the time of the work.
                     organization = None
-                    member = foundation.fetch_member(participant.email, cache)
+                    member = member_factory.fetch(participant.email)
                     if member:
                         affiliation = member.find_affiliation(participant.date)
                         if affiliation:

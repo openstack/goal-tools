@@ -79,24 +79,24 @@ class TestFoundationMember(base.TestCase):
 
 class TestFetchMember(base.TestCase):
 
+    def setUp(self):
+        super().setUp()
+        self.cache = {}
+        self.f = foundation.MemberFactory(self.cache)
+
     def test_not_in_cache(self):
-        cache = {}
         with mock.patch('goal_tools.foundation.lookup_member') as f:
             f.return_value = _member_data
-            results = foundation.fetch_member(
-                'doug@doughellmann.com', cache)
-        self.assertIn(('member', 'doug@doughellmann.com'), cache)
+            results = self.f.fetch('doug@doughellmann.com')
+        self.assertIn(('member', 'doug@doughellmann.com'), self.cache)
         self.assertEqual(_member_data, results._data)
         self.assertEqual(_member_data,
-                         cache[('member', 'doug@doughellmann.com')])
+                         self.cache[('member', 'doug@doughellmann.com')])
 
     def test_in_cache(self):
-        cache = {
-            ('member', 'doug@doughellmann.com'): _member_data,
-        }
+        self.cache[('member', 'doug@doughellmann.com')] = _member_data
         with mock.patch('goal_tools.foundation.lookup_member') as f:
             f.side_effect = AssertionError('should not be called')
-            results = foundation.fetch_member(
-                'doug@doughellmann.com', cache)
-        self.assertIn(('member', 'doug@doughellmann.com'), cache)
+            results = self.f.fetch('doug@doughellmann.com')
+        self.assertIn(('member', 'doug@doughellmann.com'), self.cache)
         self.assertEqual(_member_data, results._data)
