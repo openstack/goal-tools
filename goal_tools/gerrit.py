@@ -162,31 +162,31 @@ class Review:
     def reviewers(self):
         labels = self._data['labels']
 
-        if 'Code-Review' in labels:
-            for label in labels['Code-Review']['all']:
-                if label['value'] not in (2, -1):
-                    # Only report reviewers with negative reviews or
-                    # approvals to avoid counting anyone who is just
-                    # leaving lots of +1 votes without actually providing
-                    # feedback.
-                    continue
-                yield Participant(
-                    'reviewer',
-                    label['name'],
-                    label['email'],
-                    _to_datetime(label['date']),
-                )
+        code_review_labels = labels.get('Code-Review', {}).get('all', [])
+        for label in code_review_labels:
+            if label['value'] not in (2, -1):
+                # Only report reviewers with negative reviews or
+                # approvals to avoid counting anyone who is just
+                # leaving lots of +1 votes without actually providing
+                # feedback.
+                continue
+            yield Participant(
+                'reviewer',
+                label['name'],
+                label['email'],
+                _to_datetime(label['date']),
+            )
 
-        if 'Workflow' in labels:
-            for label in labels['Workflow']['all']:
-                if label.get('value', 0) != 1:
-                    continue
-                yield Participant(
-                    'approver',
-                    label['name'],
-                    label['email'],
-                    _to_datetime(label['date']),
-                )
+        workflow_labels = labels.get('Workflow', {}).get('all', [])
+        for label in workflow_labels:
+            if label.get('value', 0) != 1:
+                continue
+            yield Participant(
+                'approver',
+                label['name'],
+                label['email'],
+                _to_datetime(label['date']),
+            )
 
 
 def cache_review(review_id, data, cache):
