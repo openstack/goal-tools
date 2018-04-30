@@ -29,18 +29,18 @@ class Organizations:
     def __init__(self, data=_ORG_DATA):
         self._data = data
         self._reverse = {
-            alias: entry['company_name']
+            str(alias).lower(): entry['company_name']
             for entry in self._data
             for alias in entry.get('aliases', [])
         }
         self._reverse.update({
-            entry['company_name']: entry['company_name']
+            str(entry['company_name']).lower(): entry['company_name']
             for entry in self._data
         })
 
     @functools.lru_cache(maxsize=1024)
     def __getitem__(self, name):
-        aliased = self._reverse.get(name, self)
+        aliased = self._reverse.get(name.lower(), self)
         if aliased is not self:
             # We found an alias, use it.
             return aliased

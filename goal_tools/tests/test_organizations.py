@@ -31,6 +31,12 @@ class TestOrganizations(base.TestCase):
             self.o['Red Hat Software'],
         )
 
+    def test_with_alias_case_insensitive(self):
+        self.assertEqual(
+            'Red Hat',
+            self.o['red hat software'],
+        )
+
     def test_no_alias_no_change(self):
         self.assertEqual(
             'Green Hat Software',
