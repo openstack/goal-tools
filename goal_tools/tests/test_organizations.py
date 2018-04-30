@@ -48,3 +48,13 @@ class TestOrganizations(base.TestCase):
             'Company',
             self.o['Company Co., Ltd.'],
         )
+
+    def test_remove_quotes_and_endings(self):
+        self.assertEqual(
+            'Company',
+            self.o['"Company, Inc."'],
+        )
+        self.assertEqual(
+            'Company',
+            self.o["'Company, Inc.'"],
+        )

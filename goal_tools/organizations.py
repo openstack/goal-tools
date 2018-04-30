@@ -47,6 +47,7 @@ class Organizations:
         # Strip some common endings from the name to try to
         # standardize on a shorter form.
         for end in ['Inc', 'Ltd', 'Co', 'LLC', 'GmbH', 'Srl']:
+            name = name.strip('"\'')
             name = name.rstrip(' ,.')
             if name.endswith(end):
                 name = name[:-1 * len(end)]
