@@ -420,6 +420,9 @@
   company_name: ChinaNetCenter
   domains:
     - chinanetcenter.com
+- aliases:
+    - 'China Mobile Suzhou Software Technology Co., Ltd - China Mobile Suzhou Research Center'
+  company_name: 'China Mobile'
 - company_name: 'CIeNET Technologies'
   domains:
     - cienet.com.cn
