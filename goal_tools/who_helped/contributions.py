@@ -108,7 +108,7 @@ class ListContributions(lister.Lister):
 
                     # Figure out which organization the user was
                     # affiliated with at the time of the work.
-                    organization = None
+                    organization = "*unknown"
                     member = member_factory.fetch(participant.email)
                     if member:
                         affiliation = member.find_affiliation(participant.date)
