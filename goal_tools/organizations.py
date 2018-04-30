@@ -26,6 +26,18 @@ _ORG_DATA = yaml.load(
 
 class Organizations:
 
+    _ENDINGS = [
+        'Inc',
+        'Ltd',
+        'Co',
+        'LLC',
+        'GmbH',
+        'Srl',
+        'Limited',
+        'Corporation',
+        'Corp',
+    ]
+
     def __init__(self, data=_ORG_DATA):
         self._data = data
         self._reverse = {
@@ -46,7 +58,7 @@ class Organizations:
             return aliased
         # Strip some common endings from the name to try to
         # standardize on a shorter form.
-        for end in ['Inc', 'Ltd', 'Co', 'LLC', 'GmbH', 'Srl']:
+        for end in self._ENDINGS:
             name = name.strip('"\'')
             name = name.rstrip(' ,.')
             if name.endswith(end):
