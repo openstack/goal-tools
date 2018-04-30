@@ -36,6 +36,13 @@ class DateColumn(columns.FormattableColumn):
         return str(self._value)
 
 
+_COLUMNS = (
+    'Review', 'URL', 'Project', 'Team',
+    'Role', 'Name', 'Email', 'Date',
+    'Organization',
+)
+
+
 class ListContributions(lister.Lister):
     "List the contributions to a set of reviews."
 
@@ -60,11 +67,6 @@ class ListContributions(lister.Lister):
         return parser
 
     def take_action(self, parsed_args):
-        columns = (
-            'Review ID', 'Review URL', 'Project', 'Team',
-            'Role', 'Name', 'Email', 'Date',
-            'Organization',
-        )
 
         def make_rows():
             team_data = governance.get_team_data(
@@ -119,4 +121,4 @@ class ListContributions(lister.Lister):
                         organization,
                     )
 
-        return (columns, make_rows())
+        return (_COLUMNS, make_rows())

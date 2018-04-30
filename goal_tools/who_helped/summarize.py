@@ -16,6 +16,8 @@ import logging
 
 from cliff import lister
 
+from goal_tools.who_helped import contributions
+
 LOG = logging.getLogger(__name__)
 
 
@@ -37,6 +39,7 @@ class SummarizeContributions(lister.Lister):
             '--by', '-b',
             action='append',
             default=[],
+            choices=contributions._COLUMNS,
             help='columns to summarize by',
         )
         parser.add_argument(
