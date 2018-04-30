@@ -43,6 +43,12 @@ class SummarizeContributions(lister.Lister):
             help='columns to summarize by',
         )
         parser.add_argument(
+            '--role',
+            default=[],
+            action='append',
+            help='filter to only include specific roles (may be repeated)',
+        )
+        parser.add_argument(
             'contribution_list',
             nargs='+',
             help='name(s) of files containing contribution details',
@@ -60,7 +66,13 @@ class SummarizeContributions(lister.Lister):
                     reader = csv.DictReader(f)
                     yield from reader
 
-        counts = _summarize_by(parsed_args.by, rows())
+        data = rows()
+
+        roles = parsed_args.role
+        if roles:
+            data = (d for d in data if d['Role'] in roles)
+
+        counts = _summarize_by(parsed_args.by, data)
         items = reversed(sorted(counts.items(), key=lambda x: x[1]))
         columns = tuple(parsed_args.by) + ('Count',)
         return (columns, (cols + (count,) for cols, count in items))

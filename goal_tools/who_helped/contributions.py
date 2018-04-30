@@ -49,12 +49,6 @@ class ListContributions(lister.Lister):
     def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)
         parser.add_argument(
-            '--role',
-            default=[],
-            action='append',
-            help='filter to only include specific roles (may be repeated)',
-        )
-        parser.add_argument(
             '--governance-project-list',
             default=governance.PROJECTS_LIST,
             help='location of governance project list',
@@ -72,7 +66,6 @@ class ListContributions(lister.Lister):
             team_data = governance.get_team_data(
                 parsed_args.governance_project_list)
 
-            roles = parsed_args.role
             member_factory = foundation.MemberFactory(self.app.cache)
             review_factory = gerrit.ReviewFactory(self.app.cache)
             canonical_orgs = organizations.Organizations()
@@ -86,10 +79,6 @@ class ListContributions(lister.Lister):
                 review = review_factory.fetch(review_id)
 
                 for participant in review.participants:
-
-                    if roles and participant.role not in roles:
-                        LOG.debug('filtered out %s based on role', participant)
-                        continue
 
                     team_name = governance.get_repo_owner(
                         team_data, review.project)
