@@ -38,6 +38,11 @@ class Organizations:
         'Corp',
     ]
 
+    _BOTS = set([
+        'no-reply@openstack.org',
+        'infra-root@openstack.org',
+    ])
+
     def __init__(self, data=_ORG_DATA):
         self._data = data
         self._reverse = {
@@ -72,5 +77,7 @@ class Organizations:
 
     @functools.lru_cache(maxsize=1024)
     def from_email(self, email):
+        if email in self._BOTS:
+            return 'Automation'
         domain = email.partition('@')[-1].lower()
         return self._domains.get(domain)

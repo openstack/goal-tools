@@ -77,3 +77,9 @@ class TestOrganizations(base.TestCase):
         self.assertIsNone(
             self.o.from_email('dhellmann@redhat.com')
         )
+
+    def test_from_email_bot(self):
+        self.assertEqual(
+            'Automation',
+            self.o.from_email('infra-root@openstack.org')
+        )
