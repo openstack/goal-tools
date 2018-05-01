@@ -62,18 +62,7 @@ class Organizations:
 
     @functools.lru_cache(maxsize=1024)
     def __getitem__(self, name):
-        aliased = self._reverse.get(name.lower(), self)
-        if aliased is not self:
-            # We found an alias, use it.
-            return aliased
-        # Strip some common endings from the name to try to
-        # standardize on a shorter form.
-        for end in self._ENDINGS:
-            name = name.strip('"\'')
-            name = name.rstrip(' ,.')
-            if name.endswith(end):
-                name = name[:-1 * len(end)]
-        return name
+        return self._reverse.get(name.lower(), name)
 
     @functools.lru_cache(maxsize=1024)
     def from_email(self, email):

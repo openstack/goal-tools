@@ -45,28 +45,6 @@ class TestOrganizations(base.TestCase):
             self.o['Green Hat Software'],
         )
 
-    def test_no_alias_strip_ending(self):
-        self.assertEqual(
-            'Company',
-            self.o['Company, Inc.'],
-        )
-
-    def test_no_alias_strip_multiple_endings(self):
-        self.assertEqual(
-            'Company',
-            self.o['Company Co., Ltd.'],
-        )
-
-    def test_remove_quotes_and_endings(self):
-        self.assertEqual(
-            'Company',
-            self.o['"Company, Inc."'],
-        )
-        self.assertEqual(
-            'Company',
-            self.o["'Company, Inc.'"],
-        )
-
     def test_from_email(self):
         self.assertEqual(
             'PyMOTW',
