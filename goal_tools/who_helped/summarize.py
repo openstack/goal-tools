@@ -11,12 +11,10 @@
 # under the License.
 
 import collections
-import csv
 import logging
 
-from cliff import lister
-
 from goal_tools.who_helped import contributions
+from goal_tools.who_helped import report
 
 LOG = logging.getLogger(__name__)
 
@@ -35,7 +33,7 @@ def _count_distinct(by_names, to_count, data_source):
     return {k: len(v) for k, v in counts.items()}
 
 
-class SummarizeContributions(lister.Lister):
+class SummarizeContributions(report.ContributionsReportBase):
     "Summarize a contribution report."
 
     def get_parser(self, prog_name):
@@ -56,17 +54,6 @@ class SummarizeContributions(lister.Lister):
             help=('combination of unique values to count '
                   '(may be repeated), defaults to counting each contribution'),
         )
-        parser.add_argument(
-            '--role',
-            default=[],
-            action='append',
-            help='filter to only include specific roles (may be repeated)',
-        )
-        parser.add_argument(
-            'contribution_list',
-            nargs='+',
-            help='name(s) of files containing contribution details',
-        )
         return parser
 
     def take_action(self, parsed_args):
@@ -77,18 +64,7 @@ class SummarizeContributions(lister.Lister):
         to_count = parsed_args.count[:]
         to_count_column = ', '.join(to_count) or 'Count'
 
-        def rows():
-            for filename in parsed_args.contribution_list:
-                LOG.debug('reading %s', filename)
-                with open(filename, 'r', encoding='utf-8') as f:
-                    reader = csv.DictReader(f)
-                    yield from reader
-
-        data = rows()
-
-        roles = parsed_args.role
-        if roles:
-            data = (d for d in data if d['Role'] in roles)
+        data = self.get_contributions(parsed_args)
 
         counts = _count_distinct(group_by, to_count, data)
 
