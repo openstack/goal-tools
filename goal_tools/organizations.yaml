@@ -82,6 +82,8 @@
   domains:
     - 6wind.com
 - company_name: 99cloud
+  aliases:
+    - 99cloud.net
   domains:
     - 99cloud.net
 - company_name: 'A10 Networks'
@@ -118,6 +120,7 @@
     - Alcatel-Lcuent
     - 'Alcatel-Lucent Austria'
     - 'Alcatel-Lucent Bell Labs France'
+    - 'Alcatel-Lucent Cloudband'
   company_name: Alcatel-Lucent
   domains:
     - alcatel-lucent.com
@@ -225,6 +228,8 @@
 - company_name: Awcloud
   domains:
     - awcloud.com
+  aliases:
+    - 'Beijing AWcloud Software Co.,Ltd.'
 - aliases:
     - 'Awnix, Inc.'
   company_name: Awnix
@@ -282,6 +287,8 @@
 - company_name: 'Blizzard Entertainment'
   domains:
     - blizzard.com
+  aliases:
+    - 'Blizzard Entertainment, Inc'
 - aliases:
     - 'Blue Box Group'
   company_name: 'Blue Box'
@@ -348,12 +355,15 @@
 - aliases:
     - 'Canonical, Ltd.'
     - 'Ubuntu Canonical'
+    - 'Canonical Ltd'
   company_name: Canonical
   domains:
     - canonical.com
 - company_name: 'Catalyst IT'
   domains:
     - catalyst.net.nz
+  aliases:
+    - 'Catalyst IT Limited'
 - company_name: 'CEE Corporation'
   aliases:
     - 'CEE Corporation From 2014-03-15. Current Statement of Interest: I am Founder, President and CEO of CEE Corporation. My company is developing OpenStack based technology solutions.'
@@ -408,6 +418,8 @@
 - company_name: 'China UnionPay'
   domains:
     - unionpay.com
+  aliases:
+    - 'China Unionpay 中国银联'
 - company_name: Chinac
   domains:
     - chinac.com
@@ -436,6 +448,8 @@
     - 'Cisco Canada'
     - 'Cisco APAC'
     - 'Cisco Systems India'
+    - 'Cisco Sysems'
+    - 'Cisco Systems, Inc'
   company_name: 'Cisco Systems'
   domains:
     - cisco.com
@@ -454,6 +468,7 @@
     - cloudtp.com
 - aliases:
     - Cloudbase
+    - 'Cloudbase Solutions Srl'
   company_name: 'Cloudbase Solutions'
   domains:
     - cloudbasesolutions.com
@@ -560,6 +575,9 @@
 - company_name: 'Dassault Systèmes'
   domains:
     - 3ds.com
+- company_name: 'Datang Gohighsec'
+  aliases:
+    - 'Datang Gohighsec（zhejiang） Information Technology Co.,Ltd.'
 - company_name: DataCentred
   domains:
     - datacentred.co.uk
@@ -598,6 +616,7 @@
     - EMC.com
     - 'Office of The CTO EMC Corporation'
     - 'VCE - EMC'
+    - 'Dell, Inc.'
   company_name: 'Dell EMC'
   domains:
     - dell.com
@@ -679,6 +698,7 @@
     - 'Ericsson China'
     - 'Ericsson Canada'
     - 'Ericsson India Global Services'
+    - 'Ericsson Global India Pvt Ltd'
   company_name: Ericsson
   domains:
     - ericsson.com
@@ -693,6 +713,9 @@
     - fnal.gov
 - aliases:
     - 'Fiberhome Telecommunication Technologies Co.,LTD'
+    - 'Fiberhome Telecommunication Technologies'
+    - 'Fiberhome Telecommunication Technologies Co.,LTD'
+    - 'Fiberhome Telecommunication Technologies Co. LTD'
   company_name: Fiberhome
   domains:
     - fiberhome.com
@@ -724,6 +747,7 @@
     - freescale.com
 - aliases:
     - 'FUJITSU HOKURIKU SYSTEMS LIMITED'
+    - 'FUJITSU Enabling Software Technology GmbH'
   company_name: Fujitsu
   domains:
     - fujitsu.com
@@ -861,6 +885,12 @@
     - '"Huawei  Technologies Co., Limitied"'
     - 'Huawei  Technologies Co., Limitied'
     - 'Huawei china'
+    - 'Huawei Canada'
+    - 'Huawei Technolgies Co.Ltd.'
+    - 'Huawei Technologies Co. Ltd'
+    - 'Huawei Technologies Co., Ltd.'
+    - 'HUAWEI Technology Co., Ltd.'
+    - 'Huawei Technologies India Pvt. Ltd,'
   company_name: Huawei
   domains:
     - huawei.com
@@ -997,6 +1027,8 @@
     - 'Intel OTC'
     - 'Intern at intel'
     - 'Intel Security'
+    - 'Intel of Canada'
+    - 'Intel Corporation'
   company_name: Intel
   domains:
     - intel.com
@@ -1131,6 +1163,8 @@
   domains:
     - lavabit.com
 - company_name: Lenovo
+  aliases:
+    - 'Lenovo Inc'
   domains:
     - lenovo.com
 - company_name: 'Letv Cloud Computing'
@@ -1218,6 +1252,9 @@
   domains:
     - mirantis.com
     - mirantis.ru
+  aliases:
+    - 'Mirantis Inc.'
+    - 'Mirantis Inc'
 - company_name: MIT
   domains:
     - mit.edu
@@ -1260,6 +1297,12 @@
     - 'NEC Laboratories Europe'
     - 'NEC Solution Innovators'
     - 'NEC Corporation of America'
+    - 'NEC Technologies Ind. Pvt Ltd'
+    - 'NEC Technologies India Pvt Ltd'
+    - 'NEC Solution Innovators, Ltd.'
+    - 'NEC technologies pvt. ltd'
+    - 'NEC Technologies India Pvt. Ltd'
+    - 'NEC Technologies India Private Limited'
   company_name: NEC
   domains:
     - nec.com
@@ -1270,6 +1313,8 @@
 - company_name: NetApp
   domains:
     - netapp.com
+  aliases:
+    - 'NetApp Inc'
 - company_name: NetEase
   domains:
     - netease.com
@@ -1312,6 +1357,8 @@
 - aliases:
     - 'Nokia Solutions and Networks'
     - 'Nokia Networks'
+    - 'Nokia Cloudband'
+    - 'Nokia - CloudBand'
   company_name: Nokia
   domains:
     - nokia.com
@@ -1540,6 +1587,10 @@
     - eNovance
     - 'Red Hat, Inc.'
     - 'Red Hat, Inc'
+    - 'Red Hat Inc.'
+    - 'RedHat Inc.'
+    - 'Red Hat GmbH'
+    - 'RedHat'
   company_name: 'Red Hat'
   domains:
     - redhat.com
@@ -1699,6 +1750,7 @@
     - ac.th
 - aliases:
     - 'SUSE Linux GmbH'
+    - 'SUSE, SUSE Japan'
   company_name: SUSE
   domains:
     - suse.cz
@@ -1933,6 +1985,8 @@
 - company_name: VexxHost
   domains:
     - vexxhost.com
+  aliases:
+    - 'VEXXHOST, Inc.'
 - aliases:
     - 'Viettel Group'
   company_name: Viettel
@@ -1966,6 +2020,7 @@
     - 'CYSO VMWARE DHPA'
     - 'VMware, Nicira, Telstra, Accenture'
     - 'VMware Software'
+    - 'VMware Inc'
   company_name: VMware
   domains:
     - vmware.com
@@ -2017,6 +2072,8 @@
 - company_name: x-ion
   domains:
     - x-ion.de
+  aliases:
+    - 'x-ion GmbH'
 - company_name: Xerox
   domains:
     - xerox.com
@@ -2075,6 +2132,8 @@
 - company_name: 'ZTE Corporation'
   domains:
     - zte.com.cn
+  aliases:
+    - ZTE
 - company_name: 'Zurich University of Applied Sciences'
   domains:
     - zhaw.ch
