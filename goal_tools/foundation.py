@@ -49,18 +49,13 @@ class Affiliation:
         return None
 
     def active(self, when):
-        LOG.debug('checking active %s (%s - %s) against %s',
-                  self.organization, self.start_date, self.end_date,
-                  when)
         if not self.start_date and not self.end_date and self.is_current:
             return True
         # Compare only the date portion so we don't have to worry
         # about the time of day.
         if self.start_date and self.start_date.date() > when.date():
-            LOG.debug('started too late')
             return False
         if self.end_date and self.end_date.date() < when.date():
-            LOG.debug('ended too soon')
             return False
         return True
 
