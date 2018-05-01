@@ -40,7 +40,8 @@ class SummarizeContributions(lister.Lister):
             action='append',
             default=[],
             choices=contributions._COLUMNS,
-            help='columns to summarize by',
+            help=('column(s) to summarize by (may be repeated), '
+                  'defaults to "Organization"'),
         )
         parser.add_argument(
             '--role',
@@ -56,8 +57,9 @@ class SummarizeContributions(lister.Lister):
         return parser
 
     def take_action(self, parsed_args):
-        if not parsed_args.by:
-            raise RuntimeError('No --by values specified')
+        group_by = parsed_args.by[:]
+        if not group_by:
+            group_by.append('Organization')
 
         def rows():
             for filename in parsed_args.contribution_list:
@@ -72,7 +74,7 @@ class SummarizeContributions(lister.Lister):
         if roles:
             data = (d for d in data if d['Role'] in roles)
 
-        counts = _summarize_by(parsed_args.by, data)
+        counts = _summarize_by(group_by, data)
         items = reversed(sorted(counts.items(), key=lambda x: x[1]))
-        columns = tuple(parsed_args.by) + ('Count',)
+        columns = tuple(group_by) + ('Count',)
         return (columns, (cols + (count,) for cols, count in items))
