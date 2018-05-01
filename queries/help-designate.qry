@@ -1,0 +1,1 @@
+( project:openstack/designate OR project:openstack/designate-dashboard OR project:openstack/python-designateclient ) after:2017-01-01 before:2018-01-01
