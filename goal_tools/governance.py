@@ -18,9 +18,10 @@ import yaml
 from goal_tools import apis
 
 PROJECTS_LIST = "http://git.openstack.org/cgit/openstack/governance/plain/reference/projects.yaml"  # noqa
+TC_LIST = "http://git.openstack.org/cgit/openstack/governance/plain/reference/technical-committee-repos.yaml"  # noqa
 
 
-def get_team_data(url=PROJECTS_LIST):
+def get_team_data(url=PROJECTS_LIST, tc_url=TC_LIST):
     """Return the parsed team data from the governance repository.
 
     :param url: Optional URL to the location of the projects.yaml
@@ -28,8 +29,19 @@ def get_team_data(url=PROJECTS_LIST):
         repository.
 
     """
-    r = apis.requester(url)
-    return yaml.load(r.text)
+    raw = apis.requester(url)
+    team_data = yaml.load(raw.text)
+
+    tc = apis.requester(tc_url)
+    tc_data = yaml.load(tc.text)
+    team_data['Technical Committee'] = {
+        'deliverables': {
+            repo['repo'].partition('/')[-1]: {'repos': [repo['repo']]}
+            for repo in tc_data['Technical Committee']
+        }
+    }
+
+    return team_data
 
 
 def get_repo_owner(team_data, repo_name):
