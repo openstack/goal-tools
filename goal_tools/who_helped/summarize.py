@@ -69,8 +69,9 @@ class SummarizeContributions(report.ContributionsReportBase):
         counts = _count_distinct(group_by, to_count, data)
 
         output_rows = reversed(sorted(
-            by_key + (count_value,)
-            for by_key, count_value in counts.items()
+            (by_key + (count_value,)
+             for by_key, count_value in counts.items()),
+            key=lambda x: (x[-1], x[:-1]),  # by count first
         ))
 
         columns = tuple(group_by) + (to_count_column,)
