@@ -10,8 +10,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import collections
-
 from goal_tools.who_helped import summarize
 from goal_tools.tests import base
 
@@ -19,19 +17,50 @@ from goal_tools.tests import base
 class TestSummarizeBy(base.TestCase):
 
     _data = [
-        {'a': 'A', 'b': 'B'},
-        {'a': 'A', 'b': 'C'},
+        {'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D'},
+        {'a': 'A', 'b': 'C', 'c': 'D', 'd': 'D'},
     ]
 
-    def test_one_column(self):
-        results = summarize._summarize_by(['a'], self._data)
-        expected = collections.Counter({('A',): 2})
+    def test_group_by_one_column(self):
+        results = summarize._count_distinct(['a'], [], self._data)
+        expected = {
+            ('A',): 2,
+        }
         self.assertEqual(expected, results)
 
-    def test_two_columns(self):
-        results = summarize._summarize_by(['a', 'b'], self._data)
-        expected = collections.Counter({
+    def test_group_by_two_columns(self):
+        results = summarize._count_distinct(['a', 'b'], [], self._data)
+        expected = {
             ('A', 'B'): 1,
             ('A', 'C'): 1,
-        })
+        }
+        self.assertEqual(expected, results)
+
+    def test_count_one_column(self):
+        results = summarize._count_distinct(['a'], ['b'], self._data)
+        expected = {
+            ('A',): 2,
+        }
+        self.assertEqual(expected, results)
+
+    def test_count_one_column2(self):
+        results = summarize._count_distinct(['b'], ['a'], self._data)
+        expected = {
+            ('B',): 1,
+            ('C',): 1,
+        }
+        self.assertEqual(expected, results)
+
+    def test_count_one_column3(self):
+        results = summarize._count_distinct(['a'], ['d'], self._data)
+        expected = {
+            ('A',): 1,
+        }
+        self.assertEqual(expected, results)
+
+    def test_count_two_columns(self):
+        results = summarize._count_distinct(['a'], ['b', 'c'], self._data)
+        expected = {
+            ('A',): 2,
+        }
         self.assertEqual(expected, results)

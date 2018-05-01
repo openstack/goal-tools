@@ -21,13 +21,18 @@ from goal_tools.who_helped import contributions
 LOG = logging.getLogger(__name__)
 
 
-def _summarize_by(by_names, data_source):
-    counts = collections.Counter()
-    counts.update(
-        tuple(row[by] for by in by_names)
-        for row in data_source
-    )
-    return counts
+def _count_distinct(by_names, to_count, data_source):
+    counts = collections.defaultdict(set)
+    for row in data_source:
+        # Build the grouping key for this row. We always have at least
+        # one column name in by_names.
+        by_key = tuple(row[by] for by in by_names)
+        # Build a unique value based on what we were told to count,
+        # using the to_count names for columns if we have any or
+        # taking all of the column names to count the row itself.
+        count_key = tuple(row[c] for c in (to_count or row.keys()))
+        counts[by_key].add(count_key)
+    return {k: len(v) for k, v in counts.items()}
 
 
 class SummarizeContributions(lister.Lister):
@@ -42,6 +47,14 @@ class SummarizeContributions(lister.Lister):
             choices=contributions._COLUMNS,
             help=('column(s) to summarize by (may be repeated), '
                   'defaults to "Organization"'),
+        )
+        parser.add_argument(
+            '--count',
+            action='append',
+            default=[],
+            choices=('contributions',) + contributions._COLUMNS,
+            help=('combination of unique values to count '
+                  '(may be repeated), defaults to counting each contribution'),
         )
         parser.add_argument(
             '--role',
@@ -61,6 +74,9 @@ class SummarizeContributions(lister.Lister):
         if not group_by:
             group_by.append('Organization')
 
+        to_count = parsed_args.count[:]
+        to_count_column = ', '.join(to_count) or 'Count'
+
         def rows():
             for filename in parsed_args.contribution_list:
                 LOG.debug('reading %s', filename)
@@ -74,7 +90,13 @@ class SummarizeContributions(lister.Lister):
         if roles:
             data = (d for d in data if d['Role'] in roles)
 
-        counts = _summarize_by(group_by, data)
-        items = reversed(sorted(counts.items(), key=lambda x: x[1]))
-        columns = tuple(group_by) + ('Count',)
-        return (columns, (cols + (count,) for cols, count in items))
+        counts = _count_distinct(group_by, to_count, data)
+
+        output_rows = reversed(sorted(
+            by_key + (count_value,)
+            for by_key, count_value in counts.items()
+        ))
+
+        columns = tuple(group_by) + (to_count_column,)
+
+        return (columns, output_rows)
