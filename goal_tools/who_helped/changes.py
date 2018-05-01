@@ -95,5 +95,5 @@ class QueryChanges(command.Command):
 
         with open(parsed_args.review_list, 'w', encoding='utf-8') as f:
             f.write('# QUERY: {}\n'.format(parsed_args.query_string))
-            for rid in review_ids:
+            for rid in sorted(review_ids):
                 f.write('{}\n'.format(rid))
