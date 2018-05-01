@@ -84,6 +84,7 @@
 - company_name: 99cloud
   aliases:
     - 99cloud.net
+    - '99Cloud Inc.'
   domains:
     - 99cloud.net
 - company_name: 'A10 Networks'
@@ -356,6 +357,7 @@
     - 'Canonical, Ltd.'
     - 'Ubuntu Canonical'
     - 'Canonical Ltd'
+    - 'Canonical Limited'
   company_name: Canonical
   domains:
     - canonical.com
@@ -450,6 +452,8 @@
     - 'Cisco Systems India'
     - 'Cisco Sysems'
     - 'Cisco Systems, Inc'
+    - 'Cisco Systems, Inc.'
+    - 'Cisco Systems Inc'
   company_name: 'Cisco Systems'
   domains:
     - cisco.com
@@ -578,6 +582,7 @@
 - company_name: 'Datang Gohighsec'
   aliases:
     - 'Datang Gohighsec（zhejiang） Information Technology Co.,Ltd.'
+    - 'GohighSec'
 - company_name: DataCentred
   domains:
     - datacentred.co.uk
@@ -617,6 +622,7 @@
     - 'Office of The CTO EMC Corporation'
     - 'VCE - EMC'
     - 'Dell, Inc.'
+    - 'EMC Corporation'
   company_name: 'Dell EMC'
   domains:
     - dell.com
@@ -699,6 +705,7 @@
     - 'Ericsson Canada'
     - 'Ericsson India Global Services'
     - 'Ericsson Global India Pvt Ltd'
+    - 'Ericsson Inc'
   company_name: Ericsson
   domains:
     - ericsson.com
@@ -748,6 +755,8 @@
 - aliases:
     - 'FUJITSU HOKURIKU SYSTEMS LIMITED'
     - 'FUJITSU Enabling Software Technology GmbH'
+    - 'FUJITSU TECHNOLOGY SOLUTIONS'
+    - 'Fujitsu EST GmbH'
   company_name: Fujitsu
   domains:
     - fujitsu.com
@@ -864,6 +873,7 @@
     - 'HP Helion'
     - 'HP Costa Rica'
     - 'China HP'
+    - 'HP'
   company_name: HPE
   domains:
     - hpe.com
@@ -891,6 +901,7 @@
     - 'Huawei Technologies Co., Ltd.'
     - 'HUAWEI Technology Co., Ltd.'
     - 'Huawei Technologies India Pvt. Ltd,'
+    - 'Huawei Technologies  Co., Ltd.'
   company_name: Huawei
   domains:
     - huawei.com
@@ -947,6 +958,8 @@
     - 'IBM Cloud Division'
     - 'IBM Malaysia Sdn Bhd'
     - 'IBM India Private'
+    - 'IBM India Pvt Ltd'
+    - 'IBM India Pvt. Ltd.'
   company_name: IBM
   domains:
     - ibm.com
@@ -1010,6 +1023,8 @@
 - company_name: Inspur
   domains:
     - inspur.com
+  aliases:
+    - 'Inspur Electronic Information Industry Co.,Ltd'
 - aliases:
     - III
     - 'III IDEAS'
@@ -1029,6 +1044,7 @@
     - 'Intel Security'
     - 'Intel of Canada'
     - 'Intel Corporation'
+    - 'Intel Corp'
   company_name: Intel
   domains:
     - intel.com
@@ -1255,6 +1271,8 @@
   aliases:
     - 'Mirantis Inc.'
     - 'Mirantis Inc'
+    - 'Mirantis, Inc.'
+    - 'Mirantis, Inc'
 - company_name: MIT
   domains:
     - mit.edu
@@ -1359,6 +1377,7 @@
     - 'Nokia Networks'
     - 'Nokia Cloudband'
     - 'Nokia - CloudBand'
+    - 'Nokia - Nuage Networks'
   company_name: Nokia
   domains:
     - nokia.com
@@ -1401,6 +1420,7 @@
 - aliases:
     - Yahoo
     - 'Oath Inc Formerly Yahoo'
+    - 'Yahoo! JAPAN'
   company_name: Oath
   domains:
     - oath.com
@@ -1623,6 +1643,7 @@
     - 'Samsung SDS'
     - 'Samsung Electronics'
     - 'Samsung India Software Operations'
+    - 'Samsung Electronics Co., Ltd.'
   company_name: Samsung
   domains:
     - samsung.com
@@ -1751,6 +1772,7 @@
 - aliases:
     - 'SUSE Linux GmbH'
     - 'SUSE, SUSE Japan'
+    - 'SUSE Microfocus International'
   company_name: SUSE
   domains:
     - suse.cz
@@ -2021,6 +2043,7 @@
     - 'VMware, Nicira, Telstra, Accenture'
     - 'VMware Software'
     - 'VMware Inc'
+    - 'VMware Software Pvt Lmt'
   company_name: VMware
   domains:
     - vmware.com
@@ -2029,6 +2052,8 @@
   domains:
     - walmart.com
     - walmartlabs.com
+  aliases:
+    - 'Walmart eCommerce'
 - company_name: Wanclouds
   domains:
     - wanclouds.net
