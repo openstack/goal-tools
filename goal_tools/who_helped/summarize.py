@@ -11,6 +11,7 @@
 # under the License.
 
 import collections
+import itertools
 import logging
 
 from goal_tools.who_helped import contributions
@@ -31,6 +32,41 @@ def _count_distinct(by_names, to_count, data_source):
         count_key = tuple(row[c] for c in (to_count or row.keys()))
         counts[by_key].add(count_key)
     return {k: len(v) for k, v in counts.items()}
+
+
+class Anonymizer:
+    "Track unique values for a field while masking them."
+
+    def __init__(self, field):
+        self.field = field
+        self.cache = {}
+        self.counter = itertools.count(1)
+
+    def __repr__(self):
+        return 'Anonymizer({!r})'.format(self.field)
+
+    def __call__(self, value):
+        if value not in self.cache:
+            anon = '{} {}'.format(self.field, next(self.counter))
+            self.cache[value] = anon
+        return self.cache[value]
+
+
+def anonymize(group_by, data):
+    "Turn the fields with identifying information into anonymous strings."
+    generators = {
+        'Organization': Anonymizer('Organization'),
+        'Name': Anonymizer('Name'),
+        'Email': Anonymizer('Email'),
+    }
+    modifiers = [
+        generators.get(field, lambda x: x)
+        for field in group_by
+    ]
+    modifiers.append(lambda x: x)  # for the count field
+    for row in data:
+        new_row = tuple(m(r) for m, r in zip(modifiers, row))
+        yield new_row
 
 
 class SummarizeContributions(report.ContributionsReportBase):
@@ -54,6 +90,13 @@ class SummarizeContributions(report.ContributionsReportBase):
             help=('combination of unique values to count '
                   '(may be repeated), defaults to counting each contribution'),
         )
+        parser.add_argument(
+            '--anonymize', '--anon',
+            dest='anonymize',
+            default=False,
+            action='store_true',
+            help='mask organization and personal identifying information',
+        )
         return parser
 
     def take_action(self, parsed_args):
@@ -73,6 +116,9 @@ class SummarizeContributions(report.ContributionsReportBase):
              for by_key, count_value in counts.items()),
             key=lambda x: (x[-1], x[:-1]),  # by count first
         ))
+
+        if parsed_args.anonymize:
+            output_rows = anonymize(group_by, output_rows)
 
         columns = tuple(group_by) + (to_count_column,)
 

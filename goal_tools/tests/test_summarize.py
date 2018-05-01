@@ -64,3 +64,58 @@ class TestSummarizeBy(base.TestCase):
             ('A',): 2,
         }
         self.assertEqual(expected, results)
+
+
+class TestAnonymize(base.TestCase):
+
+    def test_anonymizer(self):
+        a = summarize.Anonymizer('Field')
+        self.assertEqual('Field 1', a('anything'))
+        self.assertEqual('Field 1', a('anything'))
+        self.assertEqual('Field 2', a('anything else'))
+        self.assertEqual('Field 2', a('anything else'))
+
+    def test_not_needed(self):
+        original = [('a', 'b', 1)]
+        group_by = ('Field1', 'Field2')
+        actual = list(summarize.anonymize(group_by, original))
+        self.assertEqual(original, actual)
+
+    def test_organization(self):
+        original = [
+            ('a', 'b', 2),
+            ('c', 'd', 1),
+        ]
+        group_by = ['Organization', 'Field2']
+        expected = [
+            ('Organization 1', 'b', 2),
+            ('Organization 2', 'd', 1),
+        ]
+        actual = list(summarize.anonymize(group_by, original))
+        self.assertEqual(expected, actual)
+
+    def test_name(self):
+        original = [
+            ('a', 'b', 2),
+            ('c', 'd', 1),
+        ]
+        group_by = ['Field1', 'Name']
+        expected = [
+            ('a', 'Name 1', 2),
+            ('c', 'Name 2', 1),
+        ]
+        actual = list(summarize.anonymize(group_by, original))
+        self.assertEqual(expected, actual)
+
+    def test_email(self):
+        original = [
+            ('a', 'b', 2),
+            ('c', 'd', 1),
+        ]
+        group_by = ['Field1', 'Email']
+        expected = [
+            ('a', 'Email 1', 2),
+            ('c', 'Email 2', 1),
+        ]
+        actual = list(summarize.anonymize(group_by, original))
+        self.assertEqual(expected, actual)
