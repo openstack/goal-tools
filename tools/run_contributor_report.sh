@@ -13,4 +13,6 @@ do
     who-helped -v --debug changes query "$(cat $input)" $txt_file
     who-helped --debug contributions list -f csv $txt_file | tee $csv_file
     who-helped --debug contributions summarize $csv_file | tee $rpt_file
+    who-helped contributions summarize -f csv $csv_file | tee $rpt_file.contributions.csv
+    who-helped contributions summarize -f csv --count Name $csv_file | tee $rpt_file.people.csv
 done
