@@ -1,4 +1,4 @@
-( project:^openstack/oslo\..* OR
+( project:^openstack/oslo.* OR
   project:openstack/debtcollector OR
   project:openstack/futurist OR
   project:openstack/automaton OR
