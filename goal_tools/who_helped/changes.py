@@ -94,6 +94,7 @@ class QueryChanges(command.Command):
                 break
 
         with open(parsed_args.review_list, 'w', encoding='utf-8') as f:
-            f.write('# QUERY: {}\n'.format(parsed_args.query_string))
+            f.write('# QUERY: {}\n'.format(
+                parsed_args.query_string.replace('\n', ' ')))
             for rid in sorted(review_ids):
                 f.write('{}\n'.format(rid))
