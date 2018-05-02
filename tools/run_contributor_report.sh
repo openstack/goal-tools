@@ -8,14 +8,37 @@ source .tox/venv/bin/activate
 for input in $*
 do
     txt_file=${input%.qry}.txt
-    csv_file=${input%.qry}.csv
+    dat_file=${input%.qry}.dat
     rpt_file=${input%.qry}.rpt
+
+    # Query gerrit
     who-helped -v --debug changes query "$(cat $input)" $txt_file
-    who-helped --debug contributions list -f csv $txt_file | tee $csv_file
-    who-helped --debug contributions summarize $csv_file | tee $rpt_file
-    who-helped contributions summarize -f csv $csv_file | tee $rpt_file.contributions.csv
-    who-helped contributions summarize -f csv --highlight-sponsors $csv_file | tee $rpt_file.sponsor-contributions.csv
-    who-helped contributions summarize -f csv --anon $csv_file | tee $rpt_file.anon-contributions.csv
-    who-helped contributions distinct -f csv $csv_file | tee $rpt_file.organizations.csv
-    who-helped contributions summarize -f csv --count Name $csv_file | tee $rpt_file.people.csv
+
+    # Build the raw contribution data file
+    who-helped --debug contributions list -f csv $txt_file \
+        | tee $dat_file
+
+    # Text report
+    who-helped --debug contributions summarize $dat_file \
+        | tee $rpt_file
+
+    # CSV version of report summarizing contributions per org
+    who-helped contributions summarize -f csv $dat_file \
+        | tee $rpt_file.contributions.csv
+
+    # CSV version of report summarizing contributions per sponsor org
+    who-helped contributions summarize -f csv --highlight-sponsors $dat_file \
+        | tee $rpt_file.sponsor-contributions.csv
+
+    # CSV version of report summarizing contributions with orgs anonymized
+    who-helped contributions summarize -f csv --anon $dat_file \
+        | tee $rpt_file.anon-contributions.csv
+
+    # CSV version of distinct orgs report
+    who-helped contributions distinct -f csv $dat_file \
+        | tee $rpt_file.organizations.csv
+
+    # CSV version of report summarizing people per org
+    who-helped contributions summarize -f csv --count Name $dat_file \
+        | tee $rpt_file.people.csv
 done
