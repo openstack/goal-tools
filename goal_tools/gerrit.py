@@ -172,8 +172,8 @@ class Review:
                 continue
             yield Participant(
                 'reviewer',
-                label['name'],
-                label['email'],
+                label.get('name', 'Unknown Person'),
+                label.get('email', 'unknown@example.com'),
                 _to_datetime(label['date']),
             )
 
@@ -183,8 +183,8 @@ class Review:
                 continue
             yield Participant(
                 'approver',
-                label['name'],
-                label['email'],
+                label.get('name', 'Unknown Person'),
+                label.get('email', 'unknown@example.com'),
                 _to_datetime(label['date']),
             )
 
