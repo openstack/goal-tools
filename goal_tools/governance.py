@@ -31,15 +31,30 @@ def get_team_data(url=PROJECTS_LIST, tc_url=TC_LIST):
     """
     raw = apis.requester(url)
     team_data = yaml.load(raw.text)
-
     tc = apis.requester(tc_url)
     tc_data = yaml.load(tc.text)
+    return _organize_team_data(team_data, tc_data)
+
+
+def _organize_team_data(team_data, tc_data):
     team_data['Technical Committee'] = {
         'deliverables': {
             repo['repo'].partition('/')[-1]: {'repos': [repo['repo']]}
             for repo in tc_data['Technical Committee']
         }
     }
+
+    by_repos = {}
+    for team, info in team_data.items():
+        for dname, dinfo in info.get('deliverables', {}).items():
+            for repo in dinfo.get('repos', []):
+                by_repos[repo] = {
+                    'team': team,
+                    'team_info': info,
+                    'deliverable': dname,
+                    'deliverable_info': dinfo,
+                }
+    team_data['_by_repos'] = by_repos
 
     return team_data
 
@@ -51,8 +66,5 @@ def get_repo_owner(team_data, repo_name):
     :param repo_name: Long name of the repository, such as 'openstack/nova'.
 
     """
-    for team, info in team_data.items():
-        for dname, dinfo in info.get('deliverables', {}).items():
-            if repo_name in dinfo.get('repos', []):
-                return team
-    return None
+    repo_info = team_data['_by_repos'].get(repo_name, {})
+    return repo_info.get('team')

@@ -57,7 +57,10 @@ Release Management:
         - openstack-dev/specs-cookiecutter
 """
 
-TEAM_DATA = yaml.load(_team_data_yaml)
+TEAM_DATA = governance._organize_team_data(
+    yaml.load(_team_data_yaml),
+    {'Technical Committee': [{'repo': 'openstack/governance'}]},
+)
 
 
 class TestGetRepoOwner(base.TestCase):
