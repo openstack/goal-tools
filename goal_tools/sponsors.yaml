@@ -1,0 +1,30 @@
+platinum:
+  - 'AT&T'
+  - Ericsson
+  - Huawei
+  - Intel
+  - Rackspace
+  - Red Hat
+  - SUSE
+  - Tencent
+gold:
+  - 99Cloud
+  - Canonical
+  - 'China Mobile'
+  - 'China Telecom'
+  - 'China Unicorn'
+  - Cisco
+  - 'City Network'
+  - 'Dell EMC'
+  - 'Deutsche Telekom'
+  - EasyStack
+  - FiberHome
+  - Fujitsu
+  - Inspur
+  - inwinSTACK
+  - Mirantis
+  - NEC
+  - NetApp
+  - H3C
+  - UnitedStack
+  - 'ZTE Corporation'

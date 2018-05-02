@@ -14,6 +14,7 @@ do
     who-helped --debug contributions list -f csv $txt_file | tee $csv_file
     who-helped --debug contributions summarize $csv_file | tee $rpt_file
     who-helped contributions summarize -f csv $csv_file | tee $rpt_file.contributions.csv
+    who-helped contributions summarize -f csv --highlight-sponsors $csv_file | tee $rpt_file.sponsor-contributions.csv
     who-helped contributions summarize -f csv --anon $csv_file | tee $rpt_file.anon-contributions.csv
     who-helped contributions distinct -f csv $csv_file | tee $rpt_file.organizations.csv
     who-helped contributions summarize -f csv --count Name $csv_file | tee $rpt_file.people.csv

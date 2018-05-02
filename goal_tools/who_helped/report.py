@@ -15,6 +15,8 @@ import logging
 
 from cliff import lister
 
+from goal_tools import sponsors
+
 LOG = logging.getLogger(__name__)
 
 
@@ -28,6 +30,19 @@ class ContributionsReportBase(lister.Lister):
             default=[],
             action='append',
             help='filter to only include specific roles (may be repeated)',
+        )
+        parser.add_argument(
+            '--highlight-sponsors',
+            default=False,
+            action='store_true',
+            help=('highlight sponsor organizations and '
+                  'combine stats for others'),
+        )
+        parser.add_argument(
+            '--sponsor-level',
+            default='all',
+            choices=('all', 'platinum', 'gold'),
+            help='limit sponsor highlights to a subset of sponsors',
         )
         parser.add_argument(
             'contribution_list',
@@ -50,5 +65,14 @@ class ContributionsReportBase(lister.Lister):
         roles = parsed_args.role
         if roles:
             data = (d for d in data if d['Role'] in roles)
+
+        if parsed_args.highlight_sponsors:
+            sponsor_map = sponsors.Sponsors(parsed_args.sponsor_level)
+
+            def filter_sponsors(row):
+                row['Organization'] = sponsor_map[row['Organization']]
+                return row
+
+            data = (filter_sponsors(d) for d in data)
 
         return data
