@@ -801,6 +801,10 @@
 - company_name: GRNET
   domains:
     - grnet.gr
+- company_name: H3C
+  aliases:
+    - 'New H3C Technologies Co., Limited'
+    - H3Cloud
 - company_name: Harmonic
   domains:
     - harmonicinc.com
