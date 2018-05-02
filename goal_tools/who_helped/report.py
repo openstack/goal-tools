@@ -45,6 +45,12 @@ class ContributionsReportBase(lister.Lister):
             help='limit sponsor highlights to a subset of sponsors',
         )
         parser.add_argument(
+            '--ignore-team',
+            default=[],
+            action='append',
+            help='do not show stats for the named team (may be repeated)',
+        )
+        parser.add_argument(
             'contribution_list',
             nargs='+',
             help='name(s) of files containing contribution details',
@@ -65,6 +71,10 @@ class ContributionsReportBase(lister.Lister):
         roles = parsed_args.role
         if roles:
             data = (d for d in data if d['Role'] in roles)
+
+        ignore_teams = set(t.lower() for t in parsed_args.ignore_team)
+        if ignore_teams:
+            data = (d for d in data if d['Team'].lower() not in ignore_teams)
 
         if parsed_args.highlight_sponsors:
             sponsor_map = sponsors.Sponsors(parsed_args.sponsor_level)
