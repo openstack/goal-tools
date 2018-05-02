@@ -23,22 +23,26 @@ do
         | tee $rpt_file
 
     # CSV version of report summarizing contributions per org
-    who-helped contributions summarize -f csv $dat_file \
+    who-helped contributions summarize -f csv --ignore-single-vendor $dat_file \
         | tee $rpt_file.contributions.csv
 
     # CSV version of report summarizing contributions per sponsor org
-    who-helped contributions summarize -f csv --highlight-sponsors $dat_file \
+    who-helped contributions summarize -f csv \
+               --highlight-sponsors --ignore-single-vendor $dat_file \
         | tee $rpt_file.sponsor-contributions.csv
 
     # CSV version of report summarizing contributions with orgs anonymized
-    who-helped contributions summarize -f csv --anon $dat_file \
+    who-helped contributions summarize -f csv \
+               --anon --ignore-single-vendor $dat_file \
         | tee $rpt_file.anon-contributions.csv
 
     # CSV version of distinct orgs report
-    who-helped contributions distinct -f csv $dat_file \
+    who-helped contributions distinct -f csv \
+               --ignore-single-vendor $dat_file \
         | tee $rpt_file.organizations.csv
 
     # CSV version of report summarizing people per org
-    who-helped contributions summarize -f csv --count Name $dat_file \
+    who-helped contributions summarize -f csv \
+               --count Name --ignore-single-vendor $dat_file \
         | tee $rpt_file.people.csv
 done

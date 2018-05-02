@@ -53,10 +53,18 @@ class ContributionsReportBase(lister.Lister):
         )
         parser.add_argument(
             '--ignore-tag',
+            dest='ignore_tag',
             default=[],
             action='append',
             help=('do not show stats for projects with the tag '
                   '(may be repeated)'),
+        )
+        parser.add_argument(
+            '--ignore-single-vendor',
+            action='append_const',
+            const='team:single-vendor',
+            dest='ignore_tag',
+            help='do not show stats for single-vendor projects',
         )
         parser.add_argument(
             '--governance-project-list',
