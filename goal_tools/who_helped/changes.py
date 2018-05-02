@@ -49,8 +49,8 @@ class QueryChanges(command.Command):
         return parser
 
     def take_action(self, parsed_args):
-        team_data = governance.get_team_data(
-            parsed_args.governance_project_list)
+        team_data = governance.Governance(
+            url=parsed_args.governance_project_list)
 
         review_ids = []
 
@@ -72,8 +72,7 @@ class QueryChanges(command.Command):
                     change['_number'],
                     change,
                 )
-                team_name = governance.get_repo_owner(
-                    team_data, review.project)
+                team_name = team_data.get_repo_owner(review.project)
                 if not parsed_args.include_unofficial and not team_name:
                     LOG.debug(
                         'filtered out %s based on repo governance status',

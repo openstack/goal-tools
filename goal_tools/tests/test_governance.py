@@ -57,7 +57,7 @@ Release Management:
         - openstack-dev/specs-cookiecutter
 """
 
-TEAM_DATA = governance._organize_team_data(
+TEAM_DATA = governance.Governance._organize_team_data(
     yaml.load(_team_data_yaml),
     {'Technical Committee': [{'repo': 'openstack/governance'}]},
 )
@@ -65,17 +65,13 @@ TEAM_DATA = governance._organize_team_data(
 
 class TestGetRepoOwner(base.TestCase):
 
+    def setUp(self):
+        super().setUp()
+        self.gov = governance.Governance(TEAM_DATA)
+
     def test_repo_exists(self):
-        owner = governance.get_repo_owner(
-            TEAM_DATA,
-            'openstack/releases',
-        )
+        owner = self.gov.get_repo_owner('openstack/releases')
         self.assertEqual('Release Management', owner)
 
     def test_no_such_repo(self):
-        self.assertIsNone(
-            governance.get_repo_owner(
-                TEAM_DATA,
-                'openstack/no-such-repo',
-            ),
-        )
+        self.assertIsNone(self.gov.get_repo_owner('openstack/no-such-repo'))

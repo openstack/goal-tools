@@ -13,6 +13,8 @@
 """Work with the governance repository.
 """
 
+import functools
+
 import yaml
 
 from goal_tools import apis
@@ -21,50 +23,48 @@ PROJECTS_LIST = "http://git.openstack.org/cgit/openstack/governance/plain/refere
 TC_LIST = "http://git.openstack.org/cgit/openstack/governance/plain/reference/technical-committee-repos.yaml"  # noqa
 
 
-def get_team_data(url=PROJECTS_LIST, tc_url=TC_LIST):
-    """Return the parsed team data from the governance repository.
+class Governance:
 
-    :param url: Optional URL to the location of the projects.yaml
-        file. Defaults to the most current version in the public git
-        repository.
+    def __init__(self, team_data=None, url=PROJECTS_LIST, tc_url=TC_LIST):
+        self._url = url
+        self._tc_url = tc_url
+        if team_data is None:
+            team_data = self._fetch_team_data()
+        self._team_data = team_data
 
-    """
-    raw = apis.requester(url)
-    team_data = yaml.load(raw.text)
-    tc = apis.requester(tc_url)
-    tc_data = yaml.load(tc.text)
-    return _organize_team_data(team_data, tc_data)
+    def _get_team_data(self):
+        "Return the parsed team data from the governance repository."
+        raw = apis.requester(self._url)
+        team_data = yaml.load(raw.text)
+        tc = apis.requester(self._tc_url)
+        tc_data = yaml.load(tc.text)
+        return self._organize_team_data(team_data, tc_data)
 
-
-def _organize_team_data(team_data, tc_data):
-    team_data['Technical Committee'] = {
-        'deliverables': {
-            repo['repo'].partition('/')[-1]: {'repos': [repo['repo']]}
-            for repo in tc_data['Technical Committee']
+    @staticmethod
+    def _organize_team_data(team_data, tc_data):
+        team_data['Technical Committee'] = {
+            'deliverables': {
+                repo['repo'].partition('/')[-1]: {'repos': [repo['repo']]}
+                for repo in tc_data['Technical Committee']
+            }
         }
-    }
 
-    by_repos = {}
-    for team, info in team_data.items():
-        for dname, dinfo in info.get('deliverables', {}).items():
-            for repo in dinfo.get('repos', []):
-                by_repos[repo] = {
-                    'team': team,
-                    'team_info': info,
-                    'deliverable': dname,
-                    'deliverable_info': dinfo,
-                }
-    team_data['_by_repos'] = by_repos
+        by_repos = {}
+        for team, info in team_data.items():
+            for dname, dinfo in info.get('deliverables', {}).items():
+                for repo in dinfo.get('repos', []):
+                    by_repos[repo] = {
+                        'team': team,
+                        'team_info': info,
+                        'deliverable': dname,
+                        'deliverable_info': dinfo,
+                    }
+        team_data['_by_repos'] = by_repos
 
-    return team_data
+        return team_data
 
-
-def get_repo_owner(team_data, repo_name):
-    """Return the name of the team that owns the repository.
-
-    :param team_data: The result of calling :func:`get_team_data`
-    :param repo_name: Long name of the repository, such as 'openstack/nova'.
-
-    """
-    repo_info = team_data['_by_repos'].get(repo_name, {})
-    return repo_info.get('team')
+    @functools.lru_cache()
+    def get_repo_owner(self, repo_name):
+        "Return the name of the team that owns the repository."
+        repo_info = self._team_data['_by_repos'].get(repo_name, {})
+        return repo_info.get('team')

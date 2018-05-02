@@ -63,8 +63,8 @@ class ListContributions(lister.Lister):
     def take_action(self, parsed_args):
 
         def make_rows():
-            team_data = governance.get_team_data(
-                parsed_args.governance_project_list)
+            team_data = governance.Governance(
+                url=parsed_args.governance_project_list)
 
             member_factory = foundation.MemberFactory(self.app.cache)
             review_factory = gerrit.ReviewFactory(self.app.cache)
@@ -80,8 +80,7 @@ class ListContributions(lister.Lister):
 
                 for participant in review.participants:
 
-                    team_name = governance.get_repo_owner(
-                        team_data, review.project)
+                    team_name = team_data.get_repo_owner(review.project)
 
                     # Figure out which organization the user was
                     # affiliated with at the time of the work.
