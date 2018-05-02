@@ -29,7 +29,7 @@ class Governance:
         self._url = url
         self._tc_url = tc_url
         if team_data is None:
-            team_data = self._fetch_team_data()
+            team_data = self._get_team_data()
         self._team_data = team_data
 
     def _get_team_data(self):
@@ -68,3 +68,12 @@ class Governance:
         "Return the name of the team that owns the repository."
         repo_info = self._team_data['_by_repos'].get(repo_name, {})
         return repo_info.get('team')
+
+    @functools.lru_cache()
+    def get_repo_tags(self, repo_name):
+        repo_info = self._team_data['_by_repos'].get(repo_name, {})
+        if not repo_info:
+            return set()
+        tags = set(repo_info['deliverable_info'].get('tags', []))
+        tags.update(repo_info['team_info'].get('tags', []))
+        return tags

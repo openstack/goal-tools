@@ -15,6 +15,7 @@ import logging
 
 from cliff import lister
 
+from goal_tools import governance
 from goal_tools import sponsors
 
 LOG = logging.getLogger(__name__)
@@ -51,6 +52,18 @@ class ContributionsReportBase(lister.Lister):
             help='do not show stats for the named team (may be repeated)',
         )
         parser.add_argument(
+            '--ignore-tag',
+            default=[],
+            action='append',
+            help=('do not show stats for projects with the tag '
+                  '(may be repeated)'),
+        )
+        parser.add_argument(
+            '--governance-project-list',
+            default=governance.PROJECTS_LIST,
+            help='location of governance project list',
+        )
+        parser.add_argument(
             'contribution_list',
             nargs='+',
             help='name(s) of files containing contribution details',
@@ -75,6 +88,18 @@ class ContributionsReportBase(lister.Lister):
         ignore_teams = set(t.lower() for t in parsed_args.ignore_team)
         if ignore_teams:
             data = (d for d in data if d['Team'].lower() not in ignore_teams)
+
+        ignore_tags = set(parsed_args.ignore_tag)
+        if ignore_tags:
+            team_data = governance.Governance(
+                url=parsed_args.governance_project_list)
+
+            data = (
+                d
+                for d in data
+                if not team_data.get_repo_tags(d['Project']).intersection(
+                    ignore_tags)
+            )
 
         if parsed_args.highlight_sponsors:
             sponsor_map = sponsors.Sponsors(parsed_args.sponsor_level)

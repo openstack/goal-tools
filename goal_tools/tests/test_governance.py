@@ -41,6 +41,8 @@ Release Management:
     release-test:
       repos:
         - openstack/release-test
+      tags:
+        - asserts:stable-policy
     release-tools:
       repos:
         - openstack-infra/release-tools
@@ -63,15 +65,32 @@ TEAM_DATA = governance.Governance._organize_team_data(
 )
 
 
-class TestGetRepoOwner(base.TestCase):
+class TestGovernance(base.TestCase):
 
     def setUp(self):
         super().setUp()
         self.gov = governance.Governance(TEAM_DATA)
 
-    def test_repo_exists(self):
+    def test_get_owner_repo_exists(self):
         owner = self.gov.get_repo_owner('openstack/releases')
         self.assertEqual('Release Management', owner)
 
-    def test_no_such_repo(self):
+    def test_get_owner_no_such_repo(self):
         self.assertIsNone(self.gov.get_repo_owner('openstack/no-such-repo'))
+
+    def test_get_tags_team_only(self):
+        tags = self.gov.get_repo_tags('openstack/releases')
+        self.assertEqual(set(['team:diverse-affiliation']), tags)
+
+    def test_get_tags_with_deliverable(self):
+        tags = self.gov.get_repo_tags('openstack/release-test')
+        self.assertEqual(
+            set(['team:diverse-affiliation',
+                 'asserts:stable-policy']),
+            tags)
+
+    def test_get_tags_no_such_repo(self):
+        self.assertEqual(
+            set(),
+            self.gov.get_repo_tags('openstack/no-such-repo'),
+        )
