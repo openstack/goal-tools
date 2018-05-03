@@ -37,7 +37,8 @@ class DateColumn(columns.FormattableColumn):
 
 
 _COLUMNS = (
-    'Review', 'URL', 'Project', 'Team',
+    'Review', 'URL', 'Branch',
+    'Project', 'Team',
     'Role', 'Name', 'Email', 'Date',
     'Organization',
 )
@@ -100,6 +101,7 @@ class ListContributions(lister.Lister):
                     yield (
                         review_id,
                         review.url,
+                        review.branch,
                         review.project,
                         team_name,
                         participant.role,

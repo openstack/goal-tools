@@ -87,6 +87,9 @@ class TestReview(base.TestCase):
     def test_url(self):
         self.assertEqual('https://review.openstack.org/55535/', self.rev.url)
 
+    def test_branch(self):
+        self.assertEqual('master', self.rev.branch)
+
     def test_created(self):
         self.assertEqual(
             datetime.datetime(2018, 3, 22, 16, 5, 45),

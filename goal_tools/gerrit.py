@@ -112,6 +112,10 @@ class Review:
         yield from self.uploaders
 
     @property
+    def branch(self):
+        return self._data.get('branch', '*unknown')
+
+    @property
     def owner(self):
         owner = self._data['owner']
         if 'email' not in owner:
