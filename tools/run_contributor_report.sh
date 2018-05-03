@@ -11,13 +11,6 @@ do
     dat_file=${input%.qry}.dat
     rpt_file=${input%.qry}.rpt
 
-    # Query gerrit
-    who-helped -v --debug changes query "$(cat $input)" $txt_file
-
-    # Build the raw contribution data file
-    who-helped --debug contributions list -f csv $txt_file \
-        | tee $dat_file
-
     # Text report
     who-helped --debug contributions summarize $dat_file \
         | tee $rpt_file
