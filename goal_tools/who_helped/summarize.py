@@ -105,7 +105,7 @@ class SummarizeContributions(report.ContributionsReportBase):
             group_by.append('Organization')
 
         to_count = parsed_args.count[:]
-        to_count_column = ', '.join(to_count) or 'Count'
+        to_count_column = ', '.join(to_count) or 'Contributions'
 
         data = self.get_contributions(parsed_args)
 
