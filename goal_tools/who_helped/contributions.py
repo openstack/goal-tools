@@ -89,7 +89,7 @@ class ListContributions(lister.Lister):
                     member = member_factory.fetch(participant.email)
                     if member:
                         affiliation = member.find_affiliation(participant.date)
-                        if affiliation:
+                        if affiliation and affiliation.organization:
                             organization = canonical_orgs[
                                 affiliation.organization]
                     else:

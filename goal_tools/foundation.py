@@ -31,7 +31,7 @@ class Affiliation:
     @property
     def organization(self):
         "The name of the employer"
-        return self._data['organization']['name']
+        return self._data.get('organization', {}).get('name')
 
     @property
     def is_current(self):
@@ -95,7 +95,7 @@ class Member:
 
     @property
     def affiliations(self):
-        return (Affiliation(d) for d in self._data['affiliations'])
+        return (Affiliation(d) for d in self._data.get('affiliations', []))
 
     @property
     def current_affiliation(self):

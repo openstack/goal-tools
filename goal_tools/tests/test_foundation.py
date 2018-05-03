@@ -10,6 +10,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import copy
 import datetime
 import json
 import pkgutil
@@ -43,6 +44,24 @@ class TestFoundationMember(base.TestCase):
             'Red Hat, Inc',
             self.m.current_affiliation.organization,
         )
+
+    def test_missing_affiliations(self):
+        member_data = copy.deepcopy(_member_data)
+        del member_data['affiliations']
+        member = foundation.Member('fake@example.com', data=member_data)
+        self.assertIsNone(member.current_affiliation)
+
+    def test_missing_organization(self):
+        member_data = copy.deepcopy(_member_data)
+        del member_data['affiliations'][-1]['organization']
+        member = foundation.Member('fake@example.com', data=member_data)
+        self.assertIsNone(member.current_affiliation.organization)
+
+    def test_missing_organization_name(self):
+        member_data = copy.deepcopy(_member_data)
+        del member_data['affiliations'][-1]['organization']['name']
+        member = foundation.Member('fake@example.com', data=member_data)
+        self.assertIsNone(member.current_affiliation.organization)
 
     def test_find_affiliation_too_early(self):
         a = self.m.find_affiliation(datetime.datetime(2001, 1, 1))
