@@ -73,6 +73,8 @@ def query_gerrit(method, params={}):
 def _to_datetime(s):
     "Convert a string to a datetime.datetime instance"
     # Ignore the trailing decimal seconds.
+    if s is None:
+        return None
     s = s.rpartition('.')[0]
     return datetime.datetime.strptime(s, '%Y-%m-%d %H:%M:%S')
 
@@ -94,15 +96,15 @@ class Review:
 
     @property
     def created(self):
-        return _to_datetime(self._data['created'])
+        return _to_datetime(self._data.get('created'))
 
     @property
     def is_merged(self):
-        return self._data['status'] == 'MERGED'
+        return self._data.get('status') == 'MERGED'
 
     @property
     def project(self):
-        return self._data['project']
+        return self._data.get('project')
 
     @property
     def participants(self):
@@ -116,13 +118,13 @@ class Review:
 
     @property
     def owner(self):
-        owner = self._data['owner']
+        owner = self._data.get('owner')
         if 'email' not in owner:
             owner['email'] = owner.get('email', 'no-reply@openstack.org')
         return Participant(
             'owner',
-            owner['name'],
-            owner['email'],
+            owner.get('name'),
+            owner.get('email'),
             self.created,
         )
 
@@ -134,7 +136,7 @@ class Review:
         # not emit their information again. This means someone with
         # the "uploader" role can be counted as someone taking over a
         # patch created by someone else to fix it in some way.
-        owner_email = self._data['owner']['email']
+        owner_email = self._data.get('owner', {}).get('email')
         known_uploaders.add(owner_email)
 
         # The revision data is stored in a mapping keyed by the SHA,
@@ -142,12 +144,12 @@ class Review:
         # uploaders we sort the revisions based on the number before
         # we process them.
         revisions = sorted(
-            self._data['revisions'].values(),
-            key=lambda x: x['_number'],
+            self._data.get('revisions', {}).values(),
+            key=lambda x: x.get('_number', 0),
         )
 
         for revision in revisions:
-            uploader = revision['uploader']
+            uploader = revision.get('uploader', {})
             if 'email' not in uploader:
                 uploader['email'] = 'no-reply@openstack.org'
             if uploader['email'] in known_uploaders:
@@ -156,18 +158,18 @@ class Review:
             known_uploaders.add(uploader['email'])
             yield Participant(
                 'uploader',
-                uploader['name'],
+                uploader.get('name'),
                 uploader['email'],
-                _to_datetime(revision['created']),
+                _to_datetime(revision.get('created')),
             )
 
     @property
     def reviewers(self):
-        labels = self._data['labels']
+        labels = self._data.get('labels', {})
 
         code_review_labels = labels.get('Code-Review', {}).get('all', [])
         for label in code_review_labels:
-            if label['value'] not in (2, -1):
+            if label.get('value') not in (2, -1):
                 # Only report reviewers with negative reviews or
                 # approvals to avoid counting anyone who is just
                 # leaving lots of +1 votes without actually providing
@@ -177,7 +179,7 @@ class Review:
                 'reviewer',
                 label.get('name', 'Unknown Person'),
                 label.get('email', 'unknown@example.com'),
-                _to_datetime(label['date']),
+                _to_datetime(label.get('date')),
             )
 
         workflow_labels = labels.get('Workflow', {}).get('all', [])
@@ -188,7 +190,7 @@ class Review:
                 'approver',
                 label.get('name', 'Unknown Person'),
                 label.get('email', 'unknown@example.com'),
-                _to_datetime(label['date']),
+                _to_datetime(label.get('date')),
             )
 
 
@@ -206,7 +208,7 @@ def cache_review(review_id, data, cache):
     :type cache: goal_tools.cache.Cache
 
     """
-    if data['status'] == 'MERGED':
+    if data.get('status') == 'MERGED':
         cache[('review', str(review_id))] = data
 
 
