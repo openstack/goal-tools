@@ -13,7 +13,6 @@
 import collections
 import datetime
 import fileinput
-import functools
 import logging
 import urllib.parse
 
@@ -216,7 +215,6 @@ class ReviewFactory:
     def __init__(self, cache):
         self._cache = cache
 
-    @functools.lru_cache(maxsize=1024)
     def fetch(self, review_id):
         """Find the review in the cache or look it up in the API.
 
