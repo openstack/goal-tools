@@ -79,9 +79,9 @@ class ListContributions(lister.Lister):
 
                 review = review_factory.fetch(review_id)
 
-                for participant in review.participants:
+                team_name = team_data.get_repo_owner(review.project)
 
-                    team_name = team_data.get_repo_owner(review.project)
+                for participant in review.participants:
 
                     # Figure out which organization the user was
                     # affiliated with at the time of the work.
