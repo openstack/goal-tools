@@ -32,12 +32,19 @@ class ContributionsReportBase(lister.Lister):
             action='append',
             help='filter to only include specific roles (may be repeated)',
         )
-        parser.add_argument(
+        sponsor_group = parser.add_mutually_exclusive_group()
+        sponsor_group.add_argument(
             '--highlight-sponsors',
             default=False,
             action='store_true',
             help=('highlight sponsor organizations and '
                   'combine stats for others'),
+        )
+        sponsor_group.add_argument(
+            '--only-sponsors',
+            default=False,
+            action='store_true',
+            help=('show only stats for sponsor organizations'),
         )
         parser.add_argument(
             '--sponsor-level',
@@ -96,6 +103,15 @@ class ContributionsReportBase(lister.Lister):
         ignore_teams = set(t.lower() for t in parsed_args.ignore_team)
         if ignore_teams:
             data = (d for d in data if d['Team'].lower() not in ignore_teams)
+
+        if parsed_args.only_sponsors:
+            sponsor_map = sponsors.Sponsors(parsed_args.sponsor_level)
+
+            data = (
+                d
+                for d in data
+                if d['Organization'] in sponsor_map
+            )
 
         ignore_tags = set(parsed_args.ignore_tag)
         if ignore_tags:

@@ -45,3 +45,7 @@ class Sponsors:
         if name.lower() in self._names:
             return name
         return '*other'
+
+    @functools.lru_cache(maxsize=1024)
+    def __contains__(self, name):
+        return name.lower() in self._names
