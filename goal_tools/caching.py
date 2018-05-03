@@ -10,7 +10,11 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import collections
+import logging
 import shelve
+
+LOG = logging.getLogger(__name__)
 
 
 class Cache:
@@ -27,9 +31,15 @@ class Cache:
 
     def __init__(self, filename):
         self._shelf = shelve.open(filename)
+        self._memory = {}
+        LOG.debug('loading cache into RAM')
+        for key in self._shelf:
+            self._memory[key] = self._shelf[key]
+        LOG.debug('loaded %d items from cache', len(self._memory))
+        self._data = collections.ChainMap(self._memory, self._shelf)
 
     def __contains__(self, key):
-        return self._mk_key(key) in self._shelf
+        return self._mk_key(key) in self._data
 
     def _mk_key(self, key):
         return ':'.join(str(k) for k in key)
@@ -38,9 +48,11 @@ class Cache:
         self._shelf[self._mk_key(key)] = value
 
     def __getitem__(self, key):
-        return self._shelf[self._mk_key(key)]
+        return self._data[self._mk_key(key)]
 
     def __delitem__(self, key):
         real_key = self._mk_key(key)
         if real_key in self._shelf:
             del self._shelf[real_key]
+        if real_key in self._memory:
+            del self._memory[real_key]
