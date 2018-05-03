@@ -38,7 +38,7 @@ class DateColumn(columns.FormattableColumn):
 
 _COLUMNS = (
     'Review', 'URL', 'Branch',
-    'Project', 'Team',
+    'Project', 'Team', 'Official',
     'Role', 'Name', 'Email', 'Date',
     'Organization',
 )
@@ -103,7 +103,8 @@ class ListContributions(lister.Lister):
                         review.url,
                         review.branch,
                         review.project,
-                        team_name,
+                        team_name or '*unknown',
+                        'yes' if team_name else 'no',
                         participant.role,
                         participant.name,
                         participant.email,
