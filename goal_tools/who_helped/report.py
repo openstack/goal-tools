@@ -67,6 +67,14 @@ class ContributionsReportBase(lister.Lister):
                   '(may be repeated)'),
         )
         parser.add_argument(
+            '--only-tag',
+            dest='only_tag',
+            default=[],
+            action='append',
+            help=('only show stats for projects with the tag '
+                  '(may be repeated)'),
+        )
+        parser.add_argument(
             '--ignore-single-vendor',
             action='append_const',
             const='team:single-vendor',
@@ -123,6 +131,17 @@ class ContributionsReportBase(lister.Lister):
                 for d in data
                 if not team_data.get_repo_tags(d['Project']).intersection(
                     ignore_tags)
+            )
+
+        only_tags = set(parsed_args.only_tag)
+        if only_tags:
+            team_data = governance.Governance(
+                url=parsed_args.governance_project_list)
+
+            data = (
+                d
+                for d in data
+                if only_tags.issubset(team_data.get_repo_tags(d['Project']))
             )
 
         if parsed_args.highlight_sponsors:
