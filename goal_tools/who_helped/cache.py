@@ -37,7 +37,8 @@ class CacheRemove(command.Command):
         return parser
 
     def take_action(self, parsed_args):
-        del self.app.cache[(parsed_args.type, parsed_args.id)]
+        cache = self.app._load_cache_file(preload=False)
+        del cache[(parsed_args.type, parsed_args.id)]
 
 
 class CacheShow(command.Command):
@@ -57,5 +58,6 @@ class CacheShow(command.Command):
         return parser
 
     def take_action(self, parsed_args):
-        data = self.app.cache[(parsed_args.type, parsed_args.id)]
+        cache = self.app._load_cache_file(preload=False)
+        data = cache[(parsed_args.type, parsed_args.id)]
         pprint.pprint(data)

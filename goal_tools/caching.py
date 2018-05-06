@@ -29,13 +29,14 @@ class Cache:
 
     """
 
-    def __init__(self, filename):
+    def __init__(self, filename, preload=True):
         self._shelf = shelve.open(filename)
         self._memory = {}
-        LOG.debug('loading cache into RAM')
-        for key in self._shelf:
-            self._memory[key] = self._shelf[key]
-        LOG.debug('loaded %d items from cache', len(self._memory))
+        if preload:
+            LOG.debug('loading cache into RAM')
+            for key in self._shelf:
+                self._memory[key] = self._shelf[key]
+            LOG.debug('loaded %d items from cache', len(self._memory))
         self._data = collections.ChainMap(self._memory, self._shelf)
 
     def __contains__(self, key):

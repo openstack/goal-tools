@@ -50,13 +50,21 @@ class WhoHelped(app.App):
     def initialize_app(self, argv):
         # Quiet the urllib3 module output coming out of requests.
         logging.getLogger('urllib3').setLevel(logging.WARNING)
+        self._cache = None
 
-        # Open the cache file.
-        if self.options.cache_file:
-            self.cache = caching.Cache(self.options.cache_file)
-        else:
-            # Use a dictionary for a memory cache.
-            self.cache = {}
+    def _load_cache_file(self, preload=True):
+        return caching.Cache(self.options.cache_file, preload=preload)
+
+    @property
+    def cache(self):
+        if self._cache is None:
+            # Open the cache file.
+            if self.options.cache_file:
+                self._cache = self._load_cache_file()
+            else:
+                # Use a dictionary for a memory cache.
+                self._cache = {}
+        return self._cache
 
 
 def main(argv=sys.argv[1:]):
