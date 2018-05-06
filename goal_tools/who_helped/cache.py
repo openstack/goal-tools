@@ -59,5 +59,9 @@ class CacheShow(command.Command):
 
     def take_action(self, parsed_args):
         cache = self.app._load_cache_file(preload=False)
-        data = cache[(parsed_args.type, parsed_args.id)]
-        pprint.pprint(data)
+        try:
+            data = cache[(parsed_args.type, parsed_args.id)]
+            pprint.pprint(data)
+        except KeyError:
+            msg = 'no {} with id {}'.format(parsed_args.type, parsed_args.id)
+            raise RuntimeError(msg)
