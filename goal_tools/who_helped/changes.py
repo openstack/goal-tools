@@ -54,6 +54,8 @@ class QueryChanges(command.Command):
 
         review_ids = []
 
+        cache = self.app._load_cache_file(preload=False)
+
         offset = 0
         while True:
             changes = gerrit.query_gerrit(
@@ -83,7 +85,7 @@ class QueryChanges(command.Command):
                 gerrit.cache_review(
                     change['_number'],
                     change,
-                    self.app.cache,
+                    cache,
                 )
                 review_ids.append(change['_number'])
 
