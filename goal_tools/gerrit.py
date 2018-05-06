@@ -33,6 +33,16 @@ QUERY_OPTIONS = [
 ]
 
 
+def parse_review_id(line):
+    parsed = urllib.parse.urlparse(line)
+    if parsed.fragment:
+        # https://review.openstack.org/#/c/561507/
+        return parsed.fragment.lstrip('/c').partition('/')[0]
+    else:
+        # https://review.openstack.org/555353/
+        return parsed.path.lstrip('/').partition('/')[0]
+
+
 def parse_review_lists(filenames):
     """Generator that produces review IDs as strings.
 
@@ -51,13 +61,7 @@ def parse_review_lists(filenames):
         if line.startswith('#'):
             continue
         LOG.debug('parsing %r', line)
-        parsed = urllib.parse.urlparse(line)
-        if parsed.fragment:
-            # https://review.openstack.org/#/c/561507/
-            yield parsed.fragment.lstrip('/c').partition('/')[0]
-        else:
-            # https://review.openstack.org/555353/
-            yield parsed.path.lstrip('/').partition('/')[0]
+        yield parse_review_id(line)
 
 
 def query_gerrit(method, params={}):
