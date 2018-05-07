@@ -12,6 +12,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import json
 import logging
 import pprint
 
@@ -28,6 +29,12 @@ class ReviewShow(command.Command):
     def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)
         parser.add_argument(
+            '--json',
+            default=False,
+            action='store_true',
+            help='produce JSON output instead of pretty-printing',
+        )
+        parser.add_argument(
             'id',
             help='the id of the item to remove',
         )
@@ -41,4 +48,7 @@ class ReviewShow(command.Command):
         except KeyError:
             rev = gerrit.ReviewFactory({}).fetch(review_id)
             data = rev._data
-        pprint.pprint(data)
+        if parsed_args.json:
+            print(json.dumps(data, sort_keys=True, indent=2))
+        else:
+            pprint.pprint(data)
