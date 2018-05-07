@@ -104,9 +104,14 @@ class Member:
                 return affiliation
 
     def find_affiliation(self, when):
-        for affiliation in self.affiliations:
-            if affiliation.active(when):
-                return affiliation
+        candidates = [
+            affiliation
+            for affiliation in self.affiliations
+            if affiliation.active(when)
+        ]
+        if candidates:
+            return candidates[-1]
+        return None
 
 
 def lookup_member(email):

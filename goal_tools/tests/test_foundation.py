@@ -95,6 +95,32 @@ class TestFoundationMember(base.TestCase):
             a.organization,
         )
 
+    def test_find_affiliation_two_open_date_ranges(self):
+        # Insert another affiliation at the end of the list without
+        # including an end_date so that two records match the date.
+        self.m._data['affiliations'].append({
+            "created": 1525022430,
+            "start_date": 1458518400,
+            "owner_id": 359,
+            "last_edited": 1525022430,
+            "id": 156410,
+            "is_current": True,
+            "job_title": "Super Hacker",
+            "organization": {
+                "id": 7297,
+                "created": 1422355350,
+                "name": "Hackers 'R Us",
+                "last_edited": 1422355350
+            },
+            "end_date": None,
+        })
+
+        a = self.m.find_affiliation(datetime.datetime(2016, 4, 17))
+        self.assertEqual(
+            "Hackers 'R Us",
+            a.organization,
+        )
+
 
 class TestFetchMember(base.TestCase):
 
