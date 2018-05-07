@@ -969,6 +969,7 @@
   company_name: IBM
   domains:
     - ibm.com
+    - us.ibm.com
     - linux.vnet.ibm.com
 - aliases:
     - 'Institute of Computing Technology of the Chinese Academy of Sciences'
@@ -1582,6 +1583,7 @@
     - 'Rackspace Hosting'
     - Rackspce
     - 'Rackspace Hosting; Tunnel Vision Laboratories LLC'
+    - "Rackaspace"
   company_name: Rackspace
   domains:
     - rackspace.co.uk
