@@ -99,7 +99,7 @@ class Member:
 
     @property
     def current_affiliation(self):
-        for affiliation in self.affiliations:
+        for affiliation in reversed(list(self.affiliations)):
             if affiliation.is_current:
                 return affiliation
 
