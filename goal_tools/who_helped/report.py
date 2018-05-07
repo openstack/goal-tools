@@ -59,6 +59,12 @@ class ContributionsReportBase(lister.Lister):
             help='do not show stats for the named team (may be repeated)',
         )
         parser.add_argument(
+            '--only-team',
+            default=[],
+            action='append',
+            help='only show stats for the named team (may be repeated)',
+        )
+        parser.add_argument(
             '--ignore-tag',
             dest='ignore_tag',
             default=[],
@@ -111,6 +117,10 @@ class ContributionsReportBase(lister.Lister):
         ignore_teams = set(t.lower() for t in parsed_args.ignore_team)
         if ignore_teams:
             data = (d for d in data if d['Team'].lower() not in ignore_teams)
+
+        only_teams = set(t.lower() for t in parsed_args.only_team)
+        if only_teams:
+            data = (d for d in data if d['Team'].lower() in only_teams)
 
         if parsed_args.only_sponsors:
             sponsor_map = sponsors.Sponsors(parsed_args.sponsor_level)
