@@ -197,6 +197,22 @@ class Review:
                 _to_datetime(label.get('date')),
             )
 
+    @property
+    def plus_ones(self):
+        labels = self._data.get('labels', {})
+
+        code_review_labels = labels.get('Code-Review', {}).get('all', [])
+        for label in code_review_labels:
+            if label.get('value') != 1:
+                # Other types of reviews are counted elsewhere.
+                continue
+            yield Participant(
+                'plus_one',
+                label.get('name', 'Unknown Person'),
+                label.get('email', 'unknown@example.com'),
+                _to_datetime(label.get('date')),
+            )
+
 
 def cache_review(review_id, data, cache):
     """Add a review to the cache.

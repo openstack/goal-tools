@@ -1,0 +1,516 @@
+{
+  "_number": 566433,
+  "branch": "master",
+  "change_id": "I841814148e1d84c7a5779a31a4b8ba38a1e8df21",
+  "created": "2018-05-05 12:53:23.000000000",
+  "current_revision": "c5c456c2c9a0c04cb7b37a9e92ffd9797ca61923",
+  "deletions": 0,
+  "hashtags": [],
+  "id": "openstack%2Freleases~master~I841814148e1d84c7a5779a31a4b8ba38a1e8df21",
+  "insertions": 5,
+  "labels": {
+    "Code-Review": {
+      "all": [
+        {
+          "_account_id": 11904,
+          "date": "2018-05-06 06:09:45.000000000",
+          "email": "sean.mcginnis@gmail.com",
+          "name": "Sean McGinnis",
+          "username": "SeanM",
+          "value": 2
+        },
+        {
+          "_account_id": 12404,
+          "email": "rico.lin@easystack.cn",
+          "name": "Rico Lin",
+          "username": "rico.lin",
+          "value": 0
+        },
+        {
+          "_account_id": 2472,
+          "date": "2018-05-07 15:49:04.000000000",
+          "email": "doug@doughellmann.com",
+          "name": "Doug Hellmann",
+          "username": "doug-hellmann",
+          "value": 2
+        },
+        {
+          "_account_id": 7385,
+          "email": "therve@redhat.com",
+          "name": "Thomas Herve",
+          "username": "therve",
+          "value": 0
+        },
+        {
+          "_account_id": 17130,
+          "date": "2018-05-06 12:07:02.000000000",
+          "email": "ma.lei@99cloud.net",
+          "name": "melissaml",
+          "username": "malei",
+          "value": 1
+        },
+        {
+          "_account_id": 22348,
+          "name": "Zuul",
+          "username": "zuul",
+          "value": 0
+        },
+        {
+          "_account_id": 26285,
+          "date": "2018-05-06 14:06:46.000000000",
+          "email": "wu.chunyang@99cloud.net",
+          "name": "wu.chunyang",
+          "username": "wu.chunyang",
+          "value": 1
+        },
+        {
+          "_account_id": 26222,
+          "date": "2018-05-06 07:56:18.000000000",
+          "email": "hoangphuocbk2.07@gmail.com",
+          "name": "Cong Phuoc Hoang",
+          "username": "hoangphuoc",
+          "value": 1
+        },
+        {
+          "_account_id": 16511,
+          "email": "bob.haddleton@nokia.com",
+          "name": "Bob Haddleton",
+          "username": "bobh",
+          "value": 0
+        }
+      ],
+      "approved": {
+        "_account_id": 11904,
+        "email": "sean.mcginnis@gmail.com",
+        "name": "Sean McGinnis",
+        "username": "SeanM"
+      },
+      "default_value": 0,
+      "values": {
+        " 0": "No score",
+        "+1": "Looks good to me, but someone else must approve",
+        "+2": "Looks good to me (core reviewer)",
+        "-1": "This patch needs further work before it can be merged",
+        "-2": "Do not merge"
+      }
+    },
+    "Verified": {
+      "all": [
+        {
+          "_account_id": 11904,
+          "email": "sean.mcginnis@gmail.com",
+          "name": "Sean McGinnis",
+          "username": "SeanM"
+        },
+        {
+          "_account_id": 12404,
+          "email": "rico.lin@easystack.cn",
+          "name": "Rico Lin",
+          "username": "rico.lin"
+        },
+        {
+          "_account_id": 2472,
+          "email": "doug@doughellmann.com",
+          "name": "Doug Hellmann",
+          "username": "doug-hellmann"
+        },
+        {
+          "_account_id": 7385,
+          "email": "therve@redhat.com",
+          "name": "Thomas Herve",
+          "username": "therve"
+        },
+        {
+          "_account_id": 17130,
+          "email": "ma.lei@99cloud.net",
+          "name": "melissaml",
+          "username": "malei"
+        },
+        {
+          "_account_id": 22348,
+          "date": "2018-05-05 16:32:38.000000000",
+          "name": "Zuul",
+          "username": "zuul",
+          "value": 1
+        },
+        {
+          "_account_id": 26285,
+          "email": "wu.chunyang@99cloud.net",
+          "name": "wu.chunyang",
+          "username": "wu.chunyang"
+        },
+        {
+          "_account_id": 26222,
+          "email": "hoangphuocbk2.07@gmail.com",
+          "name": "Cong Phuoc Hoang",
+          "username": "hoangphuoc"
+        },
+        {
+          "_account_id": 16511,
+          "date": "2018-05-05 19:37:06.000000000",
+          "email": "bob.haddleton@nokia.com",
+          "name": "Bob Haddleton",
+          "username": "bobh"
+        }
+      ],
+      "default_value": 0,
+      "recommended": {
+        "_account_id": 22348,
+        "name": "Zuul",
+        "username": "zuul"
+      },
+      "value": 1,
+      "values": {
+        " 0": "No score",
+        "+1": "Works for me",
+        "+2": "Verified",
+        "-1": "Doesn't seem to work",
+        "-2": "Fails"
+      }
+    },
+    "Workflow": {
+      "all": [
+        {
+          "_account_id": 11904,
+          "email": "sean.mcginnis@gmail.com",
+          "name": "Sean McGinnis",
+          "username": "SeanM",
+          "value": 0
+        },
+        {
+          "_account_id": 12404,
+          "date": "2018-05-06 06:09:21.000000000",
+          "email": "rico.lin@easystack.cn",
+          "name": "Rico Lin",
+          "username": "rico.lin"
+        },
+        {
+          "_account_id": 2472,
+          "email": "doug@doughellmann.com",
+          "name": "Doug Hellmann",
+          "username": "doug-hellmann",
+          "value": 0
+        },
+        {
+          "_account_id": 7385,
+          "date": "2018-05-06 06:09:28.000000000",
+          "email": "therve@redhat.com",
+          "name": "Thomas Herve",
+          "username": "therve"
+        },
+        {
+          "_account_id": 17130,
+          "email": "ma.lei@99cloud.net",
+          "name": "melissaml",
+          "username": "malei"
+        },
+        {
+          "_account_id": 22348,
+          "name": "Zuul",
+          "username": "zuul"
+        },
+        {
+          "_account_id": 26285,
+          "email": "wu.chunyang@99cloud.net",
+          "name": "wu.chunyang",
+          "username": "wu.chunyang"
+        },
+        {
+          "_account_id": 26222,
+          "email": "hoangphuocbk2.07@gmail.com",
+          "name": "Cong Phuoc Hoang",
+          "username": "hoangphuoc"
+        },
+        {
+          "_account_id": 16511,
+          "email": "bob.haddleton@nokia.com",
+          "name": "Bob Haddleton",
+          "username": "bobh",
+          "value": 0
+        }
+      ],
+      "default_value": 0,
+      "values": {
+        " 0": "Ready for reviews",
+        "+1": "Approved",
+        "-1": "Work in progress"
+      }
+    }
+  },
+  "mergeable": true,
+  "messages": [
+    {
+      "_revision_number": 1,
+      "author": {
+        "_account_id": 16511,
+        "email": "bob.haddleton@nokia.com",
+        "name": "Bob Haddleton",
+        "username": "bobh"
+      },
+      "date": "2018-05-05 12:53:23.000000000",
+      "id": "5f7c97a3_d645f918",
+      "message": "Uploaded patch set 1."
+    },
+    {
+      "_revision_number": 1,
+      "author": {
+        "_account_id": 22348,
+        "name": "Zuul",
+        "username": "zuul"
+      },
+      "date": "2018-05-05 12:59:34.000000000",
+      "id": "5f7c97a3_9647811e",
+      "message": "Patch Set 1: Verified+1\n\nBuild succeeded (check pipeline).\n\n- openstack-tox-validate http://logs.openstack.org/33/566433/1/check/openstack-tox-validate/22522fa/ : SUCCESS in 4m 01s\n- releases-tox-list-changes http://logs.openstack.org/33/566433/1/check/releases-tox-list-changes/31cd2b8/ : SUCCESS in 2m 33s\n- build-openstack-sphinx-docs http://logs.openstack.org/33/566433/1/check/build-openstack-sphinx-docs/4bbba74/html/ : SUCCESS in 5m 19s"
+    },
+    {
+      "_revision_number": 1,
+      "author": {
+        "_account_id": 2472,
+        "email": "doug@doughellmann.com",
+        "name": "Doug Hellmann",
+        "username": "doug-hellmann"
+      },
+      "date": "2018-05-05 13:46:13.000000000",
+      "id": "5f7c97a3_36f0edc9",
+      "message": "Patch Set 1:\n\n(1 comment)"
+    },
+    {
+      "_revision_number": 2,
+      "author": {
+        "_account_id": 16511,
+        "email": "bob.haddleton@nokia.com",
+        "name": "Bob Haddleton",
+        "username": "bobh"
+      },
+      "date": "2018-05-05 16:20:31.000000000",
+      "id": "5f7c97a3_d6d5f9ba",
+      "message": "Uploaded patch set 2."
+    },
+    {
+      "_revision_number": 2,
+      "author": {
+        "_account_id": 22348,
+        "name": "Zuul",
+        "username": "zuul"
+      },
+      "date": "2018-05-05 16:32:38.000000000",
+      "id": "5f7c97a3_56e1e999",
+      "message": "Patch Set 2: Verified+1\n\nBuild succeeded (check pipeline).\n\n- openstack-tox-validate http://logs.openstack.org/33/566433/2/check/openstack-tox-validate/bcb21a1/ : SUCCESS in 4m 16s\n- releases-tox-list-changes http://logs.openstack.org/33/566433/2/check/releases-tox-list-changes/a1cd04a/ : SUCCESS in 3m 05s\n- build-openstack-sphinx-docs http://logs.openstack.org/33/566433/2/check/build-openstack-sphinx-docs/11c542f/html/ : SUCCESS in 6m 51s"
+    },
+    {
+      "_revision_number": 2,
+      "author": {
+        "_account_id": 16511,
+        "email": "bob.haddleton@nokia.com",
+        "name": "Bob Haddleton",
+        "username": "bobh"
+      },
+      "date": "2018-05-05 19:37:06.000000000",
+      "id": "5f7c97a3_51b57330",
+      "message": "Patch Set 2:\n\nThanks Doug.  The point release is all I really need."
+    },
+    {
+      "_revision_number": 2,
+      "author": {
+        "_account_id": 11904,
+        "email": "sean.mcginnis@gmail.com",
+        "name": "Sean McGinnis",
+        "username": "SeanM"
+      },
+      "date": "2018-05-06 06:09:45.000000000",
+      "id": "5f7c97a3_0ca03ef4",
+      "message": "Patch Set 2: Code-Review+2\n\nLooks good. We just need an ack from the PTL or release liaison."
+    },
+    {
+      "_revision_number": 2,
+      "author": {
+        "_account_id": 26222,
+        "email": "hoangphuocbk2.07@gmail.com",
+        "name": "Cong Phuoc Hoang",
+        "username": "hoangphuoc"
+      },
+      "date": "2018-05-06 07:56:18.000000000",
+      "id": "5f7c97a3_0cbd9eb6",
+      "message": "Patch Set 2: Code-Review+1"
+    },
+    {
+      "_revision_number": 2,
+      "author": {
+        "_account_id": 17130,
+        "email": "ma.lei@99cloud.net",
+        "name": "melissaml",
+        "username": "malei"
+      },
+      "date": "2018-05-06 12:07:02.000000000",
+      "id": "5f7c97a3_a798456a",
+      "message": "Patch Set 2: Code-Review+1"
+    },
+    {
+      "_revision_number": 2,
+      "author": {
+        "_account_id": 26285,
+        "email": "wu.chunyang@99cloud.net",
+        "name": "wu.chunyang",
+        "username": "wu.chunyang"
+      },
+      "date": "2018-05-06 14:06:46.000000000",
+      "id": "5f7c97a3_47e1319a",
+      "message": "Patch Set 2: Code-Review+1"
+    },
+    {
+      "_revision_number": 2,
+      "author": {
+        "_account_id": 2472,
+        "email": "doug@doughellmann.com",
+        "name": "Doug Hellmann",
+        "username": "doug-hellmann"
+      },
+      "date": "2018-05-07 15:49:04.000000000",
+      "id": "5f7c97a3_1a286284",
+      "message": "Patch Set 2: Code-Review+2\n\nCongratulations on hitting 1.0! I've added Rico and Thomas to get one of them to +1 and then we can proceed."
+    }
+  ],
+  "owner": {
+    "_account_id": 16511,
+    "email": "bob.haddleton@nokia.com",
+    "name": "Bob Haddleton",
+    "username": "bobh"
+  },
+  "permitted_labels": {},
+  "project": "openstack/releases",
+  "removable_reviewers": [],
+  "reviewer_updates": [],
+  "reviewers": {
+    "CC": [
+      {
+        "_account_id": 7385,
+        "email": "therve@redhat.com",
+        "name": "Thomas Herve",
+        "username": "therve"
+      },
+      {
+        "_account_id": 12404,
+        "email": "rico.lin@easystack.cn",
+        "name": "Rico Lin",
+        "username": "rico.lin"
+      },
+      {
+        "_account_id": 16511,
+        "email": "bob.haddleton@nokia.com",
+        "name": "Bob Haddleton",
+        "username": "bobh"
+      }
+    ],
+    "REVIEWER": [
+      {
+        "_account_id": 2472,
+        "email": "doug@doughellmann.com",
+        "name": "Doug Hellmann",
+        "username": "doug-hellmann"
+      },
+      {
+        "_account_id": 11904,
+        "email": "sean.mcginnis@gmail.com",
+        "name": "Sean McGinnis",
+        "username": "SeanM"
+      },
+      {
+        "_account_id": 17130,
+        "email": "ma.lei@99cloud.net",
+        "name": "melissaml",
+        "username": "malei"
+      },
+      {
+        "_account_id": 22348,
+        "name": "Zuul",
+        "username": "zuul"
+      },
+      {
+        "_account_id": 26222,
+        "email": "hoangphuocbk2.07@gmail.com",
+        "name": "Cong Phuoc Hoang",
+        "username": "hoangphuoc"
+      },
+      {
+        "_account_id": 26285,
+        "email": "wu.chunyang@99cloud.net",
+        "name": "wu.chunyang",
+        "username": "wu.chunyang"
+      }
+    ]
+  },
+  "revisions": {
+    "bbf0a8cfce9f9e86950fd5a4f0b82b75e16ae55b": {
+      "_number": 1,
+      "created": "2018-05-05 12:53:23.000000000",
+      "fetch": {
+        "anonymous http": {
+          "ref": "refs/changes/33/566433/1",
+          "url": "https://git.openstack.org/openstack/releases"
+        },
+        "git": {
+          "ref": "refs/changes/33/566433/1",
+          "url": "git://git.openstack.org/openstack/releases"
+        }
+      },
+      "kind": "REWORK",
+      "ref": "refs/changes/33/566433/1",
+      "uploader": {
+        "_account_id": 16511,
+        "email": "bob.haddleton@nokia.com",
+        "name": "Bob Haddleton",
+        "username": "bobh"
+      }
+    },
+    "c5c456c2c9a0c04cb7b37a9e92ffd9797ca61923": {
+      "_number": 2,
+      "commit": {
+        "author": {
+          "date": "2018-05-05 12:52:34.000000000",
+          "email": "bob.haddleton@nokia.com",
+          "name": "Bob.Haddleton",
+          "tz": -300
+        },
+        "committer": {
+          "date": "2018-05-05 16:20:08.000000000",
+          "email": "bob.haddleton@nokia.com",
+          "name": "Bob.Haddleton",
+          "tz": -300
+        },
+        "message": "tosca-parser-1.0.0\n\ntosca-parser-1.0.0 is required for heat-translator to use new\nversions of several objects.\n\nChange-Id: I841814148e1d84c7a5779a31a4b8ba38a1e8df21\n",
+        "parents": [
+          {
+            "commit": "e87cac985b1662cebee5b3bb2553a168d9257874",
+            "subject": "Release 0.13.1 of os-client-config"
+          }
+        ],
+        "subject": "tosca-parser-1.0.0"
+      },
+      "created": "2018-05-05 16:20:31.000000000",
+      "fetch": {
+        "anonymous http": {
+          "ref": "refs/changes/33/566433/2",
+          "url": "https://git.openstack.org/openstack/releases"
+        },
+        "git": {
+          "ref": "refs/changes/33/566433/2",
+          "url": "git://git.openstack.org/openstack/releases"
+        }
+      },
+      "kind": "REWORK",
+      "ref": "refs/changes/33/566433/2",
+      "uploader": {
+        "_account_id": 16511,
+        "email": "bob.haddleton@nokia.com",
+        "name": "Bob Haddleton",
+        "username": "bobh"
+      }
+    }
+  },
+  "status": "NEW",
+  "subject": "tosca-parser-1.0.0",
+  "submit_type": "MERGE_IF_NECESSARY",
+  "submittable": false,
+  "topic": "tosca-parser-1.0.0",
+  "updated": "2018-05-07 15:49:04.000000000"
+}

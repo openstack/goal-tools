@@ -27,6 +27,9 @@ _data_55535 = json.loads(
 _data_561507 = json.loads(
     pkgutil.get_data('goal_tools.tests', 'data/561507.json').decode('utf-8')
 )
+_data_566433 = json.loads(
+    pkgutil.get_data('goal_tools.tests', 'data/566433.json').decode('utf-8')
+)
 
 
 class TestParseReviewLists(base.TestCase):
@@ -83,6 +86,7 @@ class TestReview(base.TestCase):
         super().setUp()
         self.rev = gerrit.Review('55535', _data_55535)
         self.rev2 = gerrit.Review('561507', _data_561507)
+        self.rev3 = gerrit.Review('566433', _data_566433)
 
     def test_url(self):
         self.assertEqual('https://review.openstack.org/55535/', self.rev.url)
@@ -132,6 +136,30 @@ class TestReview(base.TestCase):
                 name='Masahito Muroi',
                 email='muroi.masahito@lab.ntt.co.jp',
                 date=datetime.datetime(2018, 4, 26, 6, 32, 1),
+            ),
+        ]
+        self.assertEqual(expected, reviewers)
+
+    def test_plus_ones(self):
+        reviewers = list(self.rev3.plus_ones)
+        expected = [
+            gerrit.Participant(
+                role='plus_one',
+                name='melissaml',
+                email='ma.lei@99cloud.net',
+                date=datetime.datetime(2018, 5, 6, 12, 7, 2),
+            ),
+            gerrit.Participant(
+                role='plus_one',
+                name='wu.chunyang',
+                email='wu.chunyang@99cloud.net',
+                date=datetime.datetime(2018, 5, 6, 14, 6, 46),
+            ),
+            gerrit.Participant(
+                role='plus_one',
+                name='Cong Phuoc Hoang',
+                email='hoangphuocbk2.07@gmail.com',
+                date=datetime.datetime(2018, 5, 6, 7, 56, 18),
             ),
         ]
         self.assertEqual(expected, reviewers)

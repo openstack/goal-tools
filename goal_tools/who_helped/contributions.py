@@ -12,6 +12,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import itertools
 import logging
 
 from cliff import columns
@@ -55,6 +56,12 @@ class ListContributions(lister.Lister):
             help='location of governance project list',
         )
         parser.add_argument(
+            '--include-plus-one',
+            default=False,
+            action='store_true',
+            help='include +1 votes',
+        )
+        parser.add_argument(
             'review_list',
             nargs='+',
             help='name(s) of files containing reviews to include in report',
@@ -81,7 +88,15 @@ class ListContributions(lister.Lister):
 
                 team_name = team_data.get_repo_owner(review.project)
 
-                for participant in review.participants:
+                if parsed_args.include_plus_one:
+                    participants = itertools.chain(
+                        review.participants,
+                        review.plus_ones,
+                    )
+                else:
+                    participants = review.participants
+
+                for participant in participants:
 
                     # Figure out which organization the user was
                     # affiliated with at the time of the work.
