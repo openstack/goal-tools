@@ -32,7 +32,10 @@ class ShowMember(show.ShowOne):
             'Email',
             'Affiliation',
         )
-        member = foundation.fetch_member(parsed_args.email, self.app.cache)
+        member_factory = foundation.MemberFactory({})
+        member = member_factory.fetch(parsed_args.email)
+        if not member:
+            raise RuntimeError('Unknown member {}'.format(parsed_args.email))
         return (
             columns,
             (member.name,
