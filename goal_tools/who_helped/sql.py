@@ -24,6 +24,7 @@ create table contribution (
   url text,
   branch text,
   project text,
+  team text,
   role text,
   name text,
   email text,
