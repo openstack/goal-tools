@@ -11,6 +11,7 @@
 # under the License.
 
 import logging
+import os.path
 import sqlite3
 
 from goal_tools.who_helped import report
@@ -55,17 +56,26 @@ class QueryContributions(report.ContributionsReportBase):
             dest='query',
             help='SQL query to run',
         )
+        parser.add_argument(
+            '--db',
+            default=':memory:',
+            help='database to create',
+        )
         return parser
 
     def take_action(self, parsed_args):
 
-        db = sqlite3.connect(':memory:')
-        db.execute(SQL_CREATE)
+        db_is_new = not os.path.exists(parsed_args.db)
+        db = sqlite3.connect(parsed_args.db)
+        if db_is_new:
+            db.execute(SQL_CREATE)
 
-        data = self.get_contributions(parsed_args)
+            data = self.get_contributions(parsed_args)
 
-        cursor = db.cursor()
-        cursor.executemany(SQL_INSERT, data)
+            cursor = db.cursor()
+            cursor.executemany(SQL_INSERT, data)
+        else:
+            cursor = db.cursor()
 
         LOG.debug('querying')
         cursor.execute(parsed_args.query)
