@@ -66,5 +66,11 @@ def get_client(config):
     except configparser.NoOptionError:
         storyboard_url = _DEFAULT_URL
 
+    try:
+        verify_opt = config.get('DEFAULT', 'verify_cert')
+    except configparser.NoOptionError:
+        verify_opt = 'default'
+    verify = verify_opt.lower() in set(['1', 'true', 'default'])
+
     LOG.info('Connecting to storyboard at {}'.format(storyboard_url))
-    return client.Client(storyboard_url, access_token)
+    return client.Client(storyboard_url, access_token, verify=verify)
