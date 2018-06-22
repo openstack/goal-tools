@@ -119,6 +119,10 @@ def main():
         const=logging.WARNING,
     )
     parser.add_argument(
+        '--story',
+        help='ID of an existing story to use',
+    )
+    parser.add_argument(
         'goal_url',
         help='published HTML page describing the goal',
     )
@@ -160,18 +164,25 @@ def main():
     print('Goal: {}\n\n{}\n'.format(goal_info['title'],
                                     goal_info['description']))
 
-    existing = sbc.stories.get_all(title=goal_info['title'])
-    if not existing:
-        LOG.info('creating new story')
-        story = sbc.stories.create(
-            title=goal_info['title'],
-            description=goal_info['description'] + '\n\n' + goal_info['url'],
-        )
-        LOG.info('created story {}'.format(story.id))
+    if args.story:
+        LOG.info('using specified story')
+        story = sbc.stories.get(args.story)
     else:
-        story = existing[0]
-        LOG.info('found existing story {}'.format(story.id))
-        print(story)
+        LOG.info('searching for existing stories')
+        existing = sbc.stories.get_all(title=goal_info['title'])
+        if not existing:
+            LOG.info('creating new story')
+            story = sbc.stories.create(
+                title=goal_info['title'],
+                description=(goal_info['description'] +
+                             '\n\n' +
+                             goal_info['url']),
+            )
+            LOG.info('created story {}'.format(story.id))
+        else:
+            story = existing[0]
+            LOG.info('found existing story {}'.format(story.id))
+    print(story)
     story_url = _STORY_URL_TEMPLATE.format(story.id)
 
     # NOTE(dhellmann): After we migrate all projects to storyboard we
