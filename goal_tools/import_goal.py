@@ -88,6 +88,14 @@ def _get_project_info(url):
     return data
 
 
+def _find_project(sbc, name):
+    projects = sbc.projects.get_all(name=name)
+    if projects:
+        return projects[0]
+    else:
+        raise ValueError('Could not find project {}'.format(name))
+
+
 def main():
     parser = argparse.ArgumentParser()
     config_dir = appdirs.user_config_dir('OSGoalTools', 'OpenStack')
@@ -123,6 +131,12 @@ def main():
         help='ID of an existing story to use',
     )
     parser.add_argument(
+        '--task-per',
+        default='project',
+        choices=['project', 'repo'],
+        help='create a task per project or per repository',
+    )
+    parser.add_argument(
         'goal_url',
         help='published HTML page describing the goal',
     )
@@ -151,12 +165,10 @@ def main():
     except Exception as err:
         parser.error(err)
 
-    governance_projects = sbc.projects.get_all(
-        name=_GOVERNANCE_PROJECT_NAME)
-    if governance_projects:
-        governance_project = governance_projects[0]
-    else:
-        parser.error('Could not find project {}'.format(
+    try:
+        governance_project = _find_project(sbc, _GOVERNANCE_PROJECT_NAME)
+    except ValueError:
+        parser.error('Could not find governance project {}'.format(
             _GOVERNANCE_PROJECT_NAME))
     print('Governance project {} with id {}'.format(
         governance_project.name, governance_project.id))
