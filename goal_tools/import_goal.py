@@ -197,23 +197,48 @@ def main():
     print(story)
     story_url = _STORY_URL_TEMPLATE.format(story.id)
 
-    # NOTE(dhellmann): After we migrate all projects to storyboard we
-    # can change this to look for tasks using the project id. Until
-    # then, all tasks are assocated with the openstack/governance
-    # project.
-    project_names_to_task = {
+    existing_tasks = {
         task.title: task
         for task in story.tasks.get_all()
     }
 
-    for project_name in project_names:
-        if project_name not in project_names_to_task:
-            LOG.info('adding task for %s', project_name)
-            sbc.tasks.create(
-                title=project_name,
-                project_id=governance_project.id,
-                story_id=story.id,
-            )
+    if args.task_per == 'project':
+        for project_name in project_names:
+            if project_name not in existing_tasks:
+                LOG.info('adding task for %s', project_name)
+                # NOTE(dhellmann): We always use the governance
+                # repository for these tasks because a team does not
+                # have a main repository.
+                sbc.tasks.create(
+                    title=project_name,
+                    project_id=governance_project.id,
+                    story_id=story.id,
+                )
+            else:
+                LOG.info('already have task for %s', project_name)
+                return 1
+
+    elif args.task_per == 'repo':
+        for project_name in project_names:
+            deliverables = project_info[project_name]['deliverables'].items()
+            for d_name, d_info in sorted(deliverables):
+                LOG.info('processing %s - %s', project_name, d_name)
+                for repo in d_info['repos']:
+                    title = '{} - {}'.format(project_name, repo)
+                    if title not in existing_tasks:
+                        LOG.info('adding task for %s', title)
+                        # Try to attach the task to the repository and
+                        # fall back to the governance repository if
+                        # storyboard doesn't know about the repo.
+                        try:
+                            sb_project = _find_project(sbc, repo)
+                        except ValueError:
+                            sb_project = governance_project
+                        sbc.tasks.create(
+                            title=title,
+                            project_id=sb_project.id,
+                            story_id=story.id,
+                        )
 
     existing = sbc.boards.get_all(title=goal_info['title'])
     if not existing:
