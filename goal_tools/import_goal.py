@@ -13,19 +13,17 @@
 # under the License.
 
 import argparse
-import configparser
 import logging
 import os
 import os.path
-import textwrap
 
 import appdirs
 import bs4 as beautifulsoup
 import requests
-from storyboardclient.v1 import client
 import yaml
 
-_DEFAULT_URL = 'https://storyboard.openstack.org/api/v1'
+from goal_tools import storyboard
+
 _GOVERNANCE_PROJECT_NAME = 'openstack/governance'
 _STORY_URL_TEMPLATE = 'https://storyboard.openstack.org/#!/story/{}'
 _BOARD_URL_TEMPLATE = 'https://storyboard.openstack.org/#!/board/{}'
@@ -59,19 +57,6 @@ def _get_worklist_settings(story):
                  ]},
             ],
         }
-
-
-def _write_empty_config_file(filename):
-    LOG.info('creating {}'.format(filename))
-    cfg_dir = os.path.dirname(filename)
-    if cfg_dir and not os.path.exists(cfg_dir):
-        os.makedirs(cfg_dir)
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(textwrap.dedent('''\
-        [DEFAULT]
-        url = {}
-        access_token =
-        '''.format(_DEFAULT_URL)))
 
 
 _SITE_TITLE = '— OpenStack Technical Committee Governance Documents'
@@ -141,24 +126,7 @@ def main():
 
     logging.basicConfig(level=args.log_level, format='%(message)s')
 
-    LOG.info('loading config from {}'.format(args.config_file))
-    config = configparser.ConfigParser()
-    found_config = config.read(args.config_file)
-
-    if not found_config:
-        LOG.error('could not load configuration')
-        _write_empty_config_file(args.config_file)
-        LOG.error('lease update {} and try again'.format(args.config_file))
-        return 1
-
-    try:
-        access_token = config.get('DEFAULT', 'access_token')
-    except configparser.NoOptionError:
-        access_token = ''
-
-    if not access_token:
-        parser.error('Could not find access_token in {}'.format(
-            args.config_file))
+    config = storyboard.get_config(args.config_file)
 
     try:
         LOG.debug('reading goal info from {}'.format(args.goal_url))
@@ -175,14 +143,11 @@ def main():
     project_names = sorted(project_info.keys(), key=lambda x: x.lower())
 
     try:
-        storyboard_url = config.get('DEFAULT', 'url')
-    except configparser.NoOptionError:
-        storyboard_url = _DEFAULT_URL
+        sbc = storyboard.get_client(config)
+    except Exception as err:
+        parser.error(err)
 
-    print('Connecting to storyboard at {}'.format(storyboard_url))
-    storyboard = client.Client(storyboard_url, access_token)
-
-    governance_projects = storyboard.projects.get_all(
+    governance_projects = sbc.projects.get_all(
         name=_GOVERNANCE_PROJECT_NAME)
     if governance_projects:
         governance_project = governance_projects[0]
@@ -195,10 +160,10 @@ def main():
     print('Goal: {}\n\n{}\n'.format(goal_info['title'],
                                     goal_info['description']))
 
-    existing = storyboard.stories.get_all(title=goal_info['title'])
+    existing = sbc.stories.get_all(title=goal_info['title'])
     if not existing:
         LOG.info('creating new story')
-        story = storyboard.stories.create(
+        story = sbc.stories.create(
             title=goal_info['title'],
             description=goal_info['description'] + '\n\n' + goal_info['url'],
         )
@@ -221,13 +186,13 @@ def main():
     for project_name in project_names:
         if project_name not in project_names_to_task:
             LOG.info('adding task for %s', project_name)
-            storyboard.tasks.create(
+            sbc.tasks.create(
                 title=project_name,
                 project_id=governance_project.id,
                 story_id=story.id,
             )
 
-    existing = storyboard.boards.get_all(title=goal_info['title'])
+    existing = sbc.boards.get_all(title=goal_info['title'])
     if not existing:
 
         lanes = []
@@ -235,14 +200,14 @@ def main():
                 _get_worklist_settings(story)):
             title = worklist_settings['title']
             LOG.debug('creating {} worklist'.format(title))
-            new_worklist = storyboard.worklists.create(**worklist_settings)
+            new_worklist = sbc.worklists.create(**worklist_settings)
             lanes.append({
                 'position': position,
                 'list_id': str(new_worklist.id),
             })
 
         LOG.info('creating new board')
-        board = storyboard.boards.create(
+        board = sbc.boards.create(
             title=goal_info['title'],
             description=story.description,
             lanes=lanes,
