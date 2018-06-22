@@ -137,6 +137,12 @@ def main():
         help='create a task per project or per repository',
     )
     parser.add_argument(
+        '--add-board',
+        default=False,
+        action='store_true',
+        help='create a board as well as the story and tasks',
+    )
+    parser.add_argument(
         'goal_url',
         help='published HTML page describing the goal',
     )
@@ -240,33 +246,36 @@ def main():
                             story_id=story.id,
                         )
 
-    existing = sbc.boards.get_all(title=goal_info['title'])
-    if not existing:
+    board_url = None
+    if args.add_board:
+        existing = sbc.boards.get_all(title=goal_info['title'])
+        if not existing:
 
-        lanes = []
-        for position, worklist_settings in enumerate(
-                _get_worklist_settings(story)):
-            title = worklist_settings['title']
-            LOG.debug('creating {} worklist'.format(title))
-            new_worklist = sbc.worklists.create(**worklist_settings)
-            lanes.append({
-                'position': position,
-                'list_id': str(new_worklist.id),
-            })
+            lanes = []
+            for position, worklist_settings in enumerate(
+                    _get_worklist_settings(story)):
+                title = worklist_settings['title']
+                LOG.debug('creating {} worklist'.format(title))
+                new_worklist = sbc.worklists.create(**worklist_settings)
+                lanes.append({
+                    'position': position,
+                    'list_id': str(new_worklist.id),
+                })
 
-        LOG.info('creating new board')
-        board = sbc.boards.create(
-            title=goal_info['title'],
-            description=story.description,
-            lanes=lanes,
-        )
-        LOG.info('created board {}'.format(board.id))
-    else:
-        board = existing[0]
-        LOG.info('found existing board {}'.format(board.id))
-        print(board)
-    board_url = _BOARD_URL_TEMPLATE.format(board.id)
+            LOG.info('creating new board')
+            board = sbc.boards.create(
+                title=goal_info['title'],
+                description=story.description,
+                lanes=lanes,
+            )
+            LOG.info('created board {}'.format(board.id))
+        else:
+            board = existing[0]
+            LOG.info('found existing board {}'.format(board.id))
+            print(board)
+        board_url = _BOARD_URL_TEMPLATE.format(board.id)
 
     print(story_url)
-    print(board_url)
+    if board_url:
+        print(board_url)
     return 0
