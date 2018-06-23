@@ -29,31 +29,28 @@ _GOVERNANCE_PROJECT_NAME = 'openstack/governance'
 _STORY_URL_TEMPLATE = 'https://storyboard.openstack.org/#!/story/{}'
 _BOARD_URL_TEMPLATE = 'https://storyboard.openstack.org/#!/board/{}'
 _WORKLISTS = [
-    ('New', 'todo', 'Todo'),
-    ('Acknowledged', 'inprogress', 'In Progress'),
-    ('Development', 'review', 'Review'),
+    ('New', 'active', 'Todo'),
     ('Completed', 'merged', 'Merged'),
-    ('Does Not Apply', 'invalid', 'Invalid'),
 ]
 
 LOG = logging.getLogger()
 
 
-def _get_worklist_settings(story):
+def _get_worklist_settings(tag):
     for title, status, status_title in _WORKLISTS:
         yield {
             'automatic': True,
             'title': title,
             'filters': [
-                {'type': 'Task',
+                {'type': 'Story',
                  'filter_criteria': [
-                     {'value': str(story.id),
+                     {'title': tag,
+                      'value': tag,
                       'negative': False,
-                      'field': 'Story',
-                      'title': story.title},
+                      'field': 'Tags'},
                      {'value': status,
                       'negative': False,
-                      'field': 'TaskStatus',
+                      'field': 'StoryStatus',
                       'title': status_title},
                  ]},
             ],
@@ -193,6 +190,9 @@ def main():
         goal_info = _get_goal_info(args.goal_url)
     except Exception as err:
         parser.error(err)
+    full_description = (goal_info['description'] +
+                        '\n\n' +
+                        goal_info['url'])
 
     try:
         LOG.debug('reading project list from {}'.format(args.project_list))
@@ -230,9 +230,7 @@ def main():
             story = _find_or_create_story(
                 sbc=sbc,
                 title=goal_info['title'],
-                description=(goal_info['description'] +
-                             '\n\n' +
-                             goal_info['url'])
+                description=full_description,
             )
         _update_tags(sbc, story, args.tag)
         urls_to_show.append(_STORY_URL_TEMPLATE.format(story.id))
@@ -296,13 +294,15 @@ def main():
                             story_id=story.id,
                         )
 
+            print()
+
     if args.add_board:
         existing = sbc.boards.get_all(title=goal_info['title'])
-        if not existing:
 
+        if not existing:
             lanes = []
             for position, worklist_settings in enumerate(
-                    _get_worklist_settings(story)):
+                    _get_worklist_settings(args.tag)):
                 title = worklist_settings['title']
                 LOG.debug('creating {} worklist'.format(title))
                 new_worklist = sbc.worklists.create(**worklist_settings)
@@ -314,14 +314,15 @@ def main():
             LOG.info('creating new board')
             board = sbc.boards.create(
                 title=goal_info['title'],
-                description=story.description,
+                description=full_description,
                 lanes=lanes,
             )
             LOG.info('created board {}'.format(board.id))
+
         else:
             board = existing[0]
             LOG.info('found existing board {}'.format(board.id))
-            print(board)
+
         urls_to_show.append(_BOARD_URL_TEMPLATE.format(board.id))
 
     for url in urls_to_show:
