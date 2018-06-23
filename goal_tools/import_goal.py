@@ -112,6 +112,15 @@ def _find_or_create_story(sbc, title, description):
     return story
 
 
+def _update_tags(sbc, story, tag):
+    tags = set(story.tags or [])
+    if tag in tags:
+        return
+    LOG.info('adding tag %s', tag)
+    tags.add(tag)
+    story.tags_manager.update(list(tags))
+
+
 def main():
     parser = argparse.ArgumentParser()
     config_dir = appdirs.user_config_dir('OSGoalTools', 'OpenStack')
@@ -158,6 +167,10 @@ def main():
         default=False,
         action='store_true',
         help='create a board as well as the story and tasks',
+    )
+    parser.add_argument(
+        '--tag',
+        help='provide a tag for the stories',
     )
     parser.add_argument(
         'goal_url',
@@ -215,6 +228,7 @@ def main():
                              '\n\n' +
                              goal_info['url'])
             )
+        _update_tags(sbc, story, args.tag)
         urls_to_show.append(_STORY_URL_TEMPLATE.format(story.id))
 
         existing_tasks = {
@@ -249,6 +263,7 @@ def main():
                              '\n\n' +
                              goal_info['url'])
             )
+            _update_tags(sbc, story, args.tag)
             urls_to_show.append(_STORY_URL_TEMPLATE.format(story.id))
 
             existing_tasks = {
