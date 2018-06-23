@@ -96,6 +96,22 @@ def _find_project(sbc, name):
         raise ValueError('Could not find project {}'.format(name))
 
 
+def _find_or_create_story(sbc, title, description):
+    LOG.info('searching for existing stories like {!r}'.format(title))
+    existing = sbc.stories.get_all(title=title)
+    if not existing:
+        LOG.info('creating new story')
+        story = sbc.stories.create(
+            title=title,
+            description=description,
+        )
+        LOG.info('created story {}'.format(story.id))
+    else:
+        story = existing[0]
+        LOG.info('found existing story {}'.format(story.id))
+    return story
+
+
 def main():
     parser = argparse.ArgumentParser()
     config_dir = appdirs.user_config_dir('OSGoalTools', 'OpenStack')
@@ -126,15 +142,16 @@ def main():
         action='store_const',
         const=logging.WARNING,
     )
-    parser.add_argument(
+    story_group = parser.add_mutually_exclusive_group()
+    story_group.add_argument(
         '--story',
         help='ID of an existing story to use',
     )
-    parser.add_argument(
-        '--task-per',
-        default='project',
-        choices=['project', 'repo'],
-        help='create a task per project or per repository',
+    story_group.add_argument(
+        '--separate-stories',
+        default=False,
+        action='store_true',
+        help='create a story per project and task per repo',
     )
     parser.add_argument(
         '--add-board',
@@ -182,33 +199,29 @@ def main():
     print('Goal: {}\n\n{}\n'.format(goal_info['title'],
                                     goal_info['description']))
 
-    if args.story:
-        LOG.info('using specified story')
-        story = sbc.stories.get(args.story)
-    else:
-        LOG.info('searching for existing stories')
-        existing = sbc.stories.get_all(title=goal_info['title'])
-        if not existing:
-            LOG.info('creating new story')
-            story = sbc.stories.create(
+    urls_to_show = []
+
+    if not args.separate_stories:
+        # One story with a task per project team.
+
+        if args.story:
+            LOG.info('using specified story')
+            story = sbc.stories.get(args.story)
+        else:
+            story = _find_or_create_story(
+                sbc=sbc,
                 title=goal_info['title'],
                 description=(goal_info['description'] +
                              '\n\n' +
-                             goal_info['url']),
+                             goal_info['url'])
             )
-            LOG.info('created story {}'.format(story.id))
-        else:
-            story = existing[0]
-            LOG.info('found existing story {}'.format(story.id))
-    print(story)
-    story_url = _STORY_URL_TEMPLATE.format(story.id)
+        urls_to_show.append(_STORY_URL_TEMPLATE.format(story.id))
 
-    existing_tasks = {
-        task.title: task
-        for task in story.tasks.get_all()
-    }
+        existing_tasks = {
+            task.title: task
+            for task in story.tasks.get_all()
+        }
 
-    if args.task_per == 'project':
         for project_name in project_names:
             if project_name not in existing_tasks:
                 LOG.info('adding task for %s', project_name)
@@ -222,11 +235,27 @@ def main():
                 )
             else:
                 LOG.info('already have task for %s', project_name)
-                return 1
 
-    elif args.task_per == 'repo':
+    else:
+        # One story per project team with a task per repo.
+
         for project_name in project_names:
             deliverables = project_info[project_name]['deliverables'].items()
+
+            story = _find_or_create_story(
+                sbc=sbc,
+                title='{}: {}'.format(project_name, goal_info['title']),
+                description=(goal_info['description'] +
+                             '\n\n' +
+                             goal_info['url'])
+            )
+            urls_to_show.append(_STORY_URL_TEMPLATE.format(story.id))
+
+            existing_tasks = {
+                task.title: task
+                for task in story.tasks.get_all()
+            }
+
             for d_name, d_info in sorted(deliverables):
                 LOG.info('processing %s - %s', project_name, d_name)
                 for repo in d_info['repos']:
@@ -246,7 +275,6 @@ def main():
                             story_id=story.id,
                         )
 
-    board_url = None
     if args.add_board:
         existing = sbc.boards.get_all(title=goal_info['title'])
         if not existing:
@@ -273,9 +301,8 @@ def main():
             board = existing[0]
             LOG.info('found existing board {}'.format(board.id))
             print(board)
-        board_url = _BOARD_URL_TEMPLATE.format(board.id)
+        urls_to_show.append(_BOARD_URL_TEMPLATE.format(board.id))
 
-    print(story_url)
-    if board_url:
-        print(board_url)
+    for url in urls_to_show:
+        print(url)
     return 0
