@@ -16,6 +16,7 @@ import argparse
 import logging
 import os
 import os.path
+import warnings
 
 import appdirs
 import bs4 as beautifulsoup
@@ -177,6 +178,11 @@ def main():
         help='published HTML page describing the goal',
     )
     args = parser.parse_args()
+
+    warnings.filterwarnings(
+        'ignore',
+        '.*Unverified HTTPS request is being made.*',
+    )
 
     logging.basicConfig(level=args.log_level, format='%(message)s')
 
