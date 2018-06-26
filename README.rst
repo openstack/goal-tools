@@ -7,6 +7,12 @@ with all of the dependencies. The tools will then be installed into
 ``.tox/venv/bin`` and can be run directly from there or via ``tox -e
 venv -- COMMAND_NAME``.
 
+import-goal
+===========
+
+``import-goal`` can be used to create stories, tasks, and boards in
+storyboard for tracking work on completing the goals.
+
 who-helped
 ==========
 
