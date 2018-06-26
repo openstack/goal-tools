@@ -20,7 +20,8 @@ from goal_tools import foundation
 from goal_tools.tests import base
 
 _member_data = json.loads(
-    pkgutil.get_data('goal_tools.tests', 'data/doug.json').decode('utf-8')
+    pkgutil.get_data('goal_tools.tests.who_helped',
+                     'data/doug.json').decode('utf-8')
 )
 
 

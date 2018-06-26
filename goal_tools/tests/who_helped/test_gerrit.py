@@ -22,13 +22,16 @@ from goal_tools.tests import base
 
 
 _data_55535 = json.loads(
-    pkgutil.get_data('goal_tools.tests', 'data/55535.json').decode('utf-8')
+    pkgutil.get_data('goal_tools.tests.who_helped',
+                     'data/55535.json').decode('utf-8')
 )
 _data_561507 = json.loads(
-    pkgutil.get_data('goal_tools.tests', 'data/561507.json').decode('utf-8')
+    pkgutil.get_data('goal_tools.tests.who_helped',
+                     'data/561507.json').decode('utf-8')
 )
 _data_566433 = json.loads(
-    pkgutil.get_data('goal_tools.tests', 'data/566433.json').decode('utf-8')
+    pkgutil.get_data('goal_tools.tests.who_helped',
+                     'data/566433.json').decode('utf-8')
 )
 
 
