@@ -13,11 +13,24 @@ from cliff import command
 
 LOG = logging.getLogger(__name__)
 
-# Items to keep in project-config.
-KEEP = [
+# Items we know we need to keep in project-config.
+KEEP = set([
     'system-required',
+
     'translation-jobs',
-]
+    'translation-jobs-queens',
+
+    'periodic-jobs-with-oslo-master',
+
+    'api-ref-jobs',
+
+    'release-openstack-server',
+
+    'publish-to-pypi',
+    'publish-to-pypi-quietly',
+    'publish-to-pypi-horizon',
+    'publish-to-pypi-neutron',
+])
 
 BRANCHES = [
     'stable/ocata',
@@ -108,12 +121,69 @@ def filter_jobs_on_branch(project, branch):
                 del project[queue]
 
 
-def find_templates_to_extract(project):
+def find_templates_only_on_master(project, zuul_templates, zuul_jobs):
     templates = project.get('templates', [])
+
+    needs_to_stay = set()
+
+    for template_name in templates:
+        if template_name in needs_to_stay:
+            continue
+
+        LOG.debug('looking at template %r', template_name)
+
+        jobs_only_on_master = set()
+        try:
+            template_settings = zuul_templates[template_name]
+        except KeyError:
+            LOG.debug('did not find template definition for %r',
+                      template_name)
+            continue
+
+        for queue_name in template_settings.keys():
+
+            queue = template_settings[queue_name]
+            if not isinstance(queue, dict):
+                continue
+
+            for job in queue.get('jobs', []):
+                if isinstance(job, str):
+                    job_name = job
+                    try:
+                        job_params = zuul_jobs[job_name]
+                    except KeyError:
+                        LOG.debug('could not find job definition for %r',
+                                  job_name)
+                        continue
+                else:
+                    job_name = list(job.keys())[0]
+                    job_params = list(job.values())[0]
+                LOG.debug('looking at job %s', job_name)
+                branches = list(branches_for_job(job_params))
+                LOG.debug('branches: %r', branches)
+                if branches == ['master']:
+                    LOG.debug('ONLY ON MASTER')
+                    jobs_only_on_master.add(job_name)
+
+        if jobs_only_on_master:
+            needs_to_stay.add(template_name)
+
+    return needs_to_stay
+
+
+def find_templates_to_extract(project, zuul_templates, zuul_jobs):
+    templates = project.get('templates', [])
+
+    # Initialize the set of templates we need to keep in
+    # project-config with some things we know about, then add any with
+    # jobs only on the master branch.
+    needs_to_stay = KEEP.union(find_templates_only_on_master(
+        project, zuul_templates, zuul_jobs))
+
     to_keep = [
         t
         for t in templates
-        if t not in KEEP
+        if t not in needs_to_stay
     ]
     if to_keep:
         project['templates'] = to_keep
@@ -130,6 +200,11 @@ class JobsExtract(command.Command):
             '--project-config-dir',
             default='../project-config',
             help='the location of the project-config repo',
+        )
+        parser.add_argument(
+            '--openstack-zuul-jobs-dir',
+            default='../openstack-zuul-jobs',
+            help='the location of the openstack-zuul-jobs repo',
         )
         parser.add_argument(
             'repo',
@@ -153,6 +228,34 @@ class JobsExtract(command.Command):
         with open(project_filename, 'r', encoding='utf-8') as f:
             project_settings = yaml.load(f)
 
+        zuul_templates_filename = os.path.join(
+            parsed_args.openstack_zuul_jobs_dir,
+            'zuul.d',
+            'project-templates.yaml',
+        )
+        LOG.debug('loading project templates from %s', zuul_templates_filename)
+        with open(zuul_templates_filename, 'r', encoding='utf-8') as f:
+            zuul_templates_raw = yaml.load(f)
+        zuul_templates = {
+            pt['project-template']['name']: pt['project-template']
+            for pt in zuul_templates_raw
+            if 'project-template' in pt
+        }
+
+        zuul_jobs_filename = os.path.join(
+            parsed_args.openstack_zuul_jobs_dir,
+            'zuul.d',
+            'jobs.yaml',
+        )
+        LOG.debug('loading jobs from %s', zuul_jobs_filename)
+        with open(zuul_jobs_filename, 'r', encoding='utf-8') as f:
+            zuul_jobs_raw = yaml.load(f)
+        zuul_jobs = {
+            job['job']['name']: job['job']
+            for job in zuul_jobs_raw
+            if 'job' in job
+        }
+
         LOG.debug('looking for settings for %s', parsed_args.repo)
         for entry in project_settings:
             if 'project' not in entry:
@@ -164,7 +267,7 @@ class JobsExtract(command.Command):
                 parsed_args.repo, project_filename))
 
         # Remove the items that need to stay in project-config.
-        find_templates_to_extract(entry['project'])
+        find_templates_to_extract(entry['project'], zuul_templates, zuul_jobs)
 
         # Filter the jobs by branch.
         if parsed_args.branch:
@@ -226,18 +329,21 @@ def find_jobs_to_retain(project):
                 del project[queue]
 
 
-def find_templates_to_retain(project):
-    # Remove the items that need to move to the project repo.
+def find_templates_to_retain(project, zuul_templates, zuul_jobs):
+    # Initialize the set of templates we need to keep in
+    # project-config with some things we know about, then add any with
+    # jobs only on the master branch.
+    needs_to_stay = KEEP.union(find_templates_only_on_master(
+        project, zuul_templates, zuul_jobs))
     templates = project.get('templates', [])
     to_keep = [
         t
         for t in templates
-        if t in KEEP
+        if t in needs_to_stay
     ]
-    if to_keep:
-        project['templates'] = to_keep
-    elif 'templates' in project:
-        del project['templates']
+    if 'system-required' not in to_keep:
+        to_keep.insert(0, 'system-required')
+    project['templates'] = to_keep
 
 
 class JobsRetain(command.Command):
@@ -249,6 +355,11 @@ class JobsRetain(command.Command):
             '--project-config-dir',
             default='../project-config',
             help='the location of the project-config repo',
+        )
+        parser.add_argument(
+            '--openstack-zuul-jobs-dir',
+            default='../openstack-zuul-jobs',
+            help='the location of the openstack-zuul-jobs repo',
         )
         parser.add_argument(
             'repo',
@@ -268,6 +379,34 @@ class JobsRetain(command.Command):
         with open(project_filename, 'r', encoding='utf-8') as f:
             project_settings = yaml.load(f)
 
+        zuul_templates_filename = os.path.join(
+            parsed_args.openstack_zuul_jobs_dir,
+            'zuul.d',
+            'project-templates.yaml',
+        )
+        LOG.debug('loading project templates from %s', zuul_templates_filename)
+        with open(zuul_templates_filename, 'r', encoding='utf-8') as f:
+            zuul_templates_raw = yaml.load(f)
+        zuul_templates = {
+            pt['project-template']['name']: pt['project-template']
+            for pt in zuul_templates_raw
+            if 'project-template' in pt
+        }
+
+        zuul_jobs_filename = os.path.join(
+            parsed_args.openstack_zuul_jobs_dir,
+            'zuul.d',
+            'jobs.yaml',
+        )
+        LOG.debug('loading jobs from %s', zuul_jobs_filename)
+        with open(zuul_jobs_filename, 'r', encoding='utf-8') as f:
+            zuul_jobs_raw = yaml.load(f)
+        zuul_jobs = {
+            job['job']['name']: job['job']
+            for job in zuul_jobs_raw
+            if 'job' in job
+        }
+
         LOG.debug('looking for settings for %s', parsed_args.repo)
         for entry in project_settings:
             if 'project' not in entry:
@@ -278,7 +417,7 @@ class JobsRetain(command.Command):
             raise ValueError('Could not find {} in {}'.format(
                 parsed_args.repo, project_filename))
 
-        find_templates_to_retain(entry['project'])
+        find_templates_to_retain(entry['project'], zuul_templates, zuul_jobs)
 
         find_jobs_to_retain(entry['project'])
 

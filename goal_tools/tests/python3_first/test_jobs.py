@@ -250,7 +250,7 @@ class TestJobsExtractTemplates(base.TestCase):
         }
         expected = {
         }
-        jobs.find_templates_to_extract(project)
+        jobs.find_templates_to_extract(project, {}, {})
         self.assertEqual(expected, project)
 
     def test_no_templates_remain(self):
@@ -262,7 +262,7 @@ class TestJobsExtractTemplates(base.TestCase):
         }
         expected = {
         }
-        jobs.find_templates_to_extract(project)
+        jobs.find_templates_to_extract(project, {}, {})
         self.assertEqual(expected, project)
 
     def test_system_required(self):
@@ -281,7 +281,7 @@ class TestJobsExtractTemplates(base.TestCase):
                 'publish-openstack-sphinx-docs',
             ],
         }
-        jobs.find_templates_to_extract(project)
+        jobs.find_templates_to_extract(project, {}, {})
         self.assertEqual(expected, project)
 
     def test_translation_jobs(self):
@@ -300,7 +300,7 @@ class TestJobsExtractTemplates(base.TestCase):
                 'publish-openstack-sphinx-docs',
             ],
         }
-        jobs.find_templates_to_extract(project)
+        jobs.find_templates_to_extract(project, {}, {})
         self.assertEqual(expected, project)
 
 
@@ -310,8 +310,11 @@ class TestJobsRetainTemplates(base.TestCase):
         project = {
         }
         expected = {
+            'templates': [
+                'system-required',  # added back for us
+            ],
         }
-        jobs.find_templates_to_retain(project)
+        jobs.find_templates_to_retain(project, {}, {})
         self.assertEqual(expected, project)
 
     def test_no_templates_remain(self):
@@ -327,7 +330,7 @@ class TestJobsRetainTemplates(base.TestCase):
                 'translation-jobs',
             ],
         }
-        jobs.find_templates_to_retain(project)
+        jobs.find_templates_to_retain(project, {}, {})
         self.assertEqual(expected, project)
 
     def test_system_required(self):
@@ -344,7 +347,7 @@ class TestJobsRetainTemplates(base.TestCase):
                 'system-required',
             ],
         }
-        jobs.find_templates_to_retain(project)
+        jobs.find_templates_to_retain(project, {}, {})
         self.assertEqual(expected, project)
 
     def test_translation_jobs(self):
@@ -358,8 +361,140 @@ class TestJobsRetainTemplates(base.TestCase):
         }
         expected = {
             'templates': [
+                'system-required',  # added back for us
                 'translation-jobs',
             ],
         }
-        jobs.find_templates_to_retain(project)
+        jobs.find_templates_to_retain(project, {}, {})
         self.assertEqual(expected, project)
+
+
+class TestFindTemplatesOnlyOnMaster(base.TestCase):
+
+    def test_no_templates(self):
+        project = {
+        }
+        zuul_templates = {}
+        zuul_jobs = {}
+        expected = set()
+        actual = jobs.find_templates_only_on_master(
+            project, zuul_templates, zuul_jobs)
+        self.assertEqual(expected, actual)
+
+    def test_template_not_in_zuul_data(self):
+        project = {
+            'templates': [
+                'undefined-template',
+            ],
+        }
+        zuul_templates = {}
+        zuul_jobs = {}
+        expected = set()
+        actual = jobs.find_templates_only_on_master(
+            project, zuul_templates, zuul_jobs)
+        self.assertEqual(expected, actual)
+
+    def test_template_without_branches(self):
+        project = {
+            'templates': [
+                'unbranched-template',
+            ],
+        }
+        zuul_templates = {
+            'unbranched-template': {
+                'check': ['job1'],
+            }
+        }
+        zuul_jobs = {}
+        expected = set()
+        actual = jobs.find_templates_only_on_master(
+            project, zuul_templates, zuul_jobs)
+        self.assertEqual(expected, actual)
+
+    def test_template_other_branch(self):
+        project = {
+            'templates': [
+                'branched-template',
+            ],
+        }
+        zuul_templates = {
+            'branched-template': {
+                'check': {
+                    'jobs': [
+                        {'job1': {'branches': 'stable/.*'}},
+                    ],
+                },
+            },
+        }
+        zuul_jobs = {}
+        expected = set()
+        actual = jobs.find_templates_only_on_master(
+            project, zuul_templates, zuul_jobs)
+        self.assertEqual(expected, actual)
+
+    def test_template_master_branch(self):
+        project = {
+            'templates': [
+                'master-template',
+            ],
+        }
+        zuul_templates = {
+            'master-template': {
+                'check': {
+                    'jobs': [
+                        {'job1': {'branches': 'master'}},
+                    ],
+                },
+            },
+        }
+        zuul_jobs = {}
+        expected = set(['master-template'])
+        actual = jobs.find_templates_only_on_master(
+            project, zuul_templates, zuul_jobs)
+        self.assertEqual(expected, actual)
+
+    def test_template_other_branch_in_jobs(self):
+        project = {
+            'templates': [
+                'branched-template',
+            ],
+        }
+        zuul_templates = {
+            'branched-template': {
+                'check': {
+                    'jobs': [
+                        'job1',
+                    ],
+                },
+            },
+        }
+        zuul_jobs = {
+            'job1': {'branches': 'stable/.*'}
+        }
+        expected = set()
+        actual = jobs.find_templates_only_on_master(
+            project, zuul_templates, zuul_jobs)
+        self.assertEqual(expected, actual)
+
+    def test_template_master_branch_in_jobs(self):
+        project = {
+            'templates': [
+                'branched-template',
+            ],
+        }
+        zuul_templates = {
+            'branched-template': {
+                'check': {
+                    'jobs': [
+                        'job1',
+                    ],
+                },
+            },
+        }
+        zuul_jobs = {
+            'job1': {'branches': 'master'}
+        }
+        expected = set(['branched-template'])
+        actual = jobs.find_templates_only_on_master(
+            project, zuul_templates, zuul_jobs)
+        self.assertEqual(expected, actual)
