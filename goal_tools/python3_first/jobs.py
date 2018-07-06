@@ -15,8 +15,6 @@ LOG = logging.getLogger(__name__)
 
 # Items we know we need to keep in project-config.
 KEEP = set([
-    'system-required',
-
     'translation-jobs',
     'translation-jobs-queens',
 
@@ -341,8 +339,6 @@ def find_templates_to_retain(project, zuul_templates, zuul_jobs):
         for t in templates
         if t in needs_to_stay
     ]
-    if 'system-required' not in to_keep:
-        to_keep.insert(0, 'system-required')
     project['templates'] = to_keep
 
 

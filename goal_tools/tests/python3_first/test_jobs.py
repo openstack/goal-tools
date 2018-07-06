@@ -50,7 +50,6 @@ class TestFilterJobsOnBranch(base.TestCase):
     def test_no_jobs(self):
         project = {
             'templates': [
-                'system-required',
                 'integrated-gate',
                 'integrated-gate-py35',
                 'publish-openstack-sphinx-docs',
@@ -58,7 +57,6 @@ class TestFilterJobsOnBranch(base.TestCase):
         }
         expected = {
             'templates': [
-                'system-required',
                 'integrated-gate',
                 'integrated-gate-py35',
                 'publish-openstack-sphinx-docs',
@@ -156,7 +154,6 @@ class TestFindJobsToRetain(base.TestCase):
     def test_no_jobs(self):
         project = {
             'templates': [
-                'system-required',
                 'integrated-gate',
                 'integrated-gate-py35',
                 'publish-openstack-sphinx-docs',
@@ -167,7 +164,6 @@ class TestFindJobsToRetain(base.TestCase):
         }
         expected = {
             'templates': [
-                'system-required',
                 'integrated-gate',
                 'integrated-gate-py35',
                 'publish-openstack-sphinx-docs',
@@ -256,30 +252,10 @@ class TestJobsExtractTemplates(base.TestCase):
     def test_no_templates_remain(self):
         project = {
             'templates': [
-                'system-required',
                 'translation-jobs',
             ],
         }
         expected = {
-        }
-        jobs.find_templates_to_extract(project, {}, {})
-        self.assertEqual(expected, project)
-
-    def test_system_required(self):
-        project = {
-            'templates': [
-                'system-required',
-                'integrated-gate',
-                'integrated-gate-py35',
-                'publish-openstack-sphinx-docs',
-            ],
-        }
-        expected = {
-            'templates': [
-                'integrated-gate',
-                'integrated-gate-py35',
-                'publish-openstack-sphinx-docs',
-            ],
         }
         jobs.find_templates_to_extract(project, {}, {})
         self.assertEqual(expected, project)
@@ -311,7 +287,6 @@ class TestJobsRetainTemplates(base.TestCase):
         }
         expected = {
             'templates': [
-                'system-required',  # added back for us
             ],
         }
         jobs.find_templates_to_retain(project, {}, {})
@@ -320,31 +295,12 @@ class TestJobsRetainTemplates(base.TestCase):
     def test_no_templates_remain(self):
         project = {
             'templates': [
-                'system-required',
                 'translation-jobs',
             ],
         }
         expected = {
             'templates': [
-                'system-required',
                 'translation-jobs',
-            ],
-        }
-        jobs.find_templates_to_retain(project, {}, {})
-        self.assertEqual(expected, project)
-
-    def test_system_required(self):
-        project = {
-            'templates': [
-                'system-required',
-                'integrated-gate',
-                'integrated-gate-py35',
-                'publish-openstack-sphinx-docs',
-            ],
-        }
-        expected = {
-            'templates': [
-                'system-required',
             ],
         }
         jobs.find_templates_to_retain(project, {}, {})
@@ -361,7 +317,6 @@ class TestJobsRetainTemplates(base.TestCase):
         }
         expected = {
             'templates': [
-                'system-required',  # added back for us
                 'translation-jobs',
             ],
         }
