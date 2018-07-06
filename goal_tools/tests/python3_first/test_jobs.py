@@ -286,8 +286,6 @@ class TestJobsRetainTemplates(base.TestCase):
         project = {
         }
         expected = {
-            'templates': [
-            ],
         }
         jobs.find_templates_to_retain(project, {}, {})
         self.assertEqual(expected, project)

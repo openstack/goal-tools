@@ -339,7 +339,22 @@ def find_templates_to_retain(project, zuul_templates, zuul_jobs):
         for t in templates
         if t in needs_to_stay
     ]
-    project['templates'] = to_keep
+    if to_keep:
+        project['templates'] = to_keep
+    elif 'templates' in project:
+        del project['templates']
+
+
+def need_to_keep(entry):
+    project = entry.get('project', {})
+    if project.get('templates'):
+        return True
+    for key, value in project.items():
+        if not isinstance(value, dict):
+            continue
+        if 'jobs' in value:
+            return True
+    return False
 
 
 class JobsRetain(command.Command):
@@ -418,4 +433,7 @@ class JobsRetain(command.Command):
         find_jobs_to_retain(entry['project'])
 
         print()
-        yaml.dump([entry], self.app.stdout)
+        if need_to_keep(entry):
+            yaml.dump([entry], self.app.stdout)
+        else:
+            print('# No settings to retain.\n')
