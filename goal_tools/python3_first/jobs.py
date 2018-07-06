@@ -3,6 +3,7 @@
 # Show the project settings for the repository that should be moved
 # into the tree at a given branch.
 
+import copy
 import logging
 import os.path
 import re
@@ -210,6 +211,8 @@ class JobsExtract(command.Command):
         )
         parser.add_argument(
             'branch',
+            nargs='*',
+            default=BRANCHES,
             help='filter the settings by branch',
         )
         return parser
@@ -267,17 +270,18 @@ class JobsExtract(command.Command):
         # Remove the items that need to stay in project-config.
         find_templates_to_extract(entry['project'], zuul_templates, zuul_jobs)
 
-        # Filter the jobs by branch.
-        if parsed_args.branch:
-            filter_jobs_on_branch(entry['project'], parsed_args.branch)
+        for branch in parsed_args.branch:
+            to_update = copy.deepcopy(entry)
+            filter_jobs_on_branch(to_update['project'], parsed_args.branch)
 
-        # Remove the 'name' value in case we can copy the results
-        # directly into a new file.
-        if 'name' in entry['project']:
-            del entry['project']['name']
+            # Remove the 'name' value in case we can copy the results
+            # directly into a new file.
+            if 'name' in to_update['project']:
+                del to_update['project']['name']
 
-        print()
-        yaml.dump([entry], self.app.stdout)
+            print()
+            print('# {} @ {}'.format(parsed_args.repo, branch))
+            yaml.dump([to_update], self.app.stdout)
 
 
 def find_jobs_to_retain(project):
