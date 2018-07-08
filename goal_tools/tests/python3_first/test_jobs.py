@@ -239,6 +239,301 @@ class TestFindJobsToRetain(base.TestCase):
         self.assertEqual(expected['check']['jobs'], project['check']['jobs'])
 
 
+class TestMergeProjectSettings(base.TestCase):
+
+    def test_no_data(self):
+        expected = {'project': {}}
+        in_tree = {}
+        project_config = {}
+        actual = jobs.merge_project_settings(
+            {'project': in_tree},
+            {'project': project_config},
+        )
+        self.assertEqual(expected, actual)
+
+    def test_templates_0(self):
+        expected = {
+            'project': {
+                'templates': [
+                    'a',
+                    'b',
+                ],
+            },
+        }
+        in_tree = {
+        }
+        project_config = {
+            'templates': [
+                'a',
+                'b',
+            ],
+        }
+        actual = jobs.merge_project_settings(
+            {'project': in_tree},
+            {'project': project_config},
+        )
+        self.assertEqual(expected, actual)
+
+    def test_templates_1(self):
+        expected = {
+            'project': {
+                'templates': [
+                    'a',
+                    'b',
+                ],
+            },
+        }
+        in_tree = {
+            'templates': [
+                'a',
+            ],
+        }
+        project_config = {
+            'templates': [
+                'a',
+                'b',
+            ],
+        }
+        actual = jobs.merge_project_settings(
+            {'project': in_tree},
+            {'project': project_config},
+        )
+        self.assertEqual(expected, actual)
+
+    def test_templates_2(self):
+        expected = {
+            'project': {
+                'templates': [
+                    'a',
+                    'b',
+                ],
+            },
+        }
+        in_tree = {
+            'templates': [
+                'a',
+                'b',
+            ],
+        }
+        project_config = {
+            'templates': [
+                'a',
+            ],
+        }
+        actual = jobs.merge_project_settings(
+            {'project': in_tree},
+            {'project': project_config},
+        )
+        self.assertEqual(expected, actual)
+
+    def test_templates_3(self):
+        expected = {
+            'project': {
+                'templates': [
+                    'a',
+                    'b',
+                ],
+            },
+        }
+        in_tree = {
+            'templates': [
+                'a',
+                'b',
+            ],
+        }
+        project_config = {
+        }
+        actual = jobs.merge_project_settings(
+            {'project': in_tree},
+            {'project': project_config},
+        )
+        self.assertEqual(expected, actual)
+
+
+class TestMergePipeline(base.TestCase):
+
+    def test_no_data(self):
+        expected = {}
+        in_tree = {}
+        project_config = {}
+        actual = jobs.merge_pipeline(
+            'check',
+            in_tree,
+            project_config,
+        )
+        self.assertEqual(expected, actual)
+
+    def test_just_queue_1(self):
+        expected = {
+            'gate': 'gate-name',
+        }
+        in_tree = {}
+        project_config = {
+            'gate': 'gate-name',
+        }
+        actual = jobs.merge_pipeline(
+            'check',
+            in_tree,
+            project_config,
+        )
+        self.assertEqual(expected, actual)
+
+    def test_just_queue_2(self):
+        expected = {
+            'gate': 'gate-name',
+        }
+        in_tree = {
+            'gate': 'gate-name',
+        }
+        project_config = {}
+        actual = jobs.merge_pipeline(
+            'check',
+            in_tree,
+            project_config,
+        )
+        self.assertEqual(expected, actual)
+
+    def test_jobs_str_0(self):
+        expected = {
+            'jobs': [
+                'a',
+                'b',
+            ],
+        }
+        in_tree = {}
+        project_config = {
+            'jobs': [
+                'a',
+                'b',
+            ],
+        }
+        actual = jobs.merge_pipeline(
+            'check',
+            in_tree,
+            project_config,
+        )
+        self.assertEqual(expected, actual)
+
+    def test_jobs_str_1(self):
+        expected = {
+            'jobs': [
+                'a',
+                'b',
+            ],
+        }
+        in_tree = {
+            'jobs': [
+                'a',
+            ],
+        }
+        project_config = {
+            'jobs': [
+                'b',
+                'a',
+            ],
+        }
+        actual = jobs.merge_pipeline(
+            'check',
+            in_tree,
+            project_config,
+        )
+        self.assertEqual(expected, actual)
+
+    def test_jobs_str_2(self):
+        expected = {
+            'jobs': [
+                'b',
+                'a',
+            ],
+        }
+        in_tree = {
+            'jobs': [
+                'b',
+                'a',
+            ],
+        }
+        project_config = {
+            'jobs': [
+                'a',
+            ],
+        }
+        actual = jobs.merge_pipeline(
+            'check',
+            in_tree,
+            project_config,
+        )
+        self.assertEqual(expected, actual)
+
+    def test_jobs_str_3(self):
+        expected = {
+            'jobs': [
+                'a',
+                'b',
+            ],
+        }
+        in_tree = {
+            'jobs': [
+                'a',
+                'b',
+            ],
+        }
+        project_config = {
+            'jobs': [
+            ],
+        }
+        actual = jobs.merge_pipeline(
+            'check',
+            in_tree,
+            project_config,
+        )
+        self.assertEqual(expected, actual)
+
+    def test_jobs_str_and_dict_0(self):
+        expected = {
+            'jobs': [
+                'a',
+                {'b': {'setting': 'something'}},
+            ],
+        }
+        in_tree = {}
+        project_config = {
+            'jobs': [
+                'a',
+                {'b': {'setting': 'something'}},
+            ],
+        }
+        actual = jobs.merge_pipeline(
+            'check',
+            in_tree,
+            project_config,
+        )
+        self.assertEqual(expected, actual)
+
+    def test_jobs_str_and_dict_1(self):
+        expected = {
+            'jobs': [
+                {'b': {'setting': 'something'}},
+                'a',
+            ],
+        }
+        in_tree = {
+            'jobs': [
+                {'b': {'setting': 'something'}},
+            ],
+        }
+        project_config = {
+            'jobs': [
+                'a',
+            ],
+        }
+        actual = jobs.merge_pipeline(
+            'check',
+            in_tree,
+            project_config,
+        )
+        self.assertEqual(expected, actual)
+
+
 class TestJobsExtractTemplates(base.TestCase):
 
     def test_no_templates(self):

@@ -3,7 +3,10 @@
 # Show the project settings for the repository that should be moved
 # into the tree at a given branch.
 
+import configparser
 import copy
+import glob
+import itertools
 import logging
 import os.path
 import re
@@ -11,6 +14,7 @@ import re
 from goal_tools.python3_first import projectconfig_ruamellib
 
 from cliff import command
+import ruamel.yaml
 
 LOG = logging.getLogger(__name__)
 
@@ -282,6 +286,226 @@ class JobsExtract(command.Command):
             print()
             print('# {} @ {}'.format(parsed_args.repo, branch))
             yaml.dump([to_update], self.app.stdout)
+
+
+def find_project_settings_in_repo(repo_dir):
+    yaml = projectconfig_ruamellib.YAML()
+    candidate_bases = [
+        '.zuul.yaml',
+        'zuul.yaml',
+        '.zuul.d/*.yaml',
+        'zuul.d/*.yaml',
+    ]
+    for base in candidate_bases:
+        pattern = os.path.join(repo_dir, base)
+        for candidate in glob.glob(pattern):
+            LOG.debug('looking for zuul config in %s',
+                      candidate)
+            with open(candidate, 'r', encoding='utf-8') as f:
+                settings = yaml.load(f)
+            for block in settings:
+                if 'project' in block:
+                    LOG.debug('using zuul config from %s',
+                              candidate)
+                    return (candidate, block, settings)
+    LOG.debug('did not find in-tree project settings')
+    return (None, {}, [])
+
+
+def merge_pipeline(name, in_tree, updates):
+    LOG.debug('merging %s', name)
+    results = ruamel.yaml.comments.CommentedMap()
+    # Copy the settings other than the jobs.
+    results.update(in_tree)
+    results.update(updates)
+    # Merge the job list
+    all_jobs = itertools.chain(
+        in_tree.get('jobs', []),
+        updates.get('jobs', []),
+    )
+    job_names = set()
+    jobs = []
+    for job in all_jobs:
+        if isinstance(job, dict):
+            job_name = list(job.keys())[0]
+            job_info = list(job.values())[0]
+        else:
+            job_name = job
+            job_info = None
+        if job_name in job_names:
+            LOG.debug('duplicate job found: %s - %s',
+                      job_name, job_info)
+            continue
+        job_names.add(job_name)
+        if job_info is None:
+            jobs.append(job_name)
+        else:
+            jobs.append({job_name: job_info})
+    if jobs:
+        results['jobs'] = jobs
+    return results
+
+
+def merge_project_settings(in_tree, updates):
+    results = ruamel.yaml.comments.CommentedMap()
+    itp = in_tree.get('project', {})
+    up = updates.get('project', {})
+    LOG.debug('merging templates')
+    templates = list(itp.get('templates', []))
+    for t in up.get('templates', []):
+        if t not in templates:
+            templates.append(t)
+    if templates:
+        results['templates'] = templates
+    # Iterate over the keys in both input dicts, in order, and merge
+    # the pipelines one at a time. If we encounter a duplicate we can
+    # ignore it because it will have been completed from a previous
+    # iteration.
+    for pipeline in itertools.chain(itp.keys(), up.keys()):
+        if pipeline == 'templates':
+            continue
+        if pipeline in results:
+            # already done
+            continue
+        new_data = merge_pipeline(
+            pipeline,
+            itp.get(pipeline, {}),
+            up.get(pipeline, {}),
+        )
+        if new_data:
+            results[pipeline] = new_data
+    return {'project': results}
+
+
+class JobsUpdate(command.Command):
+    "update the in-tree project settings"
+
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument(
+            '--project-config-dir',
+            default='../project-config',
+            help='the location of the project-config repo',
+        )
+        parser.add_argument(
+            '--openstack-zuul-jobs-dir',
+            default='../openstack-zuul-jobs',
+            help='the location of the openstack-zuul-jobs repo',
+        )
+        parser.add_argument(
+            '--default-zuul-file',
+            default='.zuul.yaml',
+            help='the default file to create when one does not exist',
+        )
+        parser.add_argument(
+            'repo_dir',
+            help='the repository location',
+        )
+        return parser
+
+    def take_action(self, parsed_args):
+        LOG.debug('determining repository name from .gitreview')
+        gitreview_filename = os.path.join(parsed_args.repo_dir, '.gitreview')
+        cp = configparser.ConfigParser()
+        cp.read(gitreview_filename)
+        gerrit = cp['gerrit']
+        repo = gerrit['project']
+        if repo.endswith('.git'):
+            repo = repo[:-4]
+        branch = gerrit.get('defaultbranch', 'master')
+        LOG.info('working on %s @ %s', repo, branch)
+
+        in_repo = find_project_settings_in_repo(parsed_args.repo_dir)
+        in_tree_file, in_tree_project, in_tree_settings = in_repo
+
+        yaml = projectconfig_ruamellib.YAML()
+
+        project_filename = os.path.join(
+            parsed_args.project_config_dir,
+            'zuul.d',
+            'projects.yaml',
+        )
+        LOG.debug('loading project settings from %s', project_filename)
+        with open(project_filename, 'r', encoding='utf-8') as f:
+            project_settings = yaml.load(f)
+
+        zuul_templates_filename = os.path.join(
+            parsed_args.openstack_zuul_jobs_dir,
+            'zuul.d',
+            'project-templates.yaml',
+        )
+        LOG.debug('loading project templates from %s', zuul_templates_filename)
+        with open(zuul_templates_filename, 'r', encoding='utf-8') as f:
+            zuul_templates_raw = yaml.load(f)
+        zuul_templates = {
+            pt['project-template']['name']: pt['project-template']
+            for pt in zuul_templates_raw
+            if 'project-template' in pt
+        }
+
+        zuul_jobs_filename = os.path.join(
+            parsed_args.openstack_zuul_jobs_dir,
+            'zuul.d',
+            'jobs.yaml',
+        )
+        LOG.debug('loading jobs from %s', zuul_jobs_filename)
+        with open(zuul_jobs_filename, 'r', encoding='utf-8') as f:
+            zuul_jobs_raw = yaml.load(f)
+        zuul_jobs = {
+            job['job']['name']: job['job']
+            for job in zuul_jobs_raw
+            if 'job' in job
+        }
+
+        LOG.debug('looking for settings for %s', repo)
+        for entry in project_settings:
+            if 'project' not in entry:
+                continue
+            if entry['project'].get('name') == repo:
+                break
+        else:
+            raise ValueError('Could not find {} in {}'.format(
+                repo, project_filename))
+
+        # Remove the items that need to stay in project-config.
+        find_templates_to_extract(entry['project'], zuul_templates, zuul_jobs)
+
+        filter_jobs_on_branch(entry['project'], branch)
+
+        # Remove the 'name' value in case we can copy the results
+        # directly into a new file.
+        if 'name' in entry['project']:
+            del entry['project']['name']
+
+        real_settings = merge_project_settings(
+            in_tree_project,
+            entry,
+        )
+
+        n = -1
+        for n, block in enumerate(in_tree_settings):
+            if 'project' in block:
+                break
+        if n < 0:
+            in_tree_settings.insert(0, real_settings)
+        else:
+            in_tree_settings[n] = real_settings
+
+        LOG.info('# {} @ {}'.format(repo, branch))
+        yaml.dump(in_tree_settings, self.app.stdout)
+        if not in_tree_file:
+            in_tree_file = os.path.join(
+                parsed_args.repo_dir,
+                parsed_args.default_zuul_file,
+            )
+            out_dir = os.path.dirname(in_tree_file)
+            if not os.path.exists(out_dir):
+                os.makedirs(out_dir)
+            LOG.info('creating %s', in_tree_file)
+        else:
+            LOG.info('updating %s', in_tree_file)
+        with open(in_tree_file, 'w', encoding='utf-8') as f:
+            yaml.dump(in_tree_settings, f)
 
 
 def find_jobs_to_retain(project):
