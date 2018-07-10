@@ -47,7 +47,10 @@ class ReposClone(command.Command):
         gov_dat = governance.Governance(url=parsed_args.project_list)
         try:
             for repo in gov_dat.get_repos_for_team(parsed_args.team):
-                LOG.info('\ncloning %s', repo)
+                if os.path.exists(os.path.join(parsed_args.workdir, repo)):
+                    LOG.info('\n%s exists, skipping', repo)
+                    continue
+                LOG.info('\n%s cloning', repo)
                 subprocess.run(
                     [clone_script,
                      '--workspace', parsed_args.workdir,
