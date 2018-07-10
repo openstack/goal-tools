@@ -63,6 +63,18 @@ class Governance:
 
         return team_data
 
+    def get_repos_for_team(self, team_name):
+        try:
+            team = self._team_data[team_name]
+        except KeyError:
+            try:
+                team = self._team_data[team_name.lower()]
+            except KeyError:
+                raise ValueError('No data for team {!r}'.format(team_name))
+        for deliv in team['deliverables'].values():
+            for repo in deliv['repos']:
+                yield repo
+
     @functools.lru_cache()
     def get_repo_owner(self, repo_name):
         "Return the name of the team that owns the repository."
