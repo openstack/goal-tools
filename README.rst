@@ -48,5 +48,28 @@ and prints the settings that need to stay in
    $ tox -e venv -- python3-first jobs retain --project-config ../project-config \
    openstack-dev/devstack
 
+The ``jobs update`` command will modify the zuul settings in a
+repository to include all of the settings shown by ``jobs extract``.
+
+.. code-block:: console
+
+   $ git clone git://git.openstack.org/openstack/oslo.config
+   $ cd oslo.config
+   $ git checkout -b python3-first
+   $ cd ../goal-tools
+   $ tox -e venv -- python3-first jobs update --project-config ../project-config \
+   ../oslo.config
+
+The ``repos clone`` command will use the project governance data to
+find a list of all of the git repositories managed by a project team
+and then clone local copies of all of them. This makes it easier to
+work on all of the projects for a single team as a batch.
+
+.. code-block:: console
+
+   $ mkdir Oslo
+   $ cd goal-tools
+   $ tox -e venv -- python3-first repos clone ../Oslo Oslo
+
 Use the ``-v`` option to python3-first to see debug information on
 stderr (allowing stdout to be redirected to a file safely).
