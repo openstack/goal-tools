@@ -85,17 +85,18 @@ relevant stable branches.
 .. code-block:: console
 
    $ cd goal-tools
-   $ ./tools/python3-first/do_team.sh ../Documentation Documentation
+   $ ./tools/python3-first/do_team.sh ../Py3FirstGoalWork Documentation
 
 ``process_team.sh`` can be used to re-run one stage of the patch
 creation process for all of the repos and a single branch.
 
 .. code-block:: console
 
-   $ ./tools/python3-first/process_team.sh ../Documentation Documentation stable/rocky
+   $ ./tools/python3-first/process_team.sh ../Py3FirstGoalWork Documentation stable/rocky
 
 ``do_repo.sh`` creates the branch and patch for a single repository.
 
 .. code-block:: console
 
-   $ ./tools/python3-first/do_repo.sh ../Documentation/openstack/whereto stable/rocky
+   $ ./tools/python3-first/do_repo.sh ../Py3FirstGoalWork/openstack/whereto stable/rocky
+
