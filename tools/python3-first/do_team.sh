@@ -26,10 +26,19 @@ source .tox/venv/bin/activate
 
 set -x
 
-python3-first repos clone "$workdir/$team" "$team"
+function get_team_dir {
+    local workdir="$1"
+    local team="$2"
 
-$bindir/process_team.sh "$workdir" "$team" master
-$bindir/process_team.sh "$workdir" "$team" stable/ocata
-$bindir/process_team.sh "$workdir" "$team" stable/pike
-$bindir/process_team.sh "$workdir" "$team" stable/queens
-$bindir/process_team.sh "$workdir" "$team" stable/rocky
+    echo "$workdir/$team" | sed -e 's/ /-/g'
+}
+
+out_dir=$(get_team_dir "$workdir" "$team")
+
+python3-first repos clone "$out_dir" "$team"
+
+$bindir/process_team.sh "$out_dir" "$team" master
+$bindir/process_team.sh "$out_dir" "$team" stable/ocata
+$bindir/process_team.sh "$out_dir" "$team" stable/pike
+$bindir/process_team.sh "$out_dir" "$team" stable/queens
+$bindir/process_team.sh "$out_dir" "$team" stable/rocky

@@ -32,9 +32,9 @@ source .tox/venv/bin/activate
 
 set -x
 
-for repo in $(ls -d $workdir/$team/*/*); do
+for repo in $(ls -d $workdir/*/*); do
     if $bindir/do_repo.sh "$repo" "$branch"; then
         tracking="$(basename $(dirname $repo))/$(basename $repo)"
-        echo "$tracking" >> $workdir/$team/$(basename $branch)
+        echo "$tracking" >> $workdir/$(basename $branch)
     fi
 done
