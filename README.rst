@@ -73,3 +73,29 @@ work on all of the projects for a single team as a batch.
 
 Use the ``-v`` option to python3-first to see debug information on
 stderr (allowing stdout to be redirected to a file safely).
+
+There are several higher-level wrapper scripts for running these tools
+in ``tools/python3-first``.
+
+``do_team.sh`` takes as input a working directory and a team name. It
+clones all of the repositories owned by the team and prepares local
+branches with patches to import jobs into master and all of the
+relevant stable branches.
+
+.. code-block:: console
+
+   $ cd goal-tools
+   $ ./tools/python3-first/do_team.sh ../Documentation Documentation
+
+``process_team.sh`` can be used to re-run one stage of the patch
+creation process for all of the repos and a single branch.
+
+.. code-block:: console
+
+   $ ./tools/python3-first/process_team.sh ../Documentation Documentation stable/rocky
+
+``do_repo.sh`` creates the branch and patch for a single repository.
+
+.. code-block:: console
+
+   $ ./tools/python3-first/do_repo.sh ../Documentation/openstack/whereto stable/rocky

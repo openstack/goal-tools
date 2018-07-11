@@ -30,6 +30,7 @@ KEEP = set([
     'release-openstack-server',
 
     'publish-to-pypi',
+    'publish-to-pypi-python3',
     'publish-to-pypi-quietly',
     'publish-to-pypi-horizon',
     'publish-to-pypi-neutron',
