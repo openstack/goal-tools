@@ -6,7 +6,6 @@
 import configparser
 import copy
 import glob
-import itertools
 import logging
 import os.path
 import re
@@ -14,7 +13,6 @@ import re
 from goal_tools.python3_first import projectconfig_ruamellib
 
 from cliff import command
-import ruamel.yaml
 
 LOG = logging.getLogger(__name__)
 
@@ -314,19 +312,31 @@ def find_project_settings_in_repo(repo_dir):
 
 
 def merge_pipeline(name, in_tree, updates):
-    LOG.debug('merging %s', name)
-    results = ruamel.yaml.comments.CommentedMap()
+    LOG.debug('merging pipeline %s', name)
     # Copy the settings other than the jobs.
-    results.update(in_tree)
-    results.update(updates)
+    for key in updates.keys():
+        if key == 'jobs':
+            continue
+        if key not in in_tree:
+            # Data structures created by the YAML library use a
+            # CommentedMap object, which has an insert() method that
+            # lets us add something to the map in a particular place
+            # in order. To keep the file easy to read, we insert keys
+            # other than 'jobs' at the start of the map.
+            LOG.debug('copying new setting %s', key)
+            in_tree.insert(0, key, updates[key])
+        else:
+            LOG.debug('updating existing setting %s', key)
+            in_tree[key] = updates[key]
     # Merge the job list
-    all_jobs = itertools.chain(
-        in_tree.get('jobs', []),
-        updates.get('jobs', []),
-    )
     job_names = set()
-    jobs = []
-    for job in all_jobs:
+    jobs = in_tree.get('jobs', [])
+    for job in jobs:
+        if isinstance(job, dict):
+            job_names.add(list(job.keys())[0])
+        else:
+            job_names.add(job)
+    for job in updates.get('jobs', []):
         if isinstance(job, dict):
             job_name = list(job.keys())[0]
             job_info = list(job.values())[0]
@@ -341,41 +351,33 @@ def merge_pipeline(name, in_tree, updates):
         if job_info is None:
             jobs.append(job_name)
         else:
-            jobs.append({job_name: job_info})
-    if jobs:
-        results['jobs'] = jobs
-    return results
+            jobs.append(job)
+    if jobs and 'jobs' not in in_tree:
+        in_tree['jobs'] = jobs
+    return in_tree
 
 
 def merge_project_settings(in_tree, updates):
-    results = ruamel.yaml.comments.CommentedMap()
     itp = in_tree.get('project', {})
     up = updates.get('project', {})
     LOG.debug('merging templates')
-    templates = list(itp.get('templates', []))
+    templates = itp.get('templates', [])
     for t in up.get('templates', []):
         if t not in templates:
             templates.append(t)
-    if templates:
-        results['templates'] = templates
-    # Iterate over the keys in both input dicts, in order, and merge
-    # the pipelines one at a time. If we encounter a duplicate we can
-    # ignore it because it will have been completed from a previous
-    # iteration.
-    for pipeline in itertools.chain(itp.keys(), up.keys()):
+    if templates and 'templates' not in itp:
+        itp['templates'] = templates
+    for pipeline in up.keys():
         if pipeline == 'templates':
-            continue
-        if pipeline in results:
-            # already done
             continue
         new_data = merge_pipeline(
             pipeline,
             itp.get(pipeline, {}),
             up.get(pipeline, {}),
         )
-        if new_data:
-            results[pipeline] = new_data
-    return {'project': results}
+        if new_data and pipeline not in itp:
+            itp[pipeline] = new_data
+    return in_tree
 
 
 class JobsUpdate(command.Command):
@@ -478,19 +480,10 @@ class JobsUpdate(command.Command):
         if 'name' in entry['project']:
             del entry['project']['name']
 
-        real_settings = merge_project_settings(
+        merge_project_settings(
             in_tree_project,
             entry,
         )
-
-        n = -1
-        for n, block in enumerate(in_tree_settings):
-            if 'project' in block:
-                break
-        if n < 0:
-            in_tree_settings.insert(0, real_settings)
-        else:
-            in_tree_settings[n] = real_settings
 
         LOG.info('# {} @ {}'.format(repo, branch))
         yaml.dump(in_tree_settings, self.app.stdout)

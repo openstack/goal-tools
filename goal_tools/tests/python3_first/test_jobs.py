@@ -13,6 +13,8 @@
 from goal_tools.python3_first import jobs
 from goal_tools.tests import base
 
+from ruamel.yaml import comments
+
 
 class TestBranchesForJob(base.TestCase):
 
@@ -354,7 +356,7 @@ class TestMergePipeline(base.TestCase):
 
     def test_no_data(self):
         expected = {}
-        in_tree = {}
+        in_tree = comments.CommentedMap()
         project_config = {}
         actual = jobs.merge_pipeline(
             'check',
@@ -367,7 +369,7 @@ class TestMergePipeline(base.TestCase):
         expected = {
             'gate': 'gate-name',
         }
-        in_tree = {}
+        in_tree = comments.CommentedMap()
         project_config = {
             'gate': 'gate-name',
         }
@@ -382,9 +384,9 @@ class TestMergePipeline(base.TestCase):
         expected = {
             'gate': 'gate-name',
         }
-        in_tree = {
+        in_tree = comments.CommentedMap({
             'gate': 'gate-name',
-        }
+        })
         project_config = {}
         actual = jobs.merge_pipeline(
             'check',
