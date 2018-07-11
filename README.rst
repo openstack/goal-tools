@@ -100,3 +100,9 @@ creation process for all of the repos and a single branch.
 
    $ ./tools/python3-first/do_repo.sh ../Py3FirstGoalWork/openstack/whereto stable/rocky
 
+After all of the patches for a team are prepared locally, they can be
+submitted for review using ``propose.sh``.
+
+.. code-block:: console
+
+   $ ./tools/python3-first/propose.sh ../Py3FirstGoalWork Documentation
