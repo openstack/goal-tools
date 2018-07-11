@@ -38,15 +38,25 @@ source .tox/venv/bin/activate
 set -x
 
 git -C "$repo" review -s
-git -C "$repo" checkout -- .
-git -C "$repo" clean -f -d
 
-if ! git -C "$repo" checkout origin/$branch ; then
-    echo "Could not check out origin/$branch in $repo"
-    exit 1
+new_branch=python3-first-$(basename $branch)
+
+if git -C "$repo" branch | grep -q $new_branch; then
+    echo "$new_branch already exists, reusing"
+    git -C "$repo" checkout $new_branch
+else
+    echo "creating $new_branch"
+    git -C "$repo" checkout -- .
+    git -C "$repo" clean -f -d
+
+    if ! git -C "$repo" checkout origin/$branch ; then
+        echo "Could not check out origin/$branch in $repo"
+        exit 1
+    fi
+
+    git -C "$repo" checkout -b $new_branch
 fi
 
-git -C "$repo" checkout -b python3-first-$(basename $branch)
 
 if ! python3-first jobs update "$repo"; then
     echo "No changes"
