@@ -38,6 +38,7 @@ out_dir=$(get_team_dir "$workdir" "$team")
 python3-first repos clone "$out_dir" "$team"
 
 $bindir/process_team.sh "$out_dir" "$team" master
+$bindir/update_doc_job.sh "$out_dir" "$team"
 $bindir/process_team.sh "$out_dir" "$team" stable/ocata
 $bindir/process_team.sh "$out_dir" "$team" stable/pike
 $bindir/process_team.sh "$out_dir" "$team" stable/queens

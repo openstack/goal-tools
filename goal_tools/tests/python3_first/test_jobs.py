@@ -748,3 +748,43 @@ class TestFindTemplatesOnlyOnMaster(base.TestCase):
         actual = jobs.find_templates_only_on_master(
             project, zuul_templates, zuul_jobs)
         self.assertEqual(expected, actual)
+
+
+class TestUpdateDocsJob(base.TestCase):
+
+    def test_no_data(self):
+        expected = {'project': {}}
+        in_tree = {'project': {}}
+        changed = jobs.update_docs_job(in_tree)
+        self.assertEqual(expected, in_tree)
+        self.assertFalse(changed)
+
+    def test_no_switch(self):
+        expected = [
+            'publish-openstack-docs-pti',
+        ]
+        in_tree = {
+            'project': {
+                'templates': [
+                    'publish-openstack-docs-pti',
+                ],
+            },
+        }
+        changed = jobs.update_docs_job(in_tree)
+        self.assertEqual(expected, in_tree['project']['templates'])
+        self.assertFalse(changed)
+
+    def test_switch(self):
+        expected = [
+            'publish-openstack-docs-pti',
+        ]
+        in_tree = {
+            'project': {
+                'templates': [
+                    'publish-openstack-sphinx-docs',
+                ],
+            },
+        }
+        changed = jobs.update_docs_job(in_tree)
+        self.assertEqual(expected, in_tree['project']['templates'])
+        self.assertTrue(changed)

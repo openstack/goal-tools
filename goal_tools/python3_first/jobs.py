@@ -659,3 +659,63 @@ class JobsRetain(command.Command):
             yaml.dump([entry], self.app.stdout)
         else:
             print('# No settings to retain.\n')
+
+
+def update_docs_job(project):
+    "replace old documentation job with new version"
+    try:
+        proj_data = project.get('project', {})
+        templates = proj_data.get('templates', [])
+        LOG.info('found templates: %s', templates)
+        idx = templates.index('publish-openstack-sphinx-docs')
+        templates[idx] = 'publish-openstack-docs-pti'
+        return True
+    except ValueError:
+        return False
+
+
+class JobsSwitchDocs(command.Command):
+    "update the in-tree project settings for the new docs PTI"
+
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument(
+            '--default-zuul-file',
+            default='.zuul.yaml',
+            help='the default file to create when one does not exist',
+        )
+        parser.add_argument(
+            'repo_dir',
+            help='the repository location',
+        )
+        return parser
+
+    def take_action(self, parsed_args):
+        LOG.debug('determining repository name from .gitreview')
+        gitreview_filename = os.path.join(parsed_args.repo_dir, '.gitreview')
+        cp = configparser.ConfigParser()
+        cp.read(gitreview_filename)
+        gerrit = cp['gerrit']
+        repo = gerrit['project']
+        if repo.endswith('.git'):
+            repo = repo[:-4]
+        LOG.info('working on %s', repo)
+
+        in_repo = find_project_settings_in_repo(parsed_args.repo_dir)
+        in_tree_file, in_tree_project, in_tree_settings = in_repo
+        if not in_tree_file:
+            raise RuntimeError('Could not find project settings in {}'.format(
+                parsed_args.repo_dir))
+
+        changed = update_docs_job(in_tree_project)
+
+        if not changed:
+            LOG.info('No updates needed for %s', repo)
+            return 1
+
+        LOG.info('# {} switch docs jobs'.format(repo))
+        yaml = projectconfig_ruamellib.YAML()
+        yaml.dump(in_tree_settings, self.app.stdout)
+        LOG.info('updating %s', in_tree_file)
+        with open(in_tree_file, 'w', encoding='utf-8') as f:
+            yaml.dump(in_tree_settings, f)
