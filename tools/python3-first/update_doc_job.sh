@@ -26,8 +26,9 @@ source .tox/venv/bin/activate
 
 commit_message="switch documentation job to new PTI
 
-Switch the documentation jobs to use the new PTI
-versions of the jobs.
+This is a mechanically generated patch to switch the documentation
+jobs to use the new PTI versions of the jobs as part of the
+python3-first goal.
 "
 
 set -x

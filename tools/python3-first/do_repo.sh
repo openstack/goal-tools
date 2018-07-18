@@ -23,8 +23,12 @@ source .tox/venv/bin/activate
 
 commit_message="import zuul job settings from project-config
 
-Step 1 of moving the zuul job settings out of project-config and into
-each project repository.
+This is a mechanically generated patch to complete step 1 of moving
+the zuul job settings out of project-config and into each project
+repository.
+
+Because there will be a separate patch on each branch, the branch
+specifiers for branch-specific jobs have been removed.
 
 See the python3-first goal document for details:
 https://review.openstack.org/#/c/575933/
