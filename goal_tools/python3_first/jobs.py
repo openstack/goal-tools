@@ -10,6 +10,7 @@ import logging
 import os.path
 import re
 
+from goal_tools import governance
 from goal_tools.python3_first import projectconfig_ruamellib
 
 from cliff import command
@@ -719,3 +720,66 @@ class JobsSwitchDocs(command.Command):
         LOG.info('updating %s', in_tree_file)
         with open(in_tree_file, 'w', encoding='utf-8') as f:
             yaml.dump(in_tree_settings, f)
+
+
+class JobsSwitchPackaging(command.Command):
+    "update the project-config settings for the new packaging job"
+
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument(
+            '--project-config-dir',
+            default='../project-config',
+            help='the location of the project-config repo',
+        )
+        parser.add_argument(
+            '--project-list',
+            default=governance.PROJECTS_LIST,
+            help='URL for projects.yaml',
+        )
+        return parser
+
+    CANDIDATES = [
+        'publish-to-pypi',
+        'publish-to-pypi-horizon',
+        'publish-to-pypi-neutron',
+        'release-openstack-server',
+    ]
+
+    def take_action(self, parsed_args):
+        yaml = projectconfig_ruamellib.YAML()
+
+        gov_dat = governance.Governance(url=parsed_args.project_list)
+        all_repos = set(gov_dat.get_repos())
+        if not all_repos:
+            raise ValueError('found no governed repositories')
+
+        project_filename = os.path.join(
+            parsed_args.project_config_dir,
+            'zuul.d',
+            'projects.yaml',
+        )
+        LOG.debug('loading project settings from %s', project_filename)
+        with open(project_filename, 'r', encoding='utf-8') as f:
+            project_settings = yaml.load(f)
+
+        for entry in project_settings:
+            if 'project' not in entry:
+                continue
+            project = entry['project']
+            if project['name'] not in all_repos:
+                continue
+            if 'templates' not in project:
+                continue
+            templates = project['templates']
+            for candidate in self.CANDIDATES:
+                try:
+                    idx = templates.index(candidate)
+                except (ValueError, IndexError):
+                    pass
+                else:
+                    LOG.info('updating %s', project['name'])
+                    templates[idx] = 'publish-to-pypi-python3'
+
+        with open(project_filename, 'w', encoding='utf-8') as f:
+            yaml.dump(project_settings, f)
