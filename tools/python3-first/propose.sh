@@ -19,7 +19,16 @@ if [ -z "$team" ]; then
     exit 1
 fi
 
-LOGFILE="$workdir/$team-propose.txt"
+function get_team_dir {
+    local workdir="$1"
+    local team="$2"
+
+    echo "$workdir/$team" | sed -e 's/ /-/g'
+}
+
+out_dir=$(get_team_dir "$workdir" "$team")
+
+LOGFILE="$out_dir/propose.log"
 echo "Logging to $LOGFILE"
 # Set fd 1 and 2 to write the log file
 exec 1> >( tee "${LOGFILE}" ) 2>&1

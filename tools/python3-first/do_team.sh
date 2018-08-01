@@ -21,7 +21,17 @@ fi
 
 goal_url="https://governance.openstack.org/tc/goals/stein/python3-first.html"
 
-LOGFILE="$workdir/$team.txt"
+function get_team_dir {
+    local workdir="$1"
+    local team="$2"
+
+    echo "$workdir/$team" | sed -e 's/ /-/g'
+}
+
+out_dir=$(get_team_dir "$workdir" "$team")
+mkdir -p "$out_dir"
+
+LOGFILE="$out_dir/do_team.log"
 echo "Logging to $LOGFILE"
 # Set fd 1 and 2 to write the log file
 exec 1> >( tee "${LOGFILE}" ) 2>&1
@@ -40,15 +50,6 @@ if [ -z "$story_id" ]; then
     echo "Could not find story ID for $team for $goal_url"
     exit 1
 fi
-
-function get_team_dir {
-    local workdir="$1"
-    local team="$2"
-
-    echo "$workdir/$team" | sed -e 's/ /-/g'
-}
-
-out_dir=$(get_team_dir "$workdir" "$team")
 
 python3-first repos clone "$out_dir" "$team"
 
