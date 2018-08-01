@@ -3,17 +3,11 @@
 bindir=$(dirname $0)
 
 function usage {
-    echo "do_team.sh GOAL_URL WORKDIR TEAM"
+    echo "do_team.sh WORKDIR TEAM"
 }
 
-goal_url="$1"
-workdir="$2"
-team="$3"
-
-if [ -z "$goal_url" ]; then
-    usage
-    exit 1
-fi
+workdir="$1"
+team="$2"
 
 if [ -z "$workdir" ]; then
     usage
@@ -24,6 +18,8 @@ if [ -z "$team" ]; then
     usage
     exit 1
 fi
+
+goal_url="https://governance.openstack.org/tc/goals/stein/python3-first.html"
 
 LOGFILE="$workdir/$team.txt"
 echo "Logging to $LOGFILE"
