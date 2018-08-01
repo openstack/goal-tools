@@ -248,7 +248,6 @@ def main():
                 for repo in d_info['repos']:
                     title = '{} - {}'.format(project_name, repo)
                     if title not in existing_tasks:
-                        LOG.info('adding task for %s', title)
                         # Try to attach the task to the repository and
                         # fall back to the governance repository if
                         # storyboard doesn't know about the repo.
@@ -256,6 +255,8 @@ def main():
                             sb_project = _find_project(sbc, repo)
                         except ValueError:
                             sb_project = governance_project
+                        LOG.info('adding task for %s (%s)',
+                                 title, sb_project.name)
                         sbc.tasks.create(
                             title=title,
                             project_id=sb_project.id,
