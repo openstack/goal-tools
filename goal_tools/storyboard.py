@@ -74,3 +74,25 @@ def get_client(config):
 
     LOG.info('Connecting to storyboard at {}'.format(storyboard_url))
     return client.Client(storyboard_url, access_token, verify=verify)
+
+
+def find_story(sbc, title):
+    LOG.info('searching for existing stories like {!r}'.format(title))
+    existing = sbc.stories.get_all(title=title)
+    if existing:
+        story = existing[0]
+        LOG.info('found existing story {}'.format(story.id))
+        return story
+    return None
+
+
+def find_or_create_story(sbc, title, description):
+    story = find_story(sbc, title)
+    if not story:
+        LOG.info('creating new story')
+        story = sbc.stories.create(
+            title=title,
+            description=description,
+        )
+        LOG.info('created story {}'.format(story.id))
+    return story

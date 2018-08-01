@@ -71,22 +71,6 @@ def _find_project(sbc, name):
         raise ValueError('Could not find project {}'.format(name))
 
 
-def _find_or_create_story(sbc, title, description):
-    LOG.info('searching for existing stories like {!r}'.format(title))
-    existing = sbc.stories.get_all(title=title)
-    if not existing:
-        LOG.info('creating new story')
-        story = sbc.stories.create(
-            title=title,
-            description=description,
-        )
-        LOG.info('created story {}'.format(story.id))
-    else:
-        story = existing[0]
-        LOG.info('found existing story {}'.format(story.id))
-    return story
-
-
 def _update_tags(sbc, story, tag):
     tags = set(story.tags or [])
     if tag in tags:
@@ -211,7 +195,7 @@ def main():
             LOG.info('using specified story')
             story = sbc.stories.get(args.story)
         else:
-            story = _find_or_create_story(
+            story = storyboard.find_or_create_story(
                 sbc=sbc,
                 title=goal_info['title'],
                 description=full_description,
@@ -244,7 +228,7 @@ def main():
         for project_name in project_names:
             deliverables = project_info[project_name]['deliverables'].items()
 
-            story = _find_or_create_story(
+            story = storyboard.find_or_create_story(
                 sbc=sbc,
                 title='{}: {}'.format(project_name, goal_info['title']),
                 description=(goal_info['description'] +
