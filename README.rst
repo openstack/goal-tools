@@ -77,10 +77,10 @@ stderr (allowing stdout to be redirected to a file safely).
 There are several higher-level wrapper scripts for running these tools
 in ``tools/python3-first``.
 
-``do_team.sh`` takes as input a working directory and a team name. It
-clones all of the repositories owned by the team and prepares local
-branches with patches to import jobs into master and all of the
-relevant stable branches.
+``do_team.sh`` takes as input a goal URL, a working directory and a
+team name. It clones all of the repositories owned by the team and
+prepares local branches with patches to import jobs into master and
+all of the relevant stable branches.
 
 .. code-block:: console
 

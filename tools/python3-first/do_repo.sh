@@ -3,19 +3,28 @@
 bindir=$(dirname $0)
 
 function usage {
-    echo "do_repo.sh REPO_DIR BRANCH"
+    echo "do_repo.sh REPO_DIR BRANCH STORY"
 }
 
 repo="$1"
 branch="$2"
+story="$3"
 
 if [ -z "$repo" ]; then
+    usage
     echo "Need to specify a repo!"
     exit 1
 fi
 
 if [ -z "$branch" ]; then
+    usage
     echo "Need to specify a branch!"
+    exit 1
+fi
+
+if [ -z "$story" ]; then
+    usage
+    echo "Need to specify a story!"
     exit 1
 fi
 
@@ -32,6 +41,9 @@ specifiers for branch-specific jobs have been removed.
 
 See the python3-first goal document for details:
 https://review.openstack.org/#/c/575933/
+
+Story: #$story
+
 "
 
 if [ ! -d .tox/venv ]; then

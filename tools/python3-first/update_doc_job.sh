@@ -3,11 +3,12 @@
 bindir=$(dirname $0)
 
 function usage {
-    echo "update_doc_job.sh WORKDIR TEAM"
+    echo "update_doc_job.sh WORKDIR TEAM STORY"
 }
 
 workdir=$1
 team="$2"
+story="$3"
 
 if [ -z "$workdir" ]; then
     usage
@@ -15,6 +16,11 @@ if [ -z "$workdir" ]; then
 fi
 
 if [ -z "$team" ]; then
+    usage
+    exit 1
+fi
+
+if [ -z "$story" ]; then
     usage
     exit 1
 fi
@@ -29,6 +35,9 @@ commit_message="switch documentation job to new PTI
 This is a mechanically generated patch to switch the documentation
 jobs to use the new PTI versions of the jobs as part of the
 python3-first goal.
+
+Story: #$story
+
 "
 
 set -x
