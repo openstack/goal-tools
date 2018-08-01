@@ -19,6 +19,13 @@ if [ -z "$team" ]; then
     exit 1
 fi
 
+LOGFILE="$workdir/$team.txt"
+echo "Logging to $LOGFILE"
+# Set fd 1 and 2 to write the log file
+exec 1> >( tee "${LOGFILE}" ) 2>&1
+date
+echo $0 $@
+
 if [ ! -d .tox/venv ]; then
     tox -e venv --notest
 fi
