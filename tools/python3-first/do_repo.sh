@@ -40,7 +40,7 @@ Because there will be a separate patch on each branch, the branch
 specifiers for branch-specific jobs have been removed.
 
 See the python3-first goal document for details:
-https://review.openstack.org/#/c/575933/
+https://governance.openstack.org/tc/goals/stein/python3-first.html
 
 Story: #$story
 

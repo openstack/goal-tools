@@ -36,6 +36,9 @@ This is a mechanically generated patch to switch the documentation
 jobs to use the new PTI versions of the jobs as part of the
 python3-first goal.
 
+See the python3-first goal document for details:
+https://governance.openstack.org/tc/goals/stein/python3-first.html
+
 Story: #$story
 
 "
