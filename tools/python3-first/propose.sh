@@ -44,25 +44,34 @@ BRANCHES="master ocata pike queens rocky"
 
 #set -x
 
+function show_changes {
+    for branch in $BRANCHES
+    do
+        for repo in $(cat $branch)
+        do
+            if [ $branch = master ]; then
+                origin=origin/master
+            else
+                origin=origin/stable/$branch
+            fi
+            (cd $repo &&
+                    git checkout python3-first-$branch 2>/dev/null &&
+                    git log --oneline --pretty=format:"%h %s $repo $branch%n" $origin..)
+        done
+    done
+}
+
 cd $workdir/$team
 
-for branch in $BRANCHES
-do
-    for repo in $(cat $branch)
-    do
-        echo
-        echo $repo $branch
-        if [ $branch = master ]; then
-            origin=origin/master
-        else
-            origin=origin/stable/$branch
-        fi
-        (cd $repo &&
-                git checkout python3-first-$branch &&
-                git log --oneline $origin..)
-    done
-done
+echo
+show_changes
 
+nchanges=$(show_changes 2>/dev/null | wc -l)
+
+echo
+echo "About to propose $nchanges changes"
+
+echo
 echo "Press return to continue"
 read ignoreme
 
