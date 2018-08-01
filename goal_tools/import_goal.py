@@ -91,9 +91,16 @@ def _update_tags(sbc, story, tag):
     tags = set(story.tags or [])
     if tag in tags:
         return
+    if not tag:
+        return
     LOG.info('adding tag %s', tag)
     tags.add(tag)
-    story.tags_manager.update(list(tags))
+    if None in tags:
+        tags.remove(None)
+    try:
+        story.tags_manager.update(list(tags))
+    except Exception as err:
+        LOG.info(err)
 
 
 def main():
