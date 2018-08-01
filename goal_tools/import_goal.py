@@ -19,11 +19,11 @@ import os.path
 import warnings
 
 import appdirs
-import bs4 as beautifulsoup
 import requests
 import yaml
 
 from goal_tools import storyboard
+from goal_tools import goals
 
 _GOVERNANCE_PROJECT_NAME = 'openstack/governance'
 _STORY_URL_TEMPLATE = 'https://storyboard.openstack.org/#!/story/{}'
@@ -55,29 +55,6 @@ def _get_worklist_settings(tag):
                  ]},
             ],
         }
-
-
-_SITE_TITLE = '— OpenStack Technical Committee Governance Documents'
-
-
-def _parse_goal_page(html):
-    data = {
-        'title': '',
-        'description': '',
-    }
-    bs = beautifulsoup.BeautifulSoup(html, 'html.parser')
-    data['title'] = bs.title.string or ''
-    if data['title'].endswith(_SITE_TITLE):
-        data['title'] = data['title'][:-len(_SITE_TITLE)].strip()
-    data['description'] = bs.p.text or bs.p.string or ''
-    return data
-
-
-def _get_goal_info(url):
-    html = requests.get(url)
-    data = _parse_goal_page(html.text)
-    data['url'] = url
-    return data
 
 
 def _get_project_info(url):
@@ -187,7 +164,7 @@ def main():
 
     try:
         LOG.debug('reading goal info from {}'.format(args.goal_url))
-        goal_info = _get_goal_info(args.goal_url)
+        goal_info = goals.get_info(args.goal_url)
     except Exception as err:
         parser.error(err)
     full_description = (goal_info['description'] +
