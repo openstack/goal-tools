@@ -1,0 +1,27 @@
+#!/bin/bash
+
+function enable_tox {
+    if [ ! -d .tox/venv ]; then
+        tox -e venv --notest
+    fi
+    source .tox/venv/bin/activate
+}
+
+function get_team_dir {
+    local workdir="$1"
+    local team="$2"
+
+    echo "$workdir/$team" | sed -e 's/ /-/g'
+}
+
+function log_output {
+    local workdir="$1"
+    local slug="$2"
+
+    LOGFILE="$workdir/${slug}.$(date --iso-8601=seconds).log"
+    echo "Logging to $LOGFILE"
+    # Set fd 1 and 2 to write the log file
+    exec 1> >( tee "${LOGFILE}" ) 2>&1
+    date
+    echo $0 $@
+}

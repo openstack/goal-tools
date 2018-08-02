@@ -1,6 +1,7 @@
 #!/bin/bash
 
 bindir=$(dirname $0)
+source $bindir/functions
 
 function usage {
     echo "update_doc_job.sh WORKDIR TEAM STORY"
@@ -25,10 +26,7 @@ if [ -z "$story" ]; then
     exit 1
 fi
 
-if [ ! -d .tox/venv ]; then
-    tox -e venv --notest
-fi
-source .tox/venv/bin/activate
+enable_tox
 
 commit_message="switch documentation job to new PTI
 

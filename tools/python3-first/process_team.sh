@@ -1,6 +1,7 @@
 #!/bin/bash
 
 bindir=$(dirname $0)
+source $bindir/functions
 
 function usage {
     echo "process_team.sh WORKDIR TEAM BRANCH STORY"
@@ -31,10 +32,7 @@ if [ -z "$story" ]; then
     exit 1
 fi
 
-if [ ! -d .tox/venv ]; then
-    tox -e venv --notest
-fi
-source .tox/venv/bin/activate
+enable_tox
 
 set -x
 

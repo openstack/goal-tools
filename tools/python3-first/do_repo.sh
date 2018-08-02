@@ -1,6 +1,7 @@
 #!/bin/bash -e
 
 bindir=$(dirname $0)
+source $bindir/functions
 
 function usage {
     echo "do_repo.sh REPO_DIR BRANCH STORY"
@@ -28,8 +29,6 @@ if [ -z "$story" ]; then
     exit 1
 fi
 
-source .tox/venv/bin/activate
-
 commit_message="import zuul job settings from project-config
 
 This is a mechanically generated patch to complete step 1 of moving
@@ -46,10 +45,7 @@ Story: #$story
 
 "
 
-if [ ! -d .tox/venv ]; then
-    tox -e venv --notest
-fi
-source .tox/venv/bin/activate
+enable_tox
 
 set -x
 

@@ -1,6 +1,7 @@
 #!/bin/bash -e
 
 bindir=$(dirname $0)
+source $bindir/functions
 
 function usage {
     echo "do_team.sh WORKDIR TEAM"
@@ -21,27 +22,12 @@ fi
 
 goal_url="https://governance.openstack.org/tc/goals/stein/python3-first.html"
 
-function get_team_dir {
-    local workdir="$1"
-    local team="$2"
-
-    echo "$workdir/$team" | sed -e 's/ /-/g'
-}
-
 out_dir=$(get_team_dir "$workdir" "$team")
 mkdir -p "$out_dir"
 
-LOGFILE="$out_dir/do_team.log"
-echo "Logging to $LOGFILE"
-# Set fd 1 and 2 to write the log file
-exec 1> >( tee "${LOGFILE}" ) 2>&1
-date
-echo $0 $@
+log_output "$out_dir" do_team
 
-if [ ! -d .tox/venv ]; then
-    tox -e venv --notest
-fi
-source .tox/venv/bin/activate
+enable_tox
 
 set -x
 
