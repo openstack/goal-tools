@@ -53,3 +53,4 @@ $bindir/process_team.sh "$out_dir" "$team" stable/ocata $story_id
 $bindir/process_team.sh "$out_dir" "$team" stable/pike $story_id
 $bindir/process_team.sh "$out_dir" "$team" stable/queens $story_id
 $bindir/process_team.sh "$out_dir" "$team" stable/rocky $story_id
+$bindir/update_project_config.sh "$team" $story_id

@@ -7,6 +7,10 @@ function enable_tox {
     source .tox/venv/bin/activate
 }
 
+function normalize_team {
+   echo "$@" | sed -e 's/ /-/g'
+}
+
 function get_team_dir {
     local workdir="$1"
     local team="$2"
