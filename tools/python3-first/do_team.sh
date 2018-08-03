@@ -30,6 +30,12 @@ log_output "$out_dir" do_team
 enable_tox
 
 echo
+echo "=== Updating project-config ==="
+echo
+
+(cd ../project-config && git checkout master && git pull)
+
+echo
 echo "=== Cloning $team repositories ==="
 echo
 
