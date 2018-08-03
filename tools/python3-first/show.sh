@@ -22,7 +22,7 @@ fi
 
 out_dir=$(get_team_dir "$workdir" "$team")
 
-log_output "$out_dir" propose
+log_output "$out_dir" show
 
 enable_tox
 
@@ -30,11 +30,12 @@ BRANCHES="master ocata pike queens rocky"
 
 #set -x
 
-function list_changes {
+function show_changes {
     for branch in $BRANCHES
     do
         for repo in $(cat $branch)
         do
+            echo
             if [ $branch = master ]; then
                 origin=origin/master
             else
@@ -42,7 +43,7 @@ function list_changes {
             fi
             (cd $repo &&
                     git checkout python3-first-$branch 2>/dev/null &&
-                    git log --oneline --pretty=format:"%h %s $repo $branch%n" $origin..)
+                    git log --patch $origin..)
         done
     done
 }
@@ -50,25 +51,7 @@ function list_changes {
 cd $workdir/$team
 
 echo
-list_changes
-
-nchanges=$(list_changes 2>/dev/null | wc -l)
+show_changes
 
 echo
-echo "About to propose $nchanges changes"
-
-echo
-echo "Press return to continue"
-read ignoreme
-
-for branch in $BRANCHES
-do
-    for repo in $(cat $branch)
-    do
-        echo
-        echo $repo $branch
-        (cd $repo &&
-                git checkout python3-first-$branch &&
-                git review -t python3-first)
-    done
-done
+echo "Output logged to $LOGFILE"
