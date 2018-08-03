@@ -595,10 +595,15 @@ def need_to_keep(entry):
 
 
 class JobsRetain(command.Command):
-    "reduce the project settings to keep in project-config"
+    "reduce the project settings for a team's repos in project-config"
 
     def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)
+        parser.add_argument(
+            '--project-list',
+            default=governance.PROJECTS_LIST,
+            help='URL for projects.yaml',
+        )
         parser.add_argument(
             '--project-config-dir',
             default='../project-config',
@@ -616,8 +621,8 @@ class JobsRetain(command.Command):
             help='show the work but do not change anything',
         )
         parser.add_argument(
-            'repo',
-            help='the repository name',
+            'team',
+            help='the team name',
         )
         return parser
 
@@ -661,25 +666,32 @@ class JobsRetain(command.Command):
             if 'job' in job
         }
 
-        LOG.debug('looking for settings for %s', parsed_args.repo)
-        for entry in project_settings:
-            if 'project' not in entry:
+        gov_dat = governance.Governance(url=parsed_args.project_list)
+        for repo in gov_dat.get_repos_for_team(parsed_args.team):
+            LOG.debug('looking for settings for %s', repo)
+            for entry in project_settings:
+                if 'project' not in entry:
+                    continue
+                if entry['project'].get('name') == repo:
+                    break
+            else:
+                LOG.warning('Could not find {} in {}'.format(
+                    repo, project_filename))
                 continue
-            if entry['project'].get('name') == parsed_args.repo:
-                break
-        else:
-            raise ValueError('Could not find {} in {}'.format(
-                parsed_args.repo, project_filename))
 
-        find_templates_to_retain(entry['project'], zuul_templates, zuul_jobs)
+            find_templates_to_retain(
+                entry['project'],
+                zuul_templates,
+                zuul_jobs,
+            )
 
-        find_jobs_to_retain(entry['project'])
+            find_jobs_to_retain(entry['project'])
 
-        print()
-        if need_to_keep(entry):
-            yaml.dump([entry], self.app.stdout)
-        else:
-            print('# No settings to retain.\n')
+            print()
+            if need_to_keep(entry):
+                yaml.dump([entry], self.app.stdout)
+            else:
+                print('# No settings to retain for {}.\n'.format(repo))
 
         if parsed_args.dry_run:
             LOG.debug('not writing project settings to %s',
