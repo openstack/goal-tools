@@ -61,7 +61,7 @@ else
     git -C "$repo" checkout -- .
     git -C "$repo" clean -f -d
 
-    if ! git -C "$repo" checkout origin/$branch ; then
+    if ! git -C "$repo" checkout -q origin/$branch ; then
         echo "Could not check out origin/$branch in $repo"
         exit 1
     fi
