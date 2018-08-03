@@ -6,6 +6,7 @@
 import configparser
 import copy
 import glob
+import io
 import logging
 import os.path
 import re
@@ -594,7 +595,7 @@ def need_to_keep(entry):
 
 
 class JobsRetain(command.Command):
-    "show the project settings to keep in project-config"
+    "reduce the project settings to keep in project-config"
 
     def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)
@@ -607,6 +608,12 @@ class JobsRetain(command.Command):
             '--openstack-zuul-jobs-dir',
             default='../openstack-zuul-jobs',
             help='the location of the openstack-zuul-jobs repo',
+        )
+        parser.add_argument(
+            '--dry-run', '-n',
+            default=False,
+            action='store_true',
+            help='show the work but do not change anything',
         )
         parser.add_argument(
             'repo',
@@ -673,6 +680,24 @@ class JobsRetain(command.Command):
             yaml.dump([entry], self.app.stdout)
         else:
             print('# No settings to retain.\n')
+
+        if parsed_args.dry_run:
+            LOG.debug('not writing project settings to %s',
+                      project_filename)
+            return 0
+
+        LOG.debug('writing project settings to %s', project_filename)
+        # The YAML representation removes existing blank lines between
+        # the "- project:" blocks. This code reformats the YAML output
+        # to restore the blank lines and ensure that the file always
+        # ends in a newline.
+        buffer = io.StringIO()
+        yaml.dump(project_settings, buffer)
+        body = buffer.getvalue()
+        parts = body.split('- project:')
+        body = '\n\n- project:'.join(p.rstrip() for p in parts) + '\n'
+        with open(project_filename, 'w', encoding='utf-8') as f:
+            f.write(body)
 
 
 def update_docs_job(project):
