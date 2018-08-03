@@ -30,7 +30,7 @@ BRANCHES="master ocata pike queens rocky"
 
 #set -x
 
-function show_changes {
+function list_changes {
     for branch in $BRANCHES
     do
         for repo in $(cat $branch)
@@ -47,12 +47,30 @@ function show_changes {
     done
 }
 
+function show_changes {
+    for branch in $BRANCHES
+    do
+        for repo in $(cat $branch)
+        do
+            echo
+            if [ $branch = master ]; then
+                origin=origin/master
+            else
+                origin=origin/stable/$branch
+            fi
+            (cd $repo &&
+                    git checkout python3-first-$branch 2>/dev/null &&
+                    git log --patch $origin..)
+        done
+    done
+}
+
 cd $workdir/$team
 
 echo
 show_changes
 
-nchanges=$(show_changes 2>/dev/null | wc -l)
+nchanges=$(list_changes 2>/dev/null | wc -l)
 
 echo
 echo "About to propose $nchanges changes"
