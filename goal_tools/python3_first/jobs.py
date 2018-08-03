@@ -361,14 +361,16 @@ def merge_pipeline(name, in_tree, updates):
 
 
 def merge_project_settings(in_tree, updates):
-    itp = in_tree.get('project', {})
+    itp = in_tree.setdefault('project', {})
     up = updates.get('project', {})
     LOG.debug('merging templates')
     templates = itp.get('templates', [])
     for t in up.get('templates', []):
         if t not in templates:
+            LOG.debug('  adding %s', t)
             templates.append(t)
     if templates and 'templates' not in itp:
+        LOG.debug('  saving updates')
         itp['templates'] = templates
     for pipeline in up.keys():
         if pipeline == 'templates':
@@ -379,6 +381,7 @@ def merge_project_settings(in_tree, updates):
             up.get(pipeline, {}),
         )
         if new_data and pipeline not in itp:
+            LOG.debug('  saving %s', pipeline)
             itp[pipeline] = new_data
     return in_tree
 
@@ -488,11 +491,16 @@ class JobsUpdate(command.Command):
             entry,
         )
 
-        LOG.info('# {} @ {}'.format(repo, branch))
-        yaml.dump(in_tree_settings, self.app.stdout)
-        if not in_tree_settings:
+        if not in_tree_project:
             LOG.info('no settings to write')
             return 1
+
+        if not in_tree_settings:
+            in_tree_settings.append(in_tree_project)
+
+        LOG.info('# {} @ {}'.format(repo, branch))
+        yaml.dump(in_tree_settings, self.app.stdout)
+
         if not in_tree_file:
             in_tree_file = os.path.join(
                 parsed_args.repo_dir,
