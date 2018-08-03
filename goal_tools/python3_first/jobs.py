@@ -492,7 +492,7 @@ class JobsUpdate(command.Command):
             entry,
         )
 
-        if not in_tree_project:
+        if not in_tree_project.get('project'):
             LOG.info('no settings to write')
             return 1
 
