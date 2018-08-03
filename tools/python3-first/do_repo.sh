@@ -68,7 +68,7 @@ else
 fi
 
 
-if ! python3-first jobs update "$repo"; then
+if ! python3-first -v jobs update "$repo"; then
     echo "No changes"
     exit 0
 fi
