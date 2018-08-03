@@ -75,6 +75,12 @@ if ! python3-first jobs update "$repo"; then
     exit 0
 fi
 
+if ! git -C "$repo" diff --ignore-all-space; then
+    echo "No changes other than whitespace"
+    git -C "$repo" checkout -- .
+    exit 0
+fi
+
 git -C "$repo" add .
 # NOTE(dhellmann): Some repositories have '.*' excluded by default so
 # adding a new file requires a force flag.
