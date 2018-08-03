@@ -43,6 +43,7 @@ function show_changes {
             fi
             (cd $repo &&
                     git checkout python3-first-$branch 2>/dev/null &&
+                    echo $repo $branch &&
                     git log --patch $origin..)
         done
     done
