@@ -60,3 +60,29 @@ class ReposClone(command.Command):
         except ValueError as err:
             print(err)
             return 1
+
+
+class ReposList(command.Command):
+    "list the repositories for a team"
+
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument(
+            '--project-list',
+            default=governance.PROJECTS_LIST,
+            help='URL for projects.yaml',
+        )
+        parser.add_argument(
+            'team',
+            help='the team name',
+        )
+        return parser
+
+    def take_action(self, parsed_args):
+        gov_dat = governance.Governance(url=parsed_args.project_list)
+        try:
+            for repo in gov_dat.get_repos_for_team(parsed_args.team):
+                print(repo)
+        except ValueError as err:
+            print(err)
+            return 1
