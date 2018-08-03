@@ -488,6 +488,9 @@ class JobsUpdate(command.Command):
 
         LOG.info('# {} @ {}'.format(repo, branch))
         yaml.dump(in_tree_settings, self.app.stdout)
+        if not in_tree_settings:
+            LOG.info('no settings to write')
+            return 1
         if not in_tree_file:
             in_tree_file = os.path.join(
                 parsed_args.repo_dir,
