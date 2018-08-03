@@ -67,6 +67,6 @@ do
         echo $repo $branch
         (cd $repo &&
                 git checkout python3-first-$branch &&
-                git review -t python3-first)
+                git review -y -t python3-first)
     done
 done
