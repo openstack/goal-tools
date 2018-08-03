@@ -29,6 +29,10 @@ log_output "$out_dir" do_team
 
 enable_tox
 
+echo
+echo "=== Cloning $team repositories ==="
+echo
+
 set -x
 
 story_id=$(find-story "$goal_url" "$team")

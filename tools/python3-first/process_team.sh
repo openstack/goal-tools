@@ -34,9 +34,12 @@ fi
 
 enable_tox
 
-set -x
-
 for repo in $(ls -d $workdir/*/*); do
+
+    echo
+    echo "=== $repo @ $branch ==="
+    echo
+
     if $bindir/do_repo.sh "$repo" "$branch" "$story"; then
         tracking="$(basename $(dirname $repo))/$(basename $repo)"
         echo "$tracking" >> $workdir/$(basename $branch)

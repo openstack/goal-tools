@@ -41,10 +41,13 @@ Story: #$story
 
 "
 
-set -x
-
 tracking_file="$workdir/master"
 for repo in $(cat "$tracking_file"); do
+
+    echo
+    echo "=== $repo doc jobs ==="
+    echo
+
     repo_dir="$workdir/$repo"
     git -C "$repo_dir" checkout python3-first-master
     if python3-first jobs switch docs "$repo_dir"
