@@ -28,8 +28,6 @@ enable_tox
 
 BRANCHES="master ocata pike queens rocky"
 
-#set -x
-
 function show_changes {
     for branch in $BRANCHES
     do

@@ -47,8 +47,6 @@ Story: #$story
 
 enable_tox
 
-set -x
-
 git -C "$repo" review -s
 
 new_branch=python3-first-$(basename $branch)

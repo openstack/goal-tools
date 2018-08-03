@@ -33,8 +33,6 @@ echo
 echo "=== Cloning $team repositories ==="
 echo
 
-set -x
-
 story_id=$(find-story "$goal_url" "$team")
 if [ -z "$story_id" ]; then
     echo "Could not find story ID for $team for $goal_url"
