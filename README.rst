@@ -22,6 +22,81 @@ a set of patches.
 python3-first
 =============
 
+Setup
+-----
+
+To set up a workspace to use the python3-first tools::
+
+  $ mkdir python3-first
+  $ cd python3-first
+  $ git clone git://git.openstack.org/openstack-infra/project-config
+  $ git clone git://git.openstack.org/openstack/goal-tools
+  $ mkdir Output
+
+Preparing Patches
+-----------------
+
+To prepare the patches for one team, use ``do_team.sh``::
+
+  $ cd goal-tools
+  $ ./tools/python3-first/do_team.sh ../Output Documentation
+
+The script will create a subdirectory in the output location using the
+team name, clone all of the repositories owned by the team, then
+process each one to create a patch for each branch that needs to have
+job settings imported.
+
+It will also create a log file in the output directory called
+``do_team.TIMESTAMP.log`` (where "TIMESTAMP" is replaced with a real
+timestamp. The log file should show all of the work done, including
+the diffs for all of the patches created.
+
+::
+
+  $ ls -1 ../Output/Documentation/
+  do_team.2018-08-04T08:15:29-04:00.log
+  master
+  ocata
+  openstack
+  pike
+  queens
+
+Proposing Patches
+-----------------
+
+Review the log file created by ``do_team.sh`` before proposing the
+patches to ensure that there are no extraneous changes (the YAML
+parser does not produce exactly the same format output as input, and
+we have seen a couple of cases where it introduces errors by changing
+the indentation level incorrectly).
+
+Then use ``propose.sh`` to submit the patches::
+
+  $ ./tools/python3-first/propose.sh ../Output Documentation
+
+The script will provide a list of all of the patches to be proposed
+and a count, then wait for you to press ``<Return>``. After you do, it
+will submit all of the patches to gerrit.
+
+The project-config patch
+------------------------
+
+``do_team.sh`` will trigger the script to create the patch to remove
+the settings from ``openstack-infra/project-config`` for all of the
+repos for a team. ``propose.sh`` will not submit the patch, though,
+because we do not want it to accidentally be approved before the jobs
+are added in each repository. You can either propose it early and mark
+it as a work-in-progress by setting the Workflow flag to -1, or you
+can wait and propose it after the other patches are merged.
+
+::
+
+  $ cd ../Output/Documentation/openstack-infra/project-config
+  $ git review
+
+Tools
+-----
+
 ``python3-first`` is the parent command for a set of tools for
 implementing the `python3-first goal
 <https://review.openstack.org/#/c/575933/>`_.
