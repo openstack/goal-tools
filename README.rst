@@ -30,6 +30,8 @@ To set up a workspace to use the python3-first tools::
   $ mkdir python3-first
   $ cd python3-first
   $ git clone git://git.openstack.org/openstack-infra/project-config
+  $ git clone git://git.openstack.org/openstack-infra/openstack-zuul-jobs
+  $ git clone git://git.openstack.org/openstack-infra/zuul-jobs
   $ git clone git://git.openstack.org/openstack/goal-tools
   $ mkdir Output
 

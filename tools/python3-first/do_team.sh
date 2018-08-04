@@ -41,10 +41,14 @@ fi
 echo "Story: $story_id"
 
 echo
-echo "=== Updating project-config ==="
+echo "=== Updating extra project settings ==="
 echo
 
+set -x
 (cd ../project-config && git checkout master && git pull)
+(cd ../openstack-zuul-jobs && git checkout master && git pull)
+(cd ../zuul-jobs && git checkout master && git pull)
+set +x
 
 echo
 echo "=== Cloning $team repositories ==="
