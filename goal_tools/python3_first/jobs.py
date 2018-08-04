@@ -671,7 +671,7 @@ class JobsRetain(command.Command):
         gov_dat = governance.Governance(url=parsed_args.project_list)
         for repo in gov_dat.get_repos_for_team(parsed_args.team):
             LOG.debug('looking for settings for %s', repo)
-            for entry in project_settings:
+            for idx, entry in enumerate(project_settings):
                 if 'project' not in entry:
                     continue
                 if entry['project'].get('name') == repo:
@@ -694,6 +694,7 @@ class JobsRetain(command.Command):
                 yaml.dump([entry], self.app.stdout)
             else:
                 print('# No settings to retain for {}.\n'.format(repo))
+                del project_settings[idx]
 
         if parsed_args.dry_run:
             LOG.debug('not writing project settings to %s',
