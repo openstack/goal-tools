@@ -30,6 +30,17 @@ log_output "$out_dir" do_team
 enable_tox
 
 echo
+echo "=== Getting storyboard story ==="
+echo
+
+story_id=$(find-story "$goal_url" "$team")
+if [ -z "$story_id" ]; then
+    echo "Could not find story ID for $team for $goal_url"
+    exit 1
+fi
+echo "Story: $story_id"
+
+echo
 echo "=== Updating project-config ==="
 echo
 
@@ -38,12 +49,6 @@ echo
 echo
 echo "=== Cloning $team repositories ==="
 echo
-
-story_id=$(find-story "$goal_url" "$team")
-if [ -z "$story_id" ]; then
-    echo "Could not find story ID for $team for $goal_url"
-    exit 1
-fi
 
 python3-first repos clone "$out_dir" "$team"
 
