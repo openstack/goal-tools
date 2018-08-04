@@ -22,6 +22,7 @@ LOG = logging.getLogger(__name__)
 KEEP = set([
     'translation-jobs',
     'translation-jobs-queens',
+    'translation-jobs-rocky',
 
     'periodic-jobs-with-oslo-master',
 
