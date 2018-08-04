@@ -262,8 +262,7 @@ class TestMergeProjectSettings(base.TestCase):
                 ],
             },
         }
-        in_tree = {
-        }
+        in_tree = comments.CommentedMap()
         project_config = {
             'templates': [
                 'a',

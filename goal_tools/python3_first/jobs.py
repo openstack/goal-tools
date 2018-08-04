@@ -15,6 +15,7 @@ from goal_tools import governance
 from goal_tools.python3_first import projectconfig_ruamellib
 
 from cliff import command
+from ruamel.yaml import comments
 
 LOG = logging.getLogger(__name__)
 
@@ -362,8 +363,8 @@ def merge_pipeline(name, in_tree, updates):
 
 
 def merge_project_settings(in_tree, updates):
-    itp = in_tree.setdefault('project', {})
-    up = updates.get('project', {})
+    itp = in_tree.setdefault('project', comments.CommentedMap())
+    up = updates.get('project', comments.CommentedMap())
     LOG.debug('merging templates')
     templates = itp.get('templates', [])
     for t in up.get('templates', []):
@@ -372,7 +373,7 @@ def merge_project_settings(in_tree, updates):
             templates.append(t)
     if templates and 'templates' not in itp:
         LOG.debug('  saving updates')
-        itp['templates'] = templates
+        itp.insert(0, 'templates', templates)
     for pipeline in up.keys():
         if pipeline == 'templates':
             continue
