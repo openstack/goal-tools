@@ -103,6 +103,7 @@ def get_one_row(change):
     repo = change.get('project')
     url = 'https://review.openstack.org/{}\n'.format(change['_number'])
     status = change.get('status')
+    branch = change.get('branch')
     if status not in ('ABANDONED', 'MERGED'):
         code_review = count_votes(change, 'Code-Review')
         workflow = count_votes(change, 'Workflow')
@@ -112,7 +113,7 @@ def get_one_row(change):
             status = 'negative vote'
         elif code_review.get(1):
             status = 'REVIEWED'
-    return (subject.strip(), repo, status, url)
+    return (subject.strip(), repo, status, url, branch)
 
 
 class PatchesList(lister.Lister):
@@ -159,7 +160,7 @@ class PatchesList(lister.Lister):
                 counts.update({row[2]: 1})
                 yield row
             for status, n in sorted(counts.items()):
-                yield ('', '', status, str(n))
+                yield ('', '', status, str(n), '')
 
-        columns = ('Subject', 'Repo', 'Status', 'URL')
+        columns = ('Subject', 'Repo', 'Status', 'URL', 'Branch')
         return (columns, summarize())
