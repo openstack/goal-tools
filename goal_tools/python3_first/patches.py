@@ -137,10 +137,10 @@ class PatchesList(lister.Lister):
     def take_action(self, parsed_args):
         gov_dat = governance.Governance(url=parsed_args.project_list)
         repos = set(gov_dat.get_repos_for_team(parsed_args.team))
-        LOG.info('filtering on %s', repos)
+        LOG.debug('filtering on %s', repos)
 
         only_open = not parsed_args.all
-        LOG.info('only_open %s', only_open)
+        LOG.debug('only_open %s', only_open)
 
         changes = (
             c for c in all_changes(only_open)
@@ -148,7 +148,7 @@ class PatchesList(lister.Lister):
         )
 
         rows = list(get_one_row(c) for c in changes)
-        LOG.info('rows: %s', len(rows))
+        LOG.debug('rows: %s', len(rows))
 
         columns = ('Subject', 'Repo', 'Status', 'URL')
         return (columns, rows)
