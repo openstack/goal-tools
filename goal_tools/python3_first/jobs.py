@@ -330,7 +330,10 @@ def merge_pipeline(name, in_tree, updates):
             # in order. To keep the file easy to read, we insert keys
             # other than 'jobs' at the start of the map.
             LOG.debug('copying new setting %s', key)
-            in_tree.insert(0, key, updates[key])
+            try:
+                in_tree.insert(0, key, updates[key])
+            except AttributeError:
+                in_tree[key] = updates[key]
         else:
             LOG.debug('updating existing setting %s', key)
             in_tree[key] = updates[key]
@@ -380,8 +383,8 @@ def merge_project_settings(in_tree, updates):
             continue
         new_data = merge_pipeline(
             pipeline,
-            itp.get(pipeline, {}),
-            up.get(pipeline, {}),
+            itp.get(pipeline, comments.CommentedMap()),
+            up.get(pipeline, comments.CommentedMap()),
         )
         if new_data and pipeline not in itp:
             LOG.debug('  saving %s', pipeline)
