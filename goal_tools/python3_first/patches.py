@@ -101,7 +101,7 @@ def format_votes(votes):
 def get_one_row(change):
     subject = change['subject'].rstrip()
     repo = change.get('project')
-    url = 'https://review.openstack.org/{}\n'.format(change['_number'])
+    url = 'https://review.openstack.org/{}'.format(change['_number'])
     status = change.get('status')
     branch = change.get('branch')
     if status not in ('ABANDONED', 'MERGED'):
@@ -113,7 +113,7 @@ def get_one_row(change):
             status = 'negative vote'
         elif code_review.get(1):
             status = 'REVIEWED'
-    return (subject.strip(), repo, status, url, branch)
+    return (subject, repo, status, url, branch)
 
 
 class PatchesList(lister.Lister):
@@ -159,6 +159,7 @@ class PatchesList(lister.Lister):
             for row in rows:
                 counts.update({row[2]: 1})
                 yield row
+            yield ('', '', '', '', '')
             for status, n in sorted(counts.items()):
                 yield ('', '', status, str(n), '')
 
