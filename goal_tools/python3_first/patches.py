@@ -150,5 +150,13 @@ class PatchesList(lister.Lister):
         rows = list(get_one_row(c) for c in changes)
         LOG.debug('rows: %s', len(rows))
 
+        def summarize():
+            counts = collections.Counter()
+            for row in rows:
+                counts.update({row[2]: 1})
+                yield row
+            for status, n in sorted(counts.items()):
+                yield ('', '', status, str(n))
+
         columns = ('Subject', 'Repo', 'Status', 'URL')
-        return (columns, rows)
+        return (columns, summarize())
