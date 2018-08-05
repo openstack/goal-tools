@@ -103,13 +103,16 @@ def get_one_row(change):
     repo = change.get('project')
     url = 'https://review.openstack.org/{}\n'.format(change['_number'])
     status = change.get('status')
-    workflow = count_votes(change, 'Workflow')
-    if workflow.get(-1):
-        status = 'WIP'
-    code_review = count_votes(change, 'Code-Review')
-    if code_review.get(-1) and status != 'MERGED':
-        status = 'negative vote'
-    return (subject, repo, status, url)
+    if status not in ('ABANDONED', 'MERGED'):
+        code_review = count_votes(change, 'Code-Review')
+        workflow = count_votes(change, 'Workflow')
+        if workflow.get(-1):
+            status = 'WIP'
+        elif code_review.get(-1):
+            status = 'negative vote'
+        elif code_review.get(1):
+            status = 'REVIEWED'
+    return (subject.strip(), repo, status, url)
 
 
 class PatchesList(lister.Lister):
