@@ -70,13 +70,13 @@ fi
 
 if ! python3-first -v jobs update "$repo"; then
     echo "No changes"
-    exit 0
+    exit 1
 fi
 
 if ! git -C "$repo" diff --ignore-all-space; then
     echo "No changes other than whitespace"
     git -C "$repo" checkout -- .
-    exit 0
+    exit 1
 fi
 
 git -C "$repo" add .
