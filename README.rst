@@ -125,6 +125,10 @@ Marking the Team "In Progress"
      - openstack/automaton
      ...
 
+   See
+   http://lists.openstack.org/pipermail/openstack-infra/2018-August/006039.html
+   for an example.
+
 Marking the Team "Complete"
 ---------------------------
 
