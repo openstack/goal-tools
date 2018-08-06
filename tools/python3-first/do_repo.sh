@@ -52,8 +52,8 @@ enable_tox
 # trouble is a mis-match between the project setting within the
 # .gitreview file and the actual repo name.
 actual=$(cat $repo/.gitreview  | grep project | cut -f2 -d=)
-expected="$(basename $(dirname $repo))/$(basename $repo).git"
-if [ "$actual" != "$expected" ]; then
+expected="$(basename $(dirname $repo))/$(basename $repo)"
+if [ "$actual" != "$expected" -a "$actual" != "${expected}.git" ]; then
     echo "WARNING: git review -s is likely to fail for $expected because .gitreview says $actual"
     exit 1
 fi
