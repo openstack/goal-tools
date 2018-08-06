@@ -99,12 +99,9 @@ use it while reviewing the other patches.
 Marking the Team "In Progress"
 ------------------------------
 
-1. Use ``update-tasks`` to set the status of the tasks on the story to
-   "review". For example::
-
-     $ cd goal-tools
-     $ .tox/venv/bin/update-tasks --status review 2003250
-
+1. Update the sign-up list on
+   https://etherpad.openstack.org/p/python3-first to add your name or
+   IRC nickname next to the team name.
 2. The Infrastructure team needs to know not to approve changes to job
    configurations for a team while the team's settings are being
    migrated. To inform them, send email to the
@@ -132,8 +129,10 @@ Marking the Team "In Progress"
 Marking the Team "Complete"
 ---------------------------
 
-1. Use ``update-tasks`` to set the status of the tasks on the story to
-   "merged".
+1. Update the sign-up list on
+   https://etherpad.openstack.org/p/python3-first to strike through
+   the line for the team, indicating that the zuul migration is
+   completed.
 2. Reply to the preivous message on the ``openstack-infra`` mailing
    list to announce that the migration for the team is completed.
 
