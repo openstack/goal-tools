@@ -5,12 +5,12 @@ source $bindir/functions
 toolsdir=$(realpath $(dirname $bindir))
 
 function usage {
-    echo "update_project_config.sh WORKDIR TEAM STORY"
+    echo "update_project_config.sh WORKDIR TEAM TASK"
 }
 
 workdir="$1"
 team="$2"
-story="$3"
+task="$3"
 
 if [ -z "$workdir" ]; then
     usage
@@ -22,7 +22,7 @@ if [ -z "$team" ]; then
     exit 1
 fi
 
-if [ -z "$story" ]; then
+if [ -z "$task" ]; then
     usage
     exit 1
 fi
@@ -37,7 +37,8 @@ have been migrated to the git repositories owned by the $team team.
 See the python3-first goal document for details:
 https://governance.openstack.org/tc/goals/stein/python3-first.html
 
-Story: #$story
+Story: #2002586
+Task: #$task
 
 "
 

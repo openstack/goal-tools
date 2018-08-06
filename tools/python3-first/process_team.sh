@@ -4,13 +4,13 @@ bindir=$(dirname $0)
 source $bindir/functions
 
 function usage {
-    echo "process_team.sh WORKDIR TEAM BRANCH STORY"
+    echo "process_team.sh WORKDIR TEAM BRANCH TASK"
 }
 
 workdir=$1
 team="$2"
 branch="$3"
-story="$4"
+task="$4"
 
 if [ -z "$workdir" ]; then
     usage
@@ -27,7 +27,7 @@ if [ -z "$branch" ]; then
     exit 1
 fi
 
-if [ -z "$story" ]; then
+if [ -z "$task" ]; then
     usage
     exit 1
 fi
@@ -40,7 +40,7 @@ for repo in $(ls -d $workdir/*/*); do
     echo "=== $repo @ $branch ==="
     echo
 
-    if $bindir/do_repo.sh "$repo" "$branch" "$story"; then
+    if $bindir/do_repo.sh "$repo" "$branch" "$task"; then
         tracking="$(basename $(dirname $repo))/$(basename $repo)"
         echo "$tracking" >> $workdir/$(basename $branch)
     fi

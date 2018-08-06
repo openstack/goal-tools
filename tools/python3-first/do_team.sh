@@ -30,15 +30,14 @@ log_output "$out_dir" do_team
 enable_tox
 
 echo
-echo "=== Getting storyboard story ==="
+echo "=== Getting storyboard details ==="
 echo
 
-story_id=$(find-story "$goal_url" "$team")
-if [ -z "$story_id" ]; then
-    echo "Could not find story ID for $team for $goal_url"
-    exit 1
-fi
+story_id=2002586
+task_id=$(grep -e "$team" $bindir/taskids.txt | awk '{print $1}')
+
 echo "Story: $story_id"
+echo "Task : $task_id"
 
 echo
 echo "=== Updating extra project settings ==="
@@ -56,10 +55,10 @@ echo
 
 python3-first repos clone "$out_dir" "$team"
 
-$bindir/process_team.sh "$out_dir" "$team" master $story_id
-$bindir/update_doc_job.sh "$out_dir" "$team" $story_id
-$bindir/process_team.sh "$out_dir" "$team" stable/ocata $story_id
-$bindir/process_team.sh "$out_dir" "$team" stable/pike $story_id
-$bindir/process_team.sh "$out_dir" "$team" stable/queens $story_id
-$bindir/process_team.sh "$out_dir" "$team" stable/rocky $story_id
-$bindir/update_project_config.sh "$workdir" "$team" $story_id
+$bindir/process_team.sh "$out_dir" "$team" master $task_id
+$bindir/update_doc_job.sh "$out_dir" "$team" $task_id
+$bindir/process_team.sh "$out_dir" "$team" stable/ocata $task_id
+$bindir/process_team.sh "$out_dir" "$team" stable/pike $task_id
+$bindir/process_team.sh "$out_dir" "$team" stable/queens $task_id
+$bindir/process_team.sh "$out_dir" "$team" stable/rocky $task_id
+$bindir/update_project_config.sh "$workdir" "$team" $task_id

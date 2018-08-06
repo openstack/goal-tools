@@ -1,0 +1,64 @@
+24284 adjutant
+24285 barbican
+24286 blazar
+24287 Chef OpenStack
+24288 cinder
+24289 cloudkitty
+24290 congress
+24291 cyborg
+24292 designate
+24293 Documentation
+24294 dragonflow
+24295 ec2-api
+24296 freezer
+24297 glance
+24298 heat
+24299 horizon
+24300 I18n
+24301 Infrastructure
+24302 ironic
+24303 karbor
+24304 keystone
+24305 kolla
+24306 kuryr
+24307 loci
+24308 magnum
+24309 manila
+24310 masakari
+24311 mistral
+24312 monasca
+24313 murano
+24314 neutron
+24315 nova
+24316 octavia
+24317 OpenStack Charms
+24318 OpenStack-Helm
+24319 OpenStackAnsible
+24320 OpenStackClient
+24321 OpenStackSDK
+24322 oslo
+24323 Packaging-rpm
+24324 PowerVMStackers
+24325 Puppet OpenStack
+24326 qinling
+24327 Quality Assurance
+24328 rally
+24329 RefStack
+24330 Release Management
+24331 requirements
+24332 sahara
+24333 searchlight
+24334 senlin
+24335 solum
+24336 storlets
+24337 swift
+24338 tacker
+24339 Telemetry
+24340 tricircle
+24341 tripleo
+24342 trove
+24343 vitrage
+24344 watcher
+24345 winstackers
+24346 zaqar
+24347 zun
