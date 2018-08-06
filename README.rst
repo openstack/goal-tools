@@ -99,9 +99,9 @@ use it while reviewing the other patches.
 Marking the Team "In Progress"
 ------------------------------
 
-1. Update the sign-up list on
-   https://etherpad.openstack.org/p/python3-first to add your name or
-   IRC nickname next to the team name.
+1. Assign yourself to the task from
+   https://storyboard.openstack.org/#!/story/2002586 for the team you
+   are working on and set the status to "Review".
 2. The Infrastructure team needs to know not to approve changes to job
    configurations for a team while the team's settings are being
    migrated. To inform them, send email to the
@@ -129,10 +129,9 @@ Marking the Team "In Progress"
 Marking the Team "Complete"
 ---------------------------
 
-1. Update the sign-up list on
-   https://etherpad.openstack.org/p/python3-first to strike through
-   the line for the team, indicating that the zuul migration is
-   completed.
+1. Update the sign-up task from
+   https://storyboard.openstack.org/#!/story/2002586 and set the
+   status to "Merged".
 2. Reply to the preivous message on the ``openstack-infra`` mailing
    list to announce that the migration for the team is completed.
 
