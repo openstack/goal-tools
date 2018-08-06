@@ -96,6 +96,43 @@ use it while reviewing the other patches.
   $ cd ../Output/Documentation/openstack-infra/project-config
   $ git review
 
+Marking the Team "In Progress"
+------------------------------
+
+1. Use ``update-tasks`` to set the status of the tasks on the story to
+   "review". For example::
+
+     $ cd goal-tools
+     $ .tox/venv/bin/update-tasks --status review 2003250
+
+2. The Infrastructure team needs to know not to approve changes to job
+   configurations for a team while the team's settings are being
+   migrated. To inform them, send email to the
+   ``openstack-infra@lists.openstack.org`` list. The ``migration
+   announce`` command will build a message body containing all of the
+   repository names.::
+
+     $ .tox/venv/bin/python3-first migration announce Oslo
+
+     The Zuul project settings for the Oslo repositories
+     has begun. Please do not approve any changes to
+     openstack-infra/project-config/zuul.d/projects.yaml for
+     the following repositories:
+
+     - openstack-dev/cookiecutter
+     - openstack-dev/oslo-cookiecutter
+     - openstack-dev/pbr
+     - openstack/automaton
+     ...
+
+Marking the Team "Complete"
+---------------------------
+
+1. Use ``update-tasks`` to set the status of the tasks on the story to
+   "merged".
+2. Reply to the preivous message on the ``openstack-infra`` mailing
+   list to announce that the migration for the team is completed.
+
 Tools
 -----
 
