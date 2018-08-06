@@ -87,9 +87,9 @@ The project-config patch
 the settings from ``openstack-infra/project-config`` for all of the
 repos for a team. ``propose.sh`` will not submit the patch, though,
 because we do not want it to accidentally be approved before the jobs
-are added in each repository. You can either propose it early and mark
-it as a work-in-progress by setting the Workflow flag to -1, or you
-can wait and propose it after the other patches are merged.
+are added in each repository. You should propose it early and mark it
+as a work-in-progress by setting the Workflow flag to -1 so teams can
+use it while reviewing the other patches.
 
 ::
 
