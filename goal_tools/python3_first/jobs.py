@@ -747,6 +747,27 @@ def update_docs_job(project):
         changed = True
     except ValueError:
         pass
+    # Look through the pipelines for 'build-openstack-sphinx-docs'
+    # with required-projects and change the job name to
+    # 'openstack-tox-docs'.
+    for pipeline, pipeline_data in proj_data.items():
+        if pipeline == 'templates':
+            continue
+        if not isinstance(pipeline_data, dict):
+            continue
+        LOG.info('looking at %s pipeline', pipeline)
+        for job in pipeline_data.get('jobs', []):
+            if not isinstance(job, dict):
+                continue
+            job_name = list(job.keys())[0]
+            if job_name != 'build-openstack-sphinx-docs':
+                continue
+            LOG.info('updating job %s', job)
+            job_data = copy.deepcopy(job[job_name])
+            job['openstack-tox-docs'] = job_data
+            del job[job_name]
+            LOG.info('new job %s', job)
+            changed = True
     return changed
 
 
