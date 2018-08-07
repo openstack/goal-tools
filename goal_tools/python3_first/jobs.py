@@ -37,6 +37,7 @@ KEEP = set([
     'publish-to-pypi-horizon',
     'publish-to-pypi-neutron',
     'publish-xstatic-to-pypi',
+    'nodejs4-publish-to-npm',
 
     'noop-jobs',
 ])
