@@ -3,6 +3,10 @@
 bindir=$(dirname $0)
 source $bindir/functions
 
+echo
+echo "=== process team $2 ==="
+echo
+
 echo $0 $*
 echo
 

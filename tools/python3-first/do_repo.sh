@@ -51,6 +51,8 @@ Task: #$task
 
 enable_tox
 
+set -x
+
 # NOTE(dhellmann): "git review -s" will just hang waiting for input if
 # there is a problem setting up the gerrit remote. One cause of such
 # trouble is a mis-match between the project setting within the
