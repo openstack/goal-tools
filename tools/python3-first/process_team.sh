@@ -40,6 +40,10 @@ for repo in $(ls -d $workdir/*/*); do
     echo "=== $repo @ $branch ==="
     echo
 
+    # Create the branch tracking file, since some other tools assume
+    # it exists. Having it empty is fine.
+    touch $workdir/$(basename $branch)
+
     if $bindir/do_repo.sh "$repo" "$branch" "$task"; then
         tracking="$(basename $(dirname $repo))/$(basename $repo)"
         echo "$tracking" >> $workdir/$(basename $branch)
