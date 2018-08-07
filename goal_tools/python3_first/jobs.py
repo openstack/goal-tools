@@ -529,10 +529,14 @@ class JobsUpdate(command.Command):
 
 
 def find_jobs_to_retain(project):
+    LOG.debug('finding jobs to retain')
     for queue, value in list(project.items()):
         if not isinstance(value, dict):
             continue
         if queue == 'templates':
+            continue
+        if queue in ('pre-release', 'release'):
+            LOG.info('keeping all of %s queue', queue)
             continue
         if 'jobs' not in value:
             continue
