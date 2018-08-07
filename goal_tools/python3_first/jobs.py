@@ -512,7 +512,7 @@ class JobsUpdate(command.Command):
             in_tree_settings.append(in_tree_project)
 
         LOG.info('# {} @ {}'.format(repo, branch))
-        yaml.dump([in_tree_project], self.app.stdout)
+        # yaml.dump([in_tree_project], self.app.stdout)
 
         if not in_tree_file:
             in_tree_file = os.path.join(
@@ -791,7 +791,7 @@ class JobsSwitchDocs(command.Command):
 
         LOG.info('# {} switch docs jobs'.format(repo))
         yaml = projectconfig_ruamellib.YAML()
-        yaml.dump([in_tree_project], self.app.stdout)
+        # yaml.dump([in_tree_project], self.app.stdout)
         LOG.info('updating %s', in_tree_file)
         with open(in_tree_file, 'w', encoding='utf-8') as f:
             yaml.dump(in_tree_settings, f)
@@ -844,7 +844,7 @@ class JobsAddPy36(command.Command):
 
         LOG.info('# {} add py36 jobs'.format(repo))
         yaml = projectconfig_ruamellib.YAML()
-        yaml.dump([in_tree_project], self.app.stdout)
+        # yaml.dump([in_tree_project], self.app.stdout)
         LOG.info('updating %s', in_tree_file)
         with open(in_tree_file, 'w', encoding='utf-8') as f:
             yaml.dump(in_tree_settings, f)
