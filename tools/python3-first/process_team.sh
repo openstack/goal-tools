@@ -3,6 +3,9 @@
 bindir=$(dirname $0)
 source $bindir/functions
 
+echo $0 $*
+echo
+
 function usage {
     echo "process_team.sh WORKDIR TEAM BRANCH TASK"
 }

@@ -4,6 +4,9 @@ bindir=$(dirname $0)
 source $bindir/functions
 toolsdir=$(realpath $(dirname $bindir))
 
+echo $0 $*
+echo
+
 function usage {
     echo "update_project_config.sh WORKDIR TEAM TASK"
 }

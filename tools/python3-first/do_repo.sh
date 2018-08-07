@@ -3,6 +3,9 @@
 bindir=$(dirname $0)
 source $bindir/functions
 
+echo $0 $*
+echo
+
 function usage {
     echo "do_repo.sh REPO_DIR BRANCH TASK"
 }
