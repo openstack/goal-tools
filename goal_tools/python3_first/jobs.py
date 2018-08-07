@@ -805,6 +805,8 @@ class JobsSwitchPackaging(command.Command):
         'publish-to-pypi',
         'publish-to-pypi-horizon',
         'publish-to-pypi-neutron',
+        'publish-to-pypi-quietly',
+        'publish-xstatic-to-pypi',
         'release-openstack-server',
     ]
 
