@@ -36,6 +36,7 @@ KEEP = set([
     'publish-to-pypi-quietly',
     'publish-to-pypi-horizon',
     'publish-to-pypi-neutron',
+    'publish-xstatic-to-pypi',
 
     'noop-jobs',
 ])
