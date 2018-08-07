@@ -729,16 +729,24 @@ class JobsRetain(command.Command):
 
 
 def update_docs_job(project):
-    "replace old documentation job with new version"
+    "replace old documentation jobs with new version"
+    proj_data = project.get('project', {})
+    templates = proj_data.get('templates', [])
+    LOG.info('found templates: %s', templates)
+    changed = False
     try:
-        proj_data = project.get('project', {})
-        templates = proj_data.get('templates', [])
-        LOG.info('found templates: %s', templates)
         idx = templates.index('publish-openstack-sphinx-docs')
         templates[idx] = 'publish-openstack-docs-pti'
-        return True
+        changed = True
     except ValueError:
-        return False
+        pass
+    try:
+        idx = templates.index('release-notes-jobs')
+        templates[idx] = 'release-notes-jobs-python3'
+        changed = True
+    except ValueError:
+        pass
+    return changed
 
 
 class JobsSwitchDocs(command.Command):
