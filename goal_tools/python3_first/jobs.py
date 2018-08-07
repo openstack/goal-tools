@@ -383,6 +383,9 @@ def merge_project_settings(in_tree, updates):
     for pipeline in up.keys():
         if pipeline == 'templates':
             continue
+        if pipeline in ('pre-release', 'release'):
+            LOG.info('  skipping %s pipeline', pipeline)
+            continue
         new_data = merge_pipeline(
             pipeline,
             itp.get(pipeline, comments.CommentedMap()),
