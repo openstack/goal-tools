@@ -796,6 +796,59 @@ class JobsSwitchDocs(command.Command):
             yaml.dump(in_tree_settings, f)
 
 
+class JobsAddPy36(command.Command):
+    "update the in-tree project settings to include python3.6 tests"
+
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument(
+            '--default-zuul-file',
+            default='.zuul.yaml',
+            help='the default file to create when one does not exist',
+        )
+        parser.add_argument(
+            'repo_dir',
+            help='the repository location',
+        )
+        return parser
+
+    def take_action(self, parsed_args):
+        LOG.debug('determining repository name from .gitreview')
+        gitreview_filename = os.path.join(parsed_args.repo_dir, '.gitreview')
+        cp = configparser.ConfigParser()
+        cp.read(gitreview_filename)
+        gerrit = cp['gerrit']
+        repo = gerrit['project']
+        if repo.endswith('.git'):
+            repo = repo[:-4]
+        LOG.info('working on %s', repo)
+
+        in_repo = find_project_settings_in_repo(parsed_args.repo_dir)
+        in_tree_file, in_tree_project, in_tree_settings = in_repo
+        if not in_tree_file:
+            raise RuntimeError('Could not find project settings in {}'.format(
+                parsed_args.repo_dir))
+
+        changed = False
+        templates = in_tree_project['project'].get('templates', [])
+        supports_python = 'openstack-python35-jobs' in templates
+        tests_py36 = 'openstack-python36-jobs' in templates
+        if supports_python and not tests_py36:
+            templates.append('openstack-python36-jobs')
+            changed = True
+
+        if not changed:
+            LOG.info('No updates needed for %s', repo)
+            return 1
+
+        LOG.info('# {} add py36 jobs'.format(repo))
+        yaml = projectconfig_ruamellib.YAML()
+        yaml.dump(in_tree_settings, self.app.stdout)
+        LOG.info('updating %s', in_tree_file)
+        with open(in_tree_file, 'w', encoding='utf-8') as f:
+            yaml.dump(in_tree_settings, f)
+
+
 class JobsSwitchPackaging(command.Command):
     "update the project-config settings for the new packaging job"
 

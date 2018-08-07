@@ -7,7 +7,7 @@ echo $0 $*
 echo
 
 function usage {
-    echo "update_doc_job.sh WORKDIR TEAM TASK"
+    echo "add_py36_job.sh WORKDIR TEAM TASK"
 }
 
 workdir=$1
@@ -31,11 +31,10 @@ fi
 
 enable_tox
 
-commit_message="switch documentation job to new PTI
+commit_message="add python 3.6 unit test job
 
-This is a mechanically generated patch to switch the documentation
-jobs to use the new PTI versions of the jobs as part of the
-python3-first goal.
+This is a mechanically generated patch to add a unit test job running
+under Python 3.6 as part of the python3-first goal.
 
 See the python3-first goal document for details:
 https://governance.openstack.org/tc/goals/stein/python3-first.html
@@ -54,7 +53,7 @@ for repo in $(cat "$tracking_file"); do
 
     repo_dir="$workdir/$repo"
     git -C "$repo_dir" checkout python3-first-master
-    if python3-first -v --debug jobs switch docs "$repo_dir"
+    if python3-first -v --debug jobs add py36 "$repo_dir"
     then
         git -C "$repo_dir" add .
         git -C "$repo_dir" commit -m "$commit_message"
