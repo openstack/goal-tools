@@ -60,7 +60,7 @@ echo
 
 git -C "$project_config_dir" checkout -b "$branch"
 
-python3-first jobs retain --project-config-dir "$project_config_dir" "$team"
+python3-first -v --debug jobs retain --project-config-dir "$project_config_dir" "$team"
 
 git -C "$project_config_dir" add zuul.d
 git -C "$project_config_dir" commit -m "$commit_message"

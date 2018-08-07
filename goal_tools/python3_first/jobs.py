@@ -479,8 +479,9 @@ class JobsUpdate(command.Command):
             if entry['project'].get('name') == repo:
                 break
         else:
-            raise ValueError('Could not find {} in {}'.format(
+            LOG.warning('Could not find {} in {}'.format(
                 repo, project_filename))
+            return 1
 
         # Remove the items that need to stay in project-config.
         find_templates_to_extract(entry['project'], zuul_templates, zuul_jobs)
