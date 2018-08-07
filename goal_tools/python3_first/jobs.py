@@ -858,6 +858,27 @@ class JobsAddPy36(command.Command):
         if supports_python and not tests_py36:
             templates.append('openstack-python36-jobs')
             changed = True
+        # Look through the pipelines for 'openstack-tox-py35'
+        # and copy any job settings to 'openstack-tox-py36'.
+        for pipeline, pipeline_data in in_tree_project['project'].items():
+            if pipeline == 'templates':
+                continue
+            if not isinstance(pipeline_data, dict):
+                continue
+            LOG.info('looking at %s pipeline', pipeline)
+            jobs = pipeline_data.get('jobs', [])
+            for job in jobs:
+                if not isinstance(job, dict):
+                    continue
+                job_name = list(job.keys())[0]
+                if job_name == 'openstack-tox-py35':
+                    break
+            else:
+                continue
+            LOG.info('updating job %s', job)
+            job_data = copy.deepcopy(job[job_name])
+            jobs.append({'openstack-tox-py36': job_data})
+            changed = True
 
         if not changed:
             LOG.info('No updates needed for %s', repo)
