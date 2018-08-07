@@ -400,6 +400,29 @@ def merge_project_settings(in_tree, updates):
     return in_tree
 
 
+def normalize_project_settings(entry):
+    project = entry['project']
+    for pipeline, data in project.items():
+        if 'jobs' not in data:
+            LOG.debug('not normalizing %s, no jobs', pipeline)
+            continue
+        LOG.debug('normalizing %s', pipeline)
+        for job in data['jobs']:
+            if not isinstance(job, dict):
+                continue
+            LOG.debug(job)
+            # Ensure the required-projects list is in fact a list.
+            job_settings = list(job.values())[0]
+            if 'required-projects' not in job_settings:
+                LOG.debug('no required-projects')
+                continue
+            if not isinstance(job_settings['required-projects'], list):
+                LOG.debug('changed required-projects to a list')
+                job_settings['required-projects'] = [
+                    job_settings['required-projects']
+                ]
+
+
 class JobsUpdate(command.Command):
     "update the in-tree project settings"
 
@@ -505,6 +528,8 @@ class JobsUpdate(command.Command):
             in_tree_project,
             entry,
         )
+
+        normalize_project_settings(in_tree_project)
 
         if not in_tree_project.get('project'):
             LOG.info('no settings to write')
