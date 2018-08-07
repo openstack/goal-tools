@@ -918,6 +918,7 @@ class JobsSwitchPackaging(command.Command):
         'publish-to-pypi-quietly',
         'publish-xstatic-to-pypi',
         'release-openstack-server',
+        'release-openstack-python-without-pypi',
     ]
 
     def take_action(self, parsed_args):
