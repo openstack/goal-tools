@@ -59,9 +59,9 @@ actual=$(cat $repo/.gitreview  | grep project | cut -f2 -d=)
 expected="$(basename $(dirname $repo))/$(basename $repo)"
 if [ "$actual" != "$expected" -a "$actual" != "${expected}.git" ]; then
     echo "WARNING: git review -s is likely to fail for $expected because .gitreview says $actual"
-    exit 1
+else
+    git -C "$repo" review -s
 fi
-git -C "$repo" review -s
 
 new_branch=python3-first-$(basename $branch)
 
