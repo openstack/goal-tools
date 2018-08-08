@@ -883,7 +883,8 @@ class JobsAddPy36(command.Command):
         supports_python = 'openstack-python35-jobs' in templates
         tests_py36 = 'openstack-python36-jobs' in templates
         if supports_python and not tests_py36:
-            templates.append('openstack-python36-jobs')
+            idx = templates.index('openstack-python35-jobs')
+            templates.insert(idx + 1, 'openstack-python36-jobs')
             changed = True
         # Look through the pipelines for 'openstack-tox-py35'
         # and copy any job settings to 'openstack-tox-py36'.
