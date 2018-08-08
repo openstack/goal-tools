@@ -895,7 +895,7 @@ class JobsAddPy36(command.Command):
                 continue
             LOG.info('looking at %s pipeline', pipeline)
             jobs = pipeline_data.get('jobs', [])
-            for job in jobs:
+            for idx, job in enumerate(jobs):
                 if not isinstance(job, dict):
                     continue
                 job_name = list(job.keys())[0]
@@ -905,7 +905,7 @@ class JobsAddPy36(command.Command):
                 continue
             LOG.info('updating job %s', job)
             job_data = copy.deepcopy(job[job_name])
-            jobs.append({'openstack-tox-py36': job_data})
+            jobs.insert(idx + 1, {'openstack-tox-py36': job_data})
             changed = True
 
         if not changed:
