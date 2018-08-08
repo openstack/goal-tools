@@ -41,10 +41,16 @@ function show_changes {
             fi
             (cd $repo &&
                     git checkout python3-first-$branch 2>/dev/null &&
-                    echo $repo $branch &&
+                    echo "CHANGES IN $repo $branch" &&
+                    echo &&
                     git log --patch $origin..)
         done
     done
+    (cd openstack-infra/project-config &&
+            git checkout python3-first-$(basename $out_dir) >/dev/null &&
+            echo "CHANGES IN openstack-infra/project-config" &&
+            echo &&
+            git log --patch origin/master..)
 }
 
 cd $workdir/$team
