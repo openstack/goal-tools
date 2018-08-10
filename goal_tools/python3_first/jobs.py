@@ -22,6 +22,8 @@ LOG = logging.getLogger(__name__)
 # Items we know we need to keep in project-config.
 KEEP = set([
     'translation-jobs',
+    'translation-jobs-master-only',
+    'translation-jobs-master-stable',
     'translation-jobs-pike',
     'translation-jobs-queens',
     'translation-jobs-rocky',
