@@ -38,6 +38,11 @@ To set up a workspace to use the python3-first tools::
 Preparing Patches
 -----------------
 
+Before preparing any patches for a team, make sure that all of the
+changes to modify the .gitreview file for the stable/rocky branches in
+the repositories have been merged. Failing to do this will mean some
+rocky branch changes will be proposed against master.
+
 To prepare the patches for one team, use ``do_team.sh``::
 
   $ cd goal-tools
