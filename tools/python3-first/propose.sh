@@ -61,12 +61,19 @@ read ignoreme
 
 for branch in $BRANCHES
 do
+    if [ $branch = master ]; then
+        target=master
+    else
+        target=stable/$branch
+    fi
     for repo in $(cat $branch)
     do
         echo
         echo $repo $branch
+        set -x
         (cd $repo &&
                 git checkout python3-first-$branch &&
-                git review -y -t python3-first)
+                git review -y -t python3-first $target)
+        set +x
     done
 done
