@@ -102,18 +102,25 @@ def get_one_row(change):
     subject = change['subject'].rstrip()
     repo = change.get('project')
     url = 'https://review.openstack.org/{}'.format(change['_number'])
-    status = change.get('status')
+    w_status = change.get('status')
     branch = change.get('branch')
-    if status not in ('ABANDONED', 'MERGED'):
+    if w_status not in ('ABANDONED', 'MERGED'):
         code_review = count_votes(change, 'Code-Review')
+        verified = count_votes(change, 'Verified')
+        if verified.get(-1):
+            v_status = 'FAILED'
+        elif verified.get(1):
+            v_status = 'PASS'
+        else:
+            v_status = 'UNKNOWN'
         workflow = count_votes(change, 'Workflow')
         if workflow.get(-1):
-            status = 'WIP'
+            w_status = 'WIP'
         elif code_review.get(-1):
-            status = 'negative vote'
+            w_status = 'negative vote'
         elif code_review.get(1):
-            status = 'REVIEWED'
-    return (subject, repo, status, url, branch)
+            w_status = 'REVIEWED'
+    return (subject, repo, v_status, w_status, url, branch)
 
 
 class PatchesList(lister.Lister):
@@ -157,11 +164,11 @@ class PatchesList(lister.Lister):
         def summarize():
             counts = collections.Counter()
             for row in rows:
-                counts.update({row[2]: 1})
+                counts.update({row[3]: 1})
                 yield row
-            yield ('', '', '', '', '')
+            yield ('', '', '', '', '', '')
             for status, n in sorted(counts.items()):
-                yield ('', '', status, str(n), '')
+                yield ('', '', '', status, str(n), '')
 
-        columns = ('Subject', 'Repo', 'Status', 'URL', 'Branch')
+        columns = ('Subject', 'Repo', 'Tests', 'Workflow', 'URL', 'Branch')
         return (columns, summarize())
