@@ -140,6 +140,10 @@ class PatchesList(lister.Lister):
             help='show all patches',
         )
         parser.add_argument(
+            '--repo',
+            help='only the patches for the given repository',
+        )
+        parser.add_argument(
             'team',
             help='the team name',
         )
@@ -157,6 +161,12 @@ class PatchesList(lister.Lister):
             c for c in all_changes(only_open)
             if c.get('project') in repos
         )
+
+        if parsed_args.repo:
+            changes = (
+                c for c in changes
+                if c.get('project') == parsed_args.repo
+            )
 
         rows = list(get_one_row(c) for c in changes)
         LOG.debug('rows: %s', len(rows))
