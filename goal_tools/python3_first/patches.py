@@ -116,6 +116,8 @@ def get_one_row(change):
         workflow = count_votes(change, 'Workflow')
         if workflow.get(-1):
             w_status = 'WIP'
+        elif workflow.get(1):
+            w_status = 'APPROVED'
         elif code_review.get(-1):
             w_status = 'negative vote'
         elif code_review.get(1):
