@@ -171,6 +171,8 @@ class PatchesList(lister.Lister):
         rows = list(get_one_row(c) for c in changes)
         LOG.debug('rows: %s', len(rows))
 
+        rows = sorted(rows, key=lambda r: (r[1], r[5], r[4]))
+
         def summarize():
             counts = collections.Counter()
             for row in rows:
