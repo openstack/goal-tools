@@ -146,22 +146,26 @@ class PatchesList(lister.Lister):
         )
         parser.add_argument(
             'team',
+            nargs='?',
             help='the team name',
         )
         return parser
 
     def take_action(self, parsed_args):
-        gov_dat = governance.Governance(url=parsed_args.project_list)
-        repos = set(gov_dat.get_repos_for_team(parsed_args.team))
-        LOG.debug('filtering on %s', repos)
 
         only_open = not parsed_args.all
         LOG.debug('only_open %s', only_open)
 
-        changes = (
-            c for c in all_changes(only_open)
-            if c.get('project') in repos
-        )
+        changes = all_changes(only_open)
+
+        if parsed_args.team:
+            gov_dat = governance.Governance(url=parsed_args.project_list)
+            repos = set(gov_dat.get_repos_for_team(parsed_args.team))
+            LOG.debug('filtering on %s', repos)
+            changes = (
+                c for c in changes
+                if c.get('project') in repos
+            )
 
         if parsed_args.repo:
             changes = (
