@@ -103,6 +103,7 @@ def get_one_row(change):
     repo = change.get('project')
     url = 'https://review.openstack.org/{}'.format(change['_number'])
     w_status = change.get('status')
+    v_status = 'UNKNOWN'
     branch = change.get('branch')
     if w_status not in ('ABANDONED', 'MERGED'):
         code_review = count_votes(change, 'Code-Review')
@@ -111,8 +112,6 @@ def get_one_row(change):
             v_status = 'FAILED'
         elif verified.get(1):
             v_status = 'PASS'
-        else:
-            v_status = 'UNKNOWN'
         workflow = count_votes(change, 'Workflow')
         if workflow.get(-1):
             w_status = 'WIP'
