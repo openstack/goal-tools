@@ -45,7 +45,7 @@ function list_changes {
     done
 }
 
-cd $workdir/$team
+cd "$out_dir"
 
 echo
 list_changes
