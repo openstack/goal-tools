@@ -186,6 +186,8 @@ class PatchesList(lister.Lister):
             yield ('', '', '', '', '', '')
             for status, n in sorted(counts.items()):
                 yield ('', '', '', status, str(n), '')
+            total = sum(counts.values())
+            yield ('', '', '', 'TOTAL', str(total), '')
 
         columns = ('Subject', 'Repo', 'Tests', 'Workflow', 'URL', 'Branch')
         return (columns, summarize())
