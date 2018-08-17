@@ -29,6 +29,8 @@ if [ -z "$task" ]; then
     exit 1
 fi
 
+set -e
+
 enable_tox
 
 commit_message="switch documentation job to new PTI

@@ -39,6 +39,11 @@ task_id=$(grep -e "$team" $bindir/taskids.txt | awk '{print $1}')
 echo "Story: $story_id"
 echo "Task : $task_id"
 
+if [ -z "$task_id" ]; then
+    echo "Could not find task for $team"
+    exit 1
+fi
+
 echo
 echo "=== Updating extra project settings ==="
 echo
@@ -53,7 +58,9 @@ echo
 echo "=== Cloning $team repositories ==="
 echo
 
-python3-first repos clone "$out_dir" "$team"
+set -e
+
+python3-first -v --debug repos clone "$out_dir" "$team"
 
 $bindir/process_team.sh "$out_dir" "$team" master $task_id
 $bindir/update_doc_job.sh "$out_dir" "$team" $task_id

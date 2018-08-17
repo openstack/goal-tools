@@ -81,16 +81,22 @@ else
 
     if ! git -C "$repo" checkout -q origin/$branch ; then
         echo "Could not check out origin/$branch in $repo"
-        exit 1
+        exit 2
     fi
 
     git -C "$repo" checkout -b $new_branch
 fi
 
 
-if ! python3-first -v --debug jobs update "$repo"; then
+python3-first -v --debug jobs update "$repo"
+RC=$?
+if [ $RC -eq 2 ]; then
     echo "No changes"
     exit 1
+fi
+if [ $RC -ne 0 ]; then
+    echo "FAIL"
+    exit $RC
 fi
 
 if ! git -C "$repo" diff --ignore-all-space; then

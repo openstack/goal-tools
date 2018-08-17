@@ -514,7 +514,7 @@ class JobsUpdate(command.Command):
         else:
             LOG.warning('Could not find {} in {}'.format(
                 repo, project_filename))
-            return 1
+            return 2
 
         # Remove the items that need to stay in project-config.
         find_templates_to_extract(entry['project'], zuul_templates, zuul_jobs)
@@ -535,7 +535,7 @@ class JobsUpdate(command.Command):
 
         if not in_tree_project.get('project'):
             LOG.info('no settings to write')
-            return 1
+            return 2
 
         if not in_tree_settings:
             in_tree_settings.append(in_tree_project)
@@ -837,7 +837,7 @@ class JobsSwitchDocs(command.Command):
 
         if not changed:
             LOG.info('No updates needed for %s', repo)
-            return 1
+            return 2
 
         LOG.info('# {} switch docs jobs'.format(repo))
         yaml = projectconfig_ruamellib.YAML()
@@ -912,7 +912,7 @@ class JobsAddPy36(command.Command):
 
         if not changed:
             LOG.info('No updates needed for %s', repo)
-            return 1
+            return 2
 
         LOG.info('# {} add py36 jobs'.format(repo))
         yaml = projectconfig_ruamellib.YAML()
@@ -966,7 +966,7 @@ class JobsAddLibForwardTestingPy3(command.Command):
 
         if not changed:
             LOG.info('No updates needed for %s', repo)
-            return 1
+            return 2
 
         LOG.info('# {} add lib-forward-testing-python3 jobs'.format(repo))
         yaml = projectconfig_ruamellib.YAML()

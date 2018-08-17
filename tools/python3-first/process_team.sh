@@ -51,8 +51,15 @@ for repo in $(ls -d $workdir/*/*); do
     # it exists. Having it empty is fine.
     touch $workdir/$(basename $branch)
 
-    if $bindir/do_repo.sh "$repo" "$branch" "$task"; then
+    $bindir/do_repo.sh "$repo" "$branch" "$task"
+    RC=$?
+    if [ $RC -eq 0 ]; then
         tracking="$(basename $(dirname $repo))/$(basename $repo)"
         echo "$tracking" >> $workdir/$(basename $branch)
+    elif [ $RC -ne 2 ]; then
+        echo "FAIL"
+        exit $RC
     fi
 done
+
+exit 0
