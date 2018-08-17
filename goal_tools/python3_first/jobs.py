@@ -55,6 +55,8 @@ BRANCHES = [
     'master',
 ]
 
+DICT_TYPES = (dict, comments.CommentedMap)
+
 
 def branches_for_job(job_params):
     branch_patterns = job_params.get('branches', [])
@@ -70,7 +72,7 @@ def branches_for_job(job_params):
 def filter_jobs_on_branch(project, branch):
     LOG.debug('filtering on %s', branch)
     for queue, value in list(project.items()):
-        if not isinstance(value, dict):
+        if not isinstance(value, DICT_TYPES):
             continue
         if queue == 'templates':
             continue
@@ -81,7 +83,7 @@ def filter_jobs_on_branch(project, branch):
 
         keep = []
         for job in value['jobs']:
-            if not isinstance(job, dict):
+            if not isinstance(job, DICT_TYPES):
                 keep.append(job)
                 continue
 
@@ -158,7 +160,7 @@ def find_templates_only_on_master(project, zuul_templates, zuul_jobs):
         for queue_name in template_settings.keys():
 
             queue = template_settings[queue_name]
-            if not isinstance(queue, dict):
+            if not isinstance(queue, DICT_TYPES):
                 continue
 
             for job in queue.get('jobs', []):
@@ -348,12 +350,12 @@ def merge_pipeline(name, in_tree, updates):
     job_names = set()
     jobs = in_tree.get('jobs', [])
     for job in jobs:
-        if isinstance(job, dict):
+        if isinstance(job, DICT_TYPES):
             job_names.add(list(job.keys())[0])
         else:
             job_names.add(job)
     for job in updates.get('jobs', []):
-        if isinstance(job, dict):
+        if isinstance(job, DICT_TYPES):
             job_name = list(job.keys())[0]
             job_info = list(job.values())[0]
         else:
@@ -410,7 +412,7 @@ def normalize_project_settings(entry):
             continue
         LOG.debug('normalizing %s', pipeline)
         for job in data['jobs']:
-            if not isinstance(job, dict):
+            if not isinstance(job, DICT_TYPES):
                 continue
             LOG.debug(job)
             # Ensure the required-projects list is in fact a list.
@@ -561,7 +563,7 @@ class JobsUpdate(command.Command):
 def find_jobs_to_retain(project):
     LOG.debug('finding jobs to retain')
     for queue, value in list(project.items()):
-        if not isinstance(value, dict):
+        if not isinstance(value, DICT_TYPES):
             continue
         if queue == 'templates':
             continue
@@ -575,7 +577,7 @@ def find_jobs_to_retain(project):
 
         keep = []
         for job in value['jobs']:
-            if not isinstance(job, dict):
+            if not isinstance(job, DICT_TYPES):
                 continue
 
             job_name = list(job.keys())[0]
@@ -632,7 +634,7 @@ def need_to_keep(entry):
     if project.get('templates'):
         return True
     for key, value in project.items():
-        if not isinstance(value, dict):
+        if not isinstance(value, DICT_TYPES):
             continue
         if 'jobs' in value:
             return True
@@ -782,11 +784,11 @@ def update_docs_job(project):
     for pipeline, pipeline_data in proj_data.items():
         if pipeline == 'templates':
             continue
-        if not isinstance(pipeline_data, dict):
+        if not isinstance(pipeline_data, DICT_TYPES):
             continue
         LOG.info('looking at %s pipeline', pipeline)
         for job in pipeline_data.get('jobs', []):
-            if not isinstance(job, dict):
+            if not isinstance(job, DICT_TYPES):
                 continue
             job_name = list(job.keys())[0]
             if job_name != 'build-openstack-sphinx-docs':
@@ -893,12 +895,12 @@ class JobsAddPy36(command.Command):
         for pipeline, pipeline_data in in_tree_project['project'].items():
             if pipeline == 'templates':
                 continue
-            if not isinstance(pipeline_data, dict):
+            if not isinstance(pipeline_data, DICT_TYPES):
                 continue
             LOG.info('looking at %s pipeline', pipeline)
             jobs = pipeline_data.get('jobs', [])
             for idx, job in enumerate(jobs):
-                if not isinstance(job, dict):
+                if not isinstance(job, DICT_TYPES):
                     continue
                 job_name = list(job.keys())[0]
                 if job_name == 'openstack-tox-py35':
