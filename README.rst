@@ -71,6 +71,9 @@ the diffs for all of the patches created.
 Proposing Patches
 -----------------
 
+BEFORE PROPOSING ANY PATCHES FOR A TEAM, talk to the PTL of that team
+via email or IRC to ensure they are ready to receive them.
+
 Review the log file created by ``do_team.sh`` before proposing the
 patches to ensure that there are no extraneous changes (the YAML
 parser does not produce exactly the same format output as input, and
