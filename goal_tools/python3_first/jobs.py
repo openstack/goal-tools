@@ -56,11 +56,12 @@ BRANCHES = [
 ]
 
 DICT_TYPES = (dict, comments.CommentedMap)
+SEQ_TYPES = (list, comments.CommentedSeq)
 
 
 def branches_for_job(job_params):
     branch_patterns = job_params.get('branches', [])
-    if not isinstance(branch_patterns, list):
+    if not isinstance(branch_patterns, SEQ_TYPES):
         branch_patterns = [branch_patterns]
     for pattern in branch_patterns:
         for branch in BRANCHES:
@@ -420,7 +421,7 @@ def normalize_project_settings(entry):
             if 'required-projects' not in job_settings:
                 LOG.debug('no required-projects')
                 continue
-            if not isinstance(job_settings['required-projects'], list):
+            if not isinstance(job_settings['required-projects'], SEQ_TYPES):
                 LOG.debug('changed required-projects to a list')
                 job_settings['required-projects'] = [
                     job_settings['required-projects']
