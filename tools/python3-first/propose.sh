@@ -56,7 +56,7 @@ echo
 echo "About to propose $nchanges changes"
 
 echo
-echo "Press return to continue"
+echo "Press enter to continue"
 read ignoreme
 
 for branch in $BRANCHES
