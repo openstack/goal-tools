@@ -465,8 +465,8 @@ class JobsUpdate(command.Command):
 
         gitreview_filename = os.path.join(parsed_args.repo_dir, '.gitreview')
         cp = configparser.ConfigParser()
-        missing = cp.read(gitreview_filename)
-        if not missing:
+        were_read = cp.read(gitreview_filename)
+        if were_read:
             LOG.debug('determining repository name from .gitreview')
             try:
                 gerrit = cp['gerrit']
@@ -476,9 +476,9 @@ class JobsUpdate(command.Command):
                 repo = gerrit['project']
                 if repo.endswith('.git'):
                     repo = repo[:-4]
-                branch = gerrit.get('defaultbranch', 'master')
+                branch = gerrit.get('defaultbranch', None)
         else:
-            LOG.debug('could not read %s', missing)
+            LOG.debug('could not read %s', gitreview_filename)
 
         if not repo:
             LOG.debug('guessing repository name from directory name')
