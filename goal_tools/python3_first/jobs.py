@@ -921,13 +921,13 @@ class JobsAddPy35(command.Command):
 
         changed = False
         templates = in_tree_project['project'].get('templates', [])
-        supports_python = 'openstack-python27-jobs' in templates
+        supports_python = 'openstack-python-jobs' in templates
         tests_py36 = 'openstack-python35-jobs' in templates
         if supports_python and not tests_py36:
-            idx = templates.index('openstack-python27-jobs')
+            idx = templates.index('openstack-python-jobs')
             templates.insert(idx + 1, 'openstack-python35-jobs')
             changed = True
-        # Look through the pipelines for 'openstack-tox-py37'
+        # Look through the pipelines for 'openstack-tox-py27'
         # and copy any job settings to 'openstack-tox-py35'.
         for pipeline, pipeline_data in in_tree_project['project'].items():
             if pipeline == 'templates':
@@ -940,7 +940,7 @@ class JobsAddPy35(command.Command):
                 if not isinstance(job, DICT_TYPES):
                     continue
                 job_name = list(job.keys())[0]
-                if job_name == 'openstack-tox-py37':
+                if job_name == 'openstack-tox-py27':
                     break
             else:
                 continue
