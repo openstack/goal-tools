@@ -111,6 +111,6 @@ git -C "$repo" add .
 if [ -f "$repo/.zuul.yaml" ]; then
     git -C "$repo" add -f .zuul.yaml
 fi
-git -C "$repo" commit -m "$commit_message"
+git -C "$repo" commit -m "$commit_message" || exit 2
 
 git -C "$repo" show
