@@ -15,7 +15,6 @@ glance
 heat
 horizon
 I18n
-Infrastructure
 ironic
 karbor
 keystone
