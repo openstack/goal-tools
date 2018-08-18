@@ -88,7 +88,7 @@ else
 fi
 
 
-python3-first -v --debug jobs update "$repo"
+python3-first -v --debug jobs update --branch "$branch" "$repo"
 RC=$?
 if [ $RC -eq 2 ]; then
     echo "No changes"

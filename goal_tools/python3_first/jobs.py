@@ -449,21 +449,48 @@ class JobsUpdate(command.Command):
             help='the default file to create when one does not exist',
         )
         parser.add_argument(
+            '--branch',
+            default=None,
+            help='the location of the openstack-zuul-jobs repo',
+        )
+        parser.add_argument(
             'repo_dir',
             help='the repository location',
         )
         return parser
 
     def take_action(self, parsed_args):
-        LOG.debug('determining repository name from .gitreview')
+        repo = None
+        branch = None
+
         gitreview_filename = os.path.join(parsed_args.repo_dir, '.gitreview')
         cp = configparser.ConfigParser()
-        cp.read(gitreview_filename)
-        gerrit = cp['gerrit']
-        repo = gerrit['project']
-        if repo.endswith('.git'):
-            repo = repo[:-4]
-        branch = gerrit.get('defaultbranch', 'master')
+        missing = cp.read(gitreview_filename)
+        if not missing:
+            LOG.debug('determining repository name from .gitreview')
+            try:
+                gerrit = cp['gerrit']
+            except KeyError:
+                pass
+            else:
+                repo = gerrit['project']
+                if repo.endswith('.git'):
+                    repo = repo[:-4]
+                branch = gerrit.get('defaultbranch', 'master')
+        else:
+            LOG.debug('could not read %s', missing)
+
+        if not repo:
+            LOG.debug('guessing repository name from directory name')
+            repo = os.sep.join(
+                parsed_args.repo_dir.rstrip(os.sep).split(os.sep)[-2:]
+            )
+
+        # If we are given a branch on the command line, use it.
+        # Otherwise, try to use what we read from .gitreview.
+        # Fall back to using 'master'.
+        branch = parsed_args.branch or branch or 'master'
+
         LOG.info('working on %s @ %s', repo, branch)
 
         in_repo = find_project_settings_in_repo(parsed_args.repo_dir)
