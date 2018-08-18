@@ -16,7 +16,6 @@ fi
 REPOS="
 openstack/governance
 openstack/openstack-specs
-openstack/api-sig
 openstack/project-navigator-data
 openstack/project-team-guide
 openstack/service-types-authority

@@ -25,6 +25,7 @@ openstack/syntribos-openstack-templates
 openstack/syntribos-payloads
 openstack/self-healing-sig
 openstack/operations-docs
+openstack/api-sig
 "
 
 $bindir/do_team.sh "$workdir" "SIGs" $REPOS
