@@ -1,0 +1,64 @@
+adjutant
+barbican
+blazar
+Chef OpenStack
+cinder
+cloudkitty
+congress
+cyborg
+designate
+Documentation
+dragonflow
+ec2-api
+freezer
+glance
+heat
+horizon
+I18n
+Infrastructure
+ironic
+karbor
+keystone
+kolla
+kuryr
+loci
+magnum
+manila
+masakari
+mistral
+monasca
+murano
+neutron
+nova
+octavia
+OpenStackAnsible
+OpenStack Charms
+OpenStackClient
+OpenStack-Helm
+OpenStackSDK
+oslo
+Packaging-rpm
+PowerVMStackers
+Puppet OpenStack
+qinling
+Quality Assurance
+rally
+RefStack
+Release Management
+requirements
+sahara
+searchlight
+senlin
+solum
+storlets
+swift
+tacker
+Telemetry
+tricircle
+tripleo
+trove
+vitrage
+watcher
+winstackers
+zaqar
+zun
