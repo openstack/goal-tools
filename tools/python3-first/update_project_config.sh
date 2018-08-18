@@ -8,12 +8,16 @@ echo $0 $*
 echo
 
 function usage {
-    echo "update_project_config.sh WORKDIR TEAM TASK"
+    echo "update_project_config.sh WORKDIR TEAM TASK [REPO...]"
 }
 
 workdir="$1"
-team="$2"
-task="$3"
+shift
+team="$1"
+shift
+task="$1"
+shift
+repos="$@"
 
 if [ -z "$workdir" ]; then
     usage
@@ -60,7 +64,7 @@ echo
 
 git -C "$project_config_dir" checkout -b "$branch"
 
-python3-first -v --debug jobs retain --project-config-dir "$project_config_dir" "$team"
+python3-first -v --debug jobs retain --project-config-dir "$project_config_dir" "$team" $repos
 
 git -C "$project_config_dir" add zuul.d
 git -C "$project_config_dir" commit -m "$commit_message"

@@ -672,6 +672,11 @@ class JobsRetain(command.Command):
             'team',
             help='the team name',
         )
+        parser.add_argument(
+            'repos',
+            nargs='*',
+            help='the repository names for the team',
+        )
         return parser
 
     def take_action(self, parsed_args):
@@ -714,8 +719,12 @@ class JobsRetain(command.Command):
             if 'job' in job
         }
 
-        gov_dat = governance.Governance(url=parsed_args.project_list)
-        for repo in gov_dat.get_repos_for_team(parsed_args.team):
+        repos = parsed_args.repos
+        if not repos:
+            gov_dat = governance.Governance(url=parsed_args.project_list)
+            repos = gov_dat.get_repos_for_team(parsed_args.team)
+
+        for repo in repos:
             LOG.debug('looking for settings for %s', repo)
             for idx, entry in enumerate(project_settings):
                 if 'project' not in entry:

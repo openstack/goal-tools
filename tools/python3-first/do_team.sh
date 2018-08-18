@@ -4,11 +4,14 @@ bindir=$(dirname $0)
 source $bindir/functions
 
 function usage {
-    echo "do_team.sh WORKDIR TEAM"
+    echo "do_team.sh WORKDIR TEAM [REPO...]"
 }
 
 workdir="$1"
-team="$2"
+shift
+team="$1"
+shift
+repos="$@"
 
 if [ -z "$workdir" ]; then
     usage
@@ -60,7 +63,7 @@ echo
 
 set -e
 
-python3-first -v --debug repos clone "$out_dir" "$team"
+python3-first -v --debug repos clone "$out_dir" "$team" $repos
 
 $bindir/process_team.sh "$out_dir" "$team" master $task_id
 $bindir/update_doc_job.sh "$out_dir" "$team" $task_id
@@ -70,4 +73,4 @@ $bindir/process_team.sh "$out_dir" "$team" stable/ocata $task_id
 $bindir/process_team.sh "$out_dir" "$team" stable/pike $task_id
 $bindir/process_team.sh "$out_dir" "$team" stable/queens $task_id
 $bindir/process_team.sh "$out_dir" "$team" stable/rocky $task_id
-$bindir/update_project_config.sh "$workdir" "$team" $task_id
+$bindir/update_project_config.sh "$workdir" "$team" $task_id $repos

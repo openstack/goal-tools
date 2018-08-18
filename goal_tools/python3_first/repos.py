@@ -39,6 +39,11 @@ class ReposClone(command.Command):
             'team',
             help='the team name',
         )
+        parser.add_argument(
+            'repos',
+            nargs='*',
+            help='repository names',
+        )
         return parser
 
     def take_action(self, parsed_args):
@@ -46,9 +51,12 @@ class ReposClone(command.Command):
         if not os.path.exists(parsed_args.workdir):
             LOG.info('creating working directory %s', parsed_args.workdir)
             os.makedirs(parsed_args.workdir)
-        gov_dat = governance.Governance(url=parsed_args.project_list)
+        repos = parsed_args.repos
+        if not repos:
+            gov_dat = governance.Governance(url=parsed_args.project_list)
+            repos = gov_dat.get_repos_for_team(parsed_args.team)
         try:
-            for repo in gov_dat.get_repos_for_team(parsed_args.team):
+            for repo in repos:
                 if os.path.exists(os.path.join(parsed_args.workdir, repo)):
                     LOG.info('\n%s exists, skipping', repo)
                     continue
