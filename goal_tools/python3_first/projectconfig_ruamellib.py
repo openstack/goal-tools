@@ -22,11 +22,15 @@ def none_representer(dumper, data):
 
 class YAML(object):
     def __init__(self):
-        self.yaml = ruamel.yaml.YAML()
+        self.yaml = ruamel.yaml.YAML(typ='rt')
         self.yaml.width = 256
         self.yaml.allow_duplicate_keys = True
         self.yaml.representer.add_representer(type(None), none_representer)
         self.yaml.indent(mapping=2, sequence=4, offset=2)
+        self.yaml.Constructor.add_constructor(
+            '!encrypted/pkcs1-oaep',
+            ruamel.yaml.SafeConstructor.construct_yaml_seq,
+        )
 
     def load(self, stream):
         return self.yaml.load(stream)
