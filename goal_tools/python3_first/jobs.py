@@ -317,7 +317,7 @@ def find_project_settings_in_repo(repo_dir):
             LOG.debug('looking for zuul config in %s',
                       candidate)
             with open(candidate, 'r', encoding='utf-8') as f:
-                settings = yaml.load(f)
+                settings = yaml.load(f) or []
             for block in settings:
                 if 'project' in block:
                     LOG.debug('using zuul config from %s',
