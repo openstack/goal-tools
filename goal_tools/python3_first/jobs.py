@@ -33,6 +33,7 @@ KEEP = set([
     'api-ref-jobs',
 
     'release-openstack-server',
+    'release-tox-docs-infra',
 
     'publish-to-pypi',
     'publish-to-pypi-python3',
