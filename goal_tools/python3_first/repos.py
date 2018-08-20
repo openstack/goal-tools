@@ -115,10 +115,11 @@ class MigrationAnnounce(command.Command):
         return parser
 
     body_template = textwrap.dedent('''
-    The Zuul project settings for the {{team}} repositories
-    has begun. Please do not approve any changes to
-    openstack-infra/project-config/zuul.d/projects.yaml for
-    the following repositories:
+    The migration of Zuul project settings for the
+    {{team}} repositories has begun.
+    Please do not approve any changes to
+    openstack-infra/project-config/zuul.d/projects.yaml
+    for the following repositories:
     {% for repo in repos %}
     - {{repo}}
     {%- endfor %}
