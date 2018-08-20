@@ -39,7 +39,7 @@ function show_changes {
             else
                 origin=origin/stable/$branch
             fi
-            (cd $repo &&
+            (cd "$repo" &&
                     git checkout python3-first-$branch 2>/dev/null &&
                     echo "CHANGES IN $repo $branch" &&
                     echo &&
@@ -53,7 +53,7 @@ function show_changes {
             git log --patch origin/master..)
 }
 
-cd $workdir/$team
+cd "$out_dir" || exit 1
 
 echo
 show_changes
