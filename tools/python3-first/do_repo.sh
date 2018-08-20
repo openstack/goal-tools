@@ -66,25 +66,26 @@ expected="$(basename $(dirname $repo))/$(basename $repo)"
 if [ "$actual" != "$expected" -a "$actual" != "${expected}.git" ]; then
     echo "WARNING: git review -s is likely to fail for $expected because .gitreview says $actual"
 else
-    git -C "$repo" review -s
+    (cd "$repo" && git review -s)
 fi
 
 new_branch=python3-first-$(basename $branch)
 
-if git -C "$repo" branch | grep -q $new_branch; then
+if (cd "$repo" && git branch | grep -q $new_branch); then
     echo "$new_branch already exists, reusing"
-    git -C "$repo" checkout $new_branch
+    (cd "$repo" && git checkout $new_branch)
 else
     echo "creating $new_branch"
-    git -C "$repo" checkout -- .
-    git -C "$repo" clean -f -d
+    (cd "$repo" &&
+            git checkout -- . &&
+            git clean -f -d)
 
-    if ! git -C "$repo" checkout -q origin/$branch ; then
+    if ! (cd "$repo" && git checkout -q origin/$branch); then
         echo "Could not check out origin/$branch in $repo"
         exit 2
     fi
 
-    git -C "$repo" checkout -b $new_branch
+    (cd "$repo" && git checkout -b $new_branch)
 fi
 
 
@@ -99,18 +100,22 @@ if [ $RC -ne 0 ]; then
     exit $RC
 fi
 
-if ! git -C "$repo" diff --ignore-all-space; then
+# We have lots of git commands after this point so we can just change
+# directories now.
+pushd "$repo"
+
+if ! git diff --ignore-all-space; then
     echo "No changes other than whitespace"
-    git -C "$repo" checkout -- .
+    git checkout -- .
     exit 1
 fi
 
-git -C "$repo" add .
+git add .
 # NOTE(dhellmann): Some repositories have '.*' excluded by default so
 # adding a new file requires a force flag.
 if [ -f "$repo/.zuul.yaml" ]; then
-    git -C "$repo" add -f .zuul.yaml
+    git add -f .zuul.yaml
 fi
-git -C "$repo" commit -m "$commit_message" || exit 2
+git commit -m "$commit_message" || exit 2
 
-git -C "$repo" show
+git show

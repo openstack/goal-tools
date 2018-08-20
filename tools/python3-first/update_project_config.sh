@@ -62,10 +62,13 @@ echo
 
 (cd "$out_dir" && $toolsdir/clone_repo.sh openstack-infra/project-config)
 
-git -C "$project_config_dir" checkout -b "$branch"
+(cd "$project_config_dir" &&
+        git review -s &&
+        git checkout -b "$branch")
 
 python3-first -v --debug jobs retain --project-config-dir "$project_config_dir" "$team" $repos
 
-git -C "$project_config_dir" add zuul.d
-git -C "$project_config_dir" commit -m "$commit_message"
-git -C "$project_config_dir" show
+(cd "$project_config_dir" &&
+        git add zuul.d &&
+        git commit -m "$commit_message" &&
+        git show)
