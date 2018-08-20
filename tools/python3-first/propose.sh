@@ -50,7 +50,7 @@ cd "$out_dir"
 echo
 list_changes
 
-nchanges=$(list_changes 2>/dev/null | wc -l)
+nchanges=$(list_changes 2>/dev/null | grep -v "^$" | wc -l)
 
 echo
 echo "About to propose $nchanges changes"
