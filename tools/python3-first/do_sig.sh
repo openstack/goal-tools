@@ -24,7 +24,7 @@ openstack/syntribos
 openstack/syntribos-openstack-templates
 openstack/syntribos-payloads
 openstack/self-healing-sig
-openstack/operations-docs
+openstack/operations-guide
 openstack/api-sig
 "
 
