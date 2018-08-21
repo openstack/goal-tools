@@ -184,15 +184,18 @@ class PatchesList(lister.Lister):
         rows = sorted(rows, key=lambda r: (r[1], r[5], r[4]))
 
         def summarize():
-            counts = collections.Counter()
+            t_counts = collections.Counter()
+            w_counts = collections.Counter()
             for row in rows:
-                counts.update({row[3]: 1})
+                t_counts.update({row[2]: 1})
+                w_counts.update({row[3]: 1})
                 yield row
             yield ('', '', '', '', '', '')
-            for status, n in sorted(counts.items()):
-                yield ('', '', '', status, str(n), '')
-            total = sum(counts.values())
-            yield ('', '', '', 'TOTAL', str(total), '')
+            t_summary = '\n'.join('{}: {}'.format(*c)
+                                  for c in sorted(t_counts.items()))
+            w_summary = '\n'.join('{}: {}'.format(*c)
+                                  for c in sorted(w_counts.items()))
+            yield ('', '', t_summary, w_summary, '', '')
 
         columns = ('Subject', 'Repo', 'Tests', 'Workflow', 'URL', 'Branch')
         return (columns, summarize())
