@@ -855,6 +855,8 @@ def update_docs_job(project):
     job_swaps = [
         ('build-openstack-sphinx-docs',
          'openstack-tox-docs'),
+        ('publish-openstack-sphinx-docs-direct',
+         'publish-openstack-tox-docs-direct'),
     ]
 
     for pipeline, pipeline_data in proj_data.items():
