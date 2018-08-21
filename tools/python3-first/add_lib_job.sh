@@ -48,7 +48,7 @@ tracking_file="$workdir/master"
 for repo in $(cat "$tracking_file"); do
 
     echo
-    echo "=== $repo doc jobs ==="
+    echo "=== $repo lib jobs ==="
     echo
 
     repo_dir="$workdir/$repo"
