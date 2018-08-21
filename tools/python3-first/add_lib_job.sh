@@ -52,11 +52,12 @@ for repo in $(cat "$tracking_file"); do
     echo
 
     repo_dir="$workdir/$repo"
-    git -C "$repo_dir" checkout python3-first-master
+    (cd "$repo_dir" && git checkout python3-first-master)
     if python3-first -v --debug jobs add lib "$repo_dir"
     then
-        git -C "$repo_dir" add .
-        git -C "$repo_dir" commit -m "$commit_message"
-        git -C "$repo_dir" show
+        (cd "$repo_dir" &&
+                git add . &&
+                git commit -m "$commit_message" &&
+                git show)
     fi
 done
