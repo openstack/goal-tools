@@ -60,6 +60,8 @@ echo
 echo "=== Updating $team repositories in $project_config_dir ==="
 echo
 
+set -ex
+
 (cd "$out_dir" && $toolsdir/clone_repo.sh openstack-infra/project-config)
 
 (cd "$project_config_dir" &&
@@ -69,6 +71,9 @@ echo
 python3-first -v --debug jobs retain --project-config-dir "$project_config_dir" "$team" $repos
 
 (cd "$project_config_dir" &&
+        git diff &&
         git add zuul.d &&
         git commit -m "$commit_message" &&
-        git show)
+        git show) || echo "No changes in project-config?"
+
+exit 0
