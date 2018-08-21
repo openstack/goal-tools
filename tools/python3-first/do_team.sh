@@ -26,6 +26,13 @@ fi
 goal_url="https://governance.openstack.org/tc/goals/stein/python3-first.html"
 
 out_dir=$(get_team_dir "$workdir" "$team")
+
+if [ -e "$out_dir" ]; then
+    echo "ERROR: $out_dir already exists!"
+    echo "ERROR: These tools cannot be run against the same repository more than once."
+    exit 1
+fi
+
 mkdir -p "$out_dir"
 
 log_output "$out_dir" do_team
