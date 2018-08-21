@@ -802,19 +802,23 @@ def update_docs_job(project):
     "replace old documentation jobs with new version"
     proj_data = project.get('project', {})
     templates = proj_data.get('templates', [])
-    LOG.info('found templates: %s', templates)
+    LOG.info('found templates: %s', ', '.join(templates))
     changed = False
     try:
+        LOG.info('looking for publish-openstack-sphinx-docs')
         idx = templates.index('publish-openstack-sphinx-docs')
         templates[idx] = 'publish-openstack-docs-pti'
         changed = True
     except ValueError:
+        LOG.info('did not find publish-openstack-sphinx-docs')
         pass
     try:
+        LOG.info('looking for release-notes-jobs')
         idx = templates.index('release-notes-jobs')
         templates[idx] = 'release-notes-jobs-python3'
         changed = True
     except ValueError:
+        LOG.info('did not find release-notes-jobs')
         pass
     # Look through the pipelines for 'build-openstack-sphinx-docs'
     # with required-projects and change the job name to
