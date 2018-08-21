@@ -798,49 +798,79 @@ class JobsRetain(command.Command):
             f.write(body)
 
 
+def replace_template(templates, old, new):
+    try:
+        LOG.info('looking for %s', old)
+        idx = templates.index(old)
+        templates[idx] = new
+        return True
+    except ValueError:
+        LOG.info('did not find %s', old)
+    return False
+
+
+def replace_job(jobs, old, new):
+    # Simple swaps where the job name is listed but there are no extra
+    # settings.
+    try:
+        LOG.info('looking for simple use of job %s', old)
+        idx = jobs.index(old)
+        jobs[idx] = new
+        return True
+    except ValueError:
+        LOG.info('did not find simple use of %s', old)
+    # More complex swaps where we have local job settings.
+    for job in jobs:
+        if not isinstance(job, DICT_TYPES):
+            continue
+        job_name = list(job.keys())[0]
+        if job_name == old:
+            LOG.info('updating job %s with settings', old)
+            job_data = copy.deepcopy(job[job_name])
+            job[new] = job_data
+            del job[job_name]
+            LOG.info('updated to %s', job)
+            return True
+    # If we get here, we did not replace anything.
+    return False
+
+
 def update_docs_job(project):
     "replace old documentation jobs with new version"
     proj_data = project.get('project', {})
     templates = proj_data.get('templates', [])
     LOG.info('found templates: %s', ', '.join(templates))
     changed = False
-    try:
-        LOG.info('looking for publish-openstack-sphinx-docs')
-        idx = templates.index('publish-openstack-sphinx-docs')
-        templates[idx] = 'publish-openstack-docs-pti'
-        changed = True
-    except ValueError:
-        LOG.info('did not find publish-openstack-sphinx-docs')
-        pass
-    try:
-        LOG.info('looking for release-notes-jobs')
-        idx = templates.index('release-notes-jobs')
-        templates[idx] = 'release-notes-jobs-python3'
-        changed = True
-    except ValueError:
-        LOG.info('did not find release-notes-jobs')
-        pass
-    # Look through the pipelines for 'build-openstack-sphinx-docs'
-    # with required-projects and change the job name to
-    # 'openstack-tox-docs'.
+
+    template_swaps = [
+        ('build-openstack-sphinx-docs', 'build-openstack-docs-pti'),
+        ('publish-openstack-sphinx-docs', 'publish-openstack-docs-pti'),
+        ('release-notes-jobs', 'release-notes-jobs-python3'),
+    ]
+
+    for old, new in template_swaps:
+        if replace_template(templates, old, new):
+            changed = True
+
+    job_swaps = [
+        ('build-openstack-sphinx-docs',
+         'openstack-tox-docs'),
+    ]
+
     for pipeline, pipeline_data in proj_data.items():
         if pipeline == 'templates':
             continue
         if not isinstance(pipeline_data, DICT_TYPES):
             continue
         LOG.info('looking at %s pipeline', pipeline)
-        for job in pipeline_data.get('jobs', []):
-            if not isinstance(job, DICT_TYPES):
-                continue
-            job_name = list(job.keys())[0]
-            if job_name != 'build-openstack-sphinx-docs':
-                continue
-            LOG.info('updating job %s', job)
-            job_data = copy.deepcopy(job[job_name])
-            job['openstack-tox-docs'] = job_data
-            del job[job_name]
-            LOG.info('new job %s', job)
-            changed = True
+        jobs = pipeline_data.get('jobs')
+        if not jobs:
+            LOG.info('no jobs in pipeline')
+            continue
+        for old, new in job_swaps:
+            if replace_job(jobs, old, new):
+                changed = True
+
     return changed
 
 

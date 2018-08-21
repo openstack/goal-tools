@@ -773,7 +773,7 @@ class TestUpdateDocsJob(base.TestCase):
         self.assertEqual(expected, in_tree['project']['templates'])
         self.assertFalse(changed)
 
-    def test_switch(self):
+    def test_switch_templates(self):
         expected = [
             'publish-openstack-docs-pti',
         ]
@@ -786,4 +786,38 @@ class TestUpdateDocsJob(base.TestCase):
         }
         changed = jobs.update_docs_job(in_tree)
         self.assertEqual(expected, in_tree['project']['templates'])
+        self.assertTrue(changed)
+
+    def test_switch_jobs(self):
+        expected = [
+            'openstack-tox-docs',
+        ]
+        in_tree = {
+            'project': {
+                'check': {
+                    'jobs': [
+                        'build-openstack-sphinx-docs',
+                    ],
+                },
+            },
+        }
+        changed = jobs.update_docs_job(in_tree)
+        self.assertEqual(expected, in_tree['project']['check']['jobs'])
+        self.assertTrue(changed)
+
+    def test_switch_jobs_with_settings(self):
+        expected = [
+            {'openstack-tox-docs': {}}
+        ]
+        in_tree = {
+            'project': {
+                'check': {
+                    'jobs': [
+                        {'build-openstack-sphinx-docs': {}}
+                    ],
+                },
+            },
+        }
+        changed = jobs.update_docs_job(in_tree)
+        self.assertEqual(expected, in_tree['project']['check']['jobs'])
         self.assertTrue(changed)
