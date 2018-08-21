@@ -121,9 +121,9 @@ def get_one_row(change):
             w_status = 'WIP'
         elif workflow.get(1):
             w_status = 'APPROVED'
-        elif code_review.get(-1):
+        elif code_review.get(-1) or code_review.get(-2):
             w_status = 'negative vote'
-        elif code_review.get(1):
+        elif code_review.get(1) or code_review.get(2):
             w_status = 'REVIEWED'
 
     return (subject, repo, v_status, w_status, url, branch)
