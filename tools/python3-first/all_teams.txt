@@ -7,7 +7,6 @@ cloudkitty
 congress
 cyborg
 designate
-Documentation
 dragonflow
 ec2-api
 freezer
@@ -45,7 +44,6 @@ rally
 RefStack
 Release Management
 requirements
-sahara
 searchlight
 senlin
 solum
