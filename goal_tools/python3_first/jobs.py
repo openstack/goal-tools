@@ -411,6 +411,14 @@ def merge_project_settings(in_tree, updates):
 def normalize_project_settings(entry):
     project = entry['project']
     for pipeline, data in project.items():
+        if pipeline == 'vars':
+            LOG.debug('cleaning up vars %s', data)
+            if 'rtd_webhook_id' in data:
+                LOG.debug('found rtd_webhook_id')
+                # We do not want to copy the webhook setting used by a
+                # job we configure in project-config.
+                del data['rtd_webhook_id']
+            continue
         if 'jobs' not in data:
             LOG.debug('not normalizing %s, no jobs', pipeline)
             continue
@@ -429,6 +437,10 @@ def normalize_project_settings(entry):
                 job_settings['required-projects'] = [
                     job_settings['required-projects']
                 ]
+    if 'vars' in project and not project.get('vars'):
+        # There is no sense copying an empty vars dict.
+        LOG.debug('removing empty vars block')
+        del project['vars']
 
 
 class JobsUpdate(command.Command):
