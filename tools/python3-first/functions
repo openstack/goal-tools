@@ -2,7 +2,10 @@
 
 function enable_tox {
     if [ ! -d .tox/venv ]; then
-        tox -e venv --notest
+        if ! tox -e venv --notest; then
+            echo "ERROR: Failed to create tox environment 'venv'"
+            exit 1
+        fi
     fi
     source .tox/venv/bin/activate
     if [ -z "$VIRTUAL_ENV" ]; then
