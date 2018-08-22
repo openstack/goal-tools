@@ -113,7 +113,7 @@ fi
 git add .
 # NOTE(dhellmann): Some repositories have '.*' excluded by default so
 # adding a new file requires a force flag.
-if [ -f "$repo/.zuul.yaml" ]; then
+if [ -f ".zuul.yaml" ]; then
     git add -f .zuul.yaml
 fi
 git commit -m "$commit_message" || exit 2
