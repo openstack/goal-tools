@@ -130,7 +130,7 @@ def get_one_row(change):
 
 
 class PatchesList(lister.Lister):
-    "clone the repositories for a team"
+    "list the patches proposed for a team or repository"
 
     def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)
