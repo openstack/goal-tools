@@ -21,4 +21,4 @@ openstack/refstack
 openstack/python-tempestconf
 "
 
-$bindir/do_team.sh "$workdir" "User Committee" $REPOS
+$bindir/do_team.sh "$workdir" "Board" $REPOS
