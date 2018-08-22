@@ -28,6 +28,8 @@ KEEP = set([
     'translation-jobs-queens',
     'translation-jobs-rocky',
 
+    'docs-on-readthedocs',
+
     'periodic-jobs-with-oslo-master',
 
     'api-ref-jobs',
