@@ -937,6 +937,41 @@ class JobsSwitchDocs(command.Command):
             yaml.dump(in_tree_settings, f)
 
 
+def add_template_if_template(project,
+                             seeking_templ, seeking_job,
+                             adding_templ, adding_job):
+    changed = False
+    templates = project.get('templates', [])
+    supports_seeking = seeking_templ in templates
+    tests_adding = adding_templ in templates
+    if supports_seeking and not tests_adding:
+        idx = templates.index(seeking_templ)
+        templates.insert(idx + 1, adding_templ)
+        changed = True
+    # Look through the pipelines for the old job
+    # and copy any job settings to the new job
+    for pipeline, pipeline_data in project.items():
+        if pipeline == 'templates':
+            continue
+        if not isinstance(pipeline_data, DICT_TYPES):
+            continue
+        LOG.info('looking at %s pipeline', pipeline)
+        jobs = pipeline_data.get('jobs', [])
+        for idx, job in enumerate(jobs):
+            if not isinstance(job, DICT_TYPES):
+                continue
+            job_name = list(job.keys())[0]
+            if job_name == seeking_job:
+                break
+        else:
+            continue
+        LOG.info('updating job %s', job)
+        job_data = copy.deepcopy(job[job_name])
+        jobs.insert(idx + 1, {adding_job: job_data})
+        changed = True
+    return changed
+
+
 class JobsAddPy35(command.Command):
     "update the in-tree project settings to include python3.6 tests"
 
@@ -971,33 +1006,19 @@ class JobsAddPy35(command.Command):
                 parsed_args.repo_dir))
 
         changed = False
-        templates = in_tree_project['project'].get('templates', [])
-        supports_python = 'openstack-python-jobs' in templates
-        tests_py36 = 'openstack-python35-jobs' in templates
-        if supports_python and not tests_py36:
-            idx = templates.index('openstack-python-jobs')
-            templates.insert(idx + 1, 'openstack-python35-jobs')
+        if add_template_if_template(
+                in_tree_project['project'],
+                'openstack-python-jobs',
+                'openstack-tox-py27',
+                'openstack-python35-jobs',
+                'openstack-tox-py35'):
             changed = True
-        # Look through the pipelines for 'openstack-tox-py27'
-        # and copy any job settings to 'openstack-tox-py35'.
-        for pipeline, pipeline_data in in_tree_project['project'].items():
-            if pipeline == 'templates':
-                continue
-            if not isinstance(pipeline_data, DICT_TYPES):
-                continue
-            LOG.info('looking at %s pipeline', pipeline)
-            jobs = pipeline_data.get('jobs', [])
-            for idx, job in enumerate(jobs):
-                if not isinstance(job, DICT_TYPES):
-                    continue
-                job_name = list(job.keys())[0]
-                if job_name == 'openstack-tox-py27':
-                    break
-            else:
-                continue
-            LOG.info('updating job %s', job)
-            job_data = copy.deepcopy(job[job_name])
-            jobs.insert(idx + 1, {'openstack-tox-py35': job_data})
+        if add_template_if_template(
+                in_tree_project['project'],
+                'openstack-python-jobs-neutron',
+                'openstack-tox-py27',
+                'openstack-python35-jobs-neutron',
+                'openstack-tox-py35'):
             changed = True
 
         if not changed:
@@ -1046,33 +1067,19 @@ class JobsAddPy36(command.Command):
                 parsed_args.repo_dir))
 
         changed = False
-        templates = in_tree_project['project'].get('templates', [])
-        supports_python = 'openstack-python35-jobs' in templates
-        tests_py36 = 'openstack-python36-jobs' in templates
-        if supports_python and not tests_py36:
-            idx = templates.index('openstack-python35-jobs')
-            templates.insert(idx + 1, 'openstack-python36-jobs')
+        if add_template_if_template(
+                in_tree_project['project'],
+                'openstack-python35-jobs',
+                'openstack-tox-py35',
+                'openstack-python36-jobs',
+                'openstack-tox-py36'):
             changed = True
-        # Look through the pipelines for 'openstack-tox-py35'
-        # and copy any job settings to 'openstack-tox-py36'.
-        for pipeline, pipeline_data in in_tree_project['project'].items():
-            if pipeline == 'templates':
-                continue
-            if not isinstance(pipeline_data, DICT_TYPES):
-                continue
-            LOG.info('looking at %s pipeline', pipeline)
-            jobs = pipeline_data.get('jobs', [])
-            for idx, job in enumerate(jobs):
-                if not isinstance(job, DICT_TYPES):
-                    continue
-                job_name = list(job.keys())[0]
-                if job_name == 'openstack-tox-py35':
-                    break
-            else:
-                continue
-            LOG.info('updating job %s', job)
-            job_data = copy.deepcopy(job[job_name])
-            jobs.insert(idx + 1, {'openstack-tox-py36': job_data})
+        if add_template_if_template(
+                in_tree_project['project'],
+                'openstack-python35-jobs-neutron',
+                'openstack-tox-py35',
+                'openstack-python36-jobs-neutron',
+                'openstack-tox-py36'):
             changed = True
 
         if not changed:
