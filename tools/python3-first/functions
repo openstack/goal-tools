@@ -5,6 +5,11 @@ function enable_tox {
         tox -e venv --notest
     fi
     source .tox/venv/bin/activate
+    if [ -z "$VIRTUAL_ENV" ]; then
+        echo "ERROR: The virtual environment was not activated."
+        echo "Check .tox/venv/bin/activate"
+        exit 1
+    fi
 }
 
 function normalize_team {
