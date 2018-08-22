@@ -16,6 +16,9 @@ fi
 REPOS="
 openstack/interop
 openstack/transparency-policy
+openstack/refstack-client
+openstack/refstack
+openstack/python-tempestconf
 "
 
 $bindir/do_team.sh "$workdir" "User Committee" $REPOS

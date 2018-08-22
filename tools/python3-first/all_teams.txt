@@ -41,7 +41,6 @@ Puppet OpenStack
 qinling
 Quality Assurance
 rally
-RefStack
 Release Management
 requirements
 searchlight
