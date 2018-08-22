@@ -146,6 +146,12 @@ class PatchesList(lister.Lister):
             help='show all patches',
         )
         parser.add_argument(
+            '--imports',
+            default=False,
+            action='store_true',
+            help='show only zuul imports, not follow-ups',
+        )
+        parser.add_argument(
             '--repo',
             help='only the patches for the given repository',
         )
@@ -155,6 +161,8 @@ class PatchesList(lister.Lister):
             help='the team name',
         )
         return parser
+
+    _import_subject = 'import zuul job settings from project-config'
 
     def take_action(self, parsed_args):
 
@@ -176,6 +184,12 @@ class PatchesList(lister.Lister):
             changes = (
                 c for c in changes
                 if c.get('project') == parsed_args.repo
+            )
+
+        if parsed_args.imports:
+            changes = (
+                c for c in changes
+                if c.get('subject') == self._import_subject
             )
 
         rows = list(get_one_row(c) for c in changes)
