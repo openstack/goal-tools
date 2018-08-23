@@ -248,16 +248,24 @@ class PatchesCount(lister.Lister):
         gov_dat = governance.Governance(url=parsed_args.project_list)
 
         changes = (
-            c for c in all_changes(True)
+            c for c in all_changes(False)
             if c.get('subject') == self._import_subject
         )
 
         team_counts = collections.Counter()
+        open_counts = collections.Counter()
         for c in changes:
-            team_counts.update(
-                {gov_dat.get_repo_owner(c.get('project')) or 'unknown': 1}
-            )
+            status = c.get('status')
+            if status == 'ABANDONED':
+                continue
+            item = {gov_dat.get_repo_owner(c.get('project')) or 'other': 1}
+            team_counts.update(item)
+            if c.get('status') != 'MERGED':
+                open_counts.update(item)
 
-        columns = ('Team', 'Open')
-        data = sorted(team_counts.items())
+        columns = ('Team', 'Open', 'Total')
+        data = (
+            (team, open_counts[team], count)
+            for team, count in sorted(team_counts.items())
+        )
         return (columns, data)
