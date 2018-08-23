@@ -98,11 +98,12 @@ def format_votes(votes):
     )
 
 
-def get_one_row(change):
+def get_one_row(change, gov_dat):
     subject = change['subject'].rstrip()
     repo = change.get('project')
     url = 'https://review.openstack.org/{}'.format(change['_number'])
     branch = change.get('branch')
+    team = gov_dat.get_repo_owner(repo) or 'unknown'
 
     v_status = 'UNKNOWN'
     verified = count_votes(change, 'Verified')
@@ -126,7 +127,7 @@ def get_one_row(change):
         elif code_review.get(1) or code_review.get(2):
             w_status = 'REVIEWED'
 
-    return (subject, repo, v_status, w_status, url, branch)
+    return (subject, repo, team, v_status, w_status, url, branch)
 
 
 class PatchesList(lister.Lister):
@@ -165,6 +166,7 @@ class PatchesList(lister.Lister):
     _import_subject = 'import zuul job settings from project-config'
 
     def take_action(self, parsed_args):
+        gov_dat = governance.Governance(url=parsed_args.project_list)
 
         only_open = not parsed_args.all
         LOG.debug('only_open %s', only_open)
@@ -172,7 +174,6 @@ class PatchesList(lister.Lister):
         changes = all_changes(only_open)
 
         if parsed_args.team:
-            gov_dat = governance.Governance(url=parsed_args.project_list)
             repos = set(gov_dat.get_repos_for_team(parsed_args.team))
             LOG.debug('filtering on %s', repos)
             changes = (
@@ -192,24 +193,29 @@ class PatchesList(lister.Lister):
                 if c.get('subject') == self._import_subject
             )
 
-        rows = list(get_one_row(c) for c in changes)
+        rows = list(get_one_row(c, gov_dat) for c in changes)
         LOG.debug('rows: %s', len(rows))
 
         rows = sorted(rows, key=lambda r: (r[1], r[5], r[4]))
 
         def summarize():
-            t_counts = collections.Counter()
+            team_counts = collections.Counter()
+            test_counts = collections.Counter()
             w_counts = collections.Counter()
             for row in rows:
-                t_counts.update({row[2]: 1})
-                w_counts.update({row[3]: 1})
+                team_counts.update({row[2]: 1})
+                test_counts.update({row[3]: 1})
+                w_counts.update({row[4]: 1})
                 yield row
-            yield ('', '', '', '', '', '')
-            t_summary = '\n'.join('{}: {}'.format(*c)
-                                  for c in sorted(t_counts.items()))
+            yield ('', '', '', '', '', '', '')
+            team_summary = '\n'.join('{}: {}'.format(*c)
+                                     for c in sorted(team_counts.items()))
+            test_summary = '\n'.join('{}: {}'.format(*c)
+                                     for c in sorted(test_counts.items()))
             w_summary = '\n'.join('{}: {}'.format(*c)
                                   for c in sorted(w_counts.items()))
-            yield ('', '', t_summary, w_summary, '', '')
+            yield ('', '', team_summary, test_summary, w_summary, '', '')
 
-        columns = ('Subject', 'Repo', 'Tests', 'Workflow', 'URL', 'Branch')
+        columns = ('Subject', 'Repo', 'Team',
+                   'Tests', 'Workflow', 'URL', 'Branch')
         return (columns, summarize())
