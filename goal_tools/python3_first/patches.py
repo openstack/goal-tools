@@ -216,6 +216,48 @@ class PatchesList(lister.Lister):
                                   for c in sorted(w_counts.items()))
             yield ('', '', team_summary, test_summary, w_summary, '', '')
 
-        columns = ('Subject', 'Repo', 'Team',
-                   'Tests', 'Workflow', 'URL', 'Branch')
-        return (columns, summarize())
+        if parsed_args.team:
+            columns = ('Subject', 'Repo',
+                       'Tests', 'Workflow', 'URL', 'Branch')
+            data = (
+                r[:2] + r[3:]
+                for r in summarize()
+            )
+        else:
+            columns = ('Subject', 'Repo', 'Team',
+                       'Tests', 'Workflow', 'URL', 'Branch')
+            data = summarize()
+        return (columns, data)
+
+
+class PatchesCount(lister.Lister):
+    "count the patches open for each team"
+
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument(
+            '--project-list',
+            default=governance.PROJECTS_LIST,
+            help='URL for projects.yaml',
+        )
+        return parser
+
+    _import_subject = 'import zuul job settings from project-config'
+
+    def take_action(self, parsed_args):
+        gov_dat = governance.Governance(url=parsed_args.project_list)
+
+        changes = (
+            c for c in all_changes(True)
+            if c.get('subject') == self._import_subject
+        )
+
+        team_counts = collections.Counter()
+        for c in changes:
+            team_counts.update(
+                {gov_dat.get_repo_owner(c.get('project')) or 'unknown': 1}
+            )
+
+        columns = ('Team', 'Open')
+        data = sorted(team_counts.items())
+        return (columns, data)
