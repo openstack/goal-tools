@@ -411,7 +411,7 @@ def merge_project_settings(in_tree, updates):
 def normalize_project_settings(entry):
     project = entry['project']
     for pipeline, data in project.items():
-        if pipeline == 'templates':
+        if pipeline in ('name', 'templates'):
             continue
         LOG.debug(pipeline)
         if pipeline == 'vars':
@@ -448,8 +448,8 @@ def normalize_project_settings(entry):
                 ]
     all_pipelines = list(project.keys())
     for pipeline in all_pipelines:
-        if not project[pipeline]:
-            LOG.debug('removing empty %s block', pipeline)
+        if pipeline == 'name' or not project[pipeline]:
+            LOG.debug('removing %s', pipeline)
             del project[pipeline]
 
 
