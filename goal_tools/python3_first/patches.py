@@ -263,9 +263,10 @@ class PatchesCount(lister.Lister):
             if c.get('status') != 'MERGED':
                 open_counts.update(item)
 
-        columns = ('Team', 'Open', 'Total')
+        columns = ('Team', 'Open', 'Total', 'Done')
         data = (
-            (team, open_counts[team], count)
+            (team, open_counts[team], count,
+             'yes' if open_counts[team] == 0 else '')
             for team, count in sorted(team_counts.items())
         )
         return (columns, data)
