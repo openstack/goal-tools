@@ -411,6 +411,9 @@ def merge_project_settings(in_tree, updates):
 def normalize_project_settings(entry):
     project = entry['project']
     for pipeline, data in project.items():
+        if pipeline == 'templates':
+            continue
+        LOG.debug(pipeline)
         if pipeline == 'vars':
             LOG.debug('cleaning up vars %s', data)
             if 'rtd_webhook_id' in data:
@@ -419,8 +422,14 @@ def normalize_project_settings(entry):
                 # job we configure in project-config.
                 del data['rtd_webhook_id']
             continue
+        if data.get('queue') == 'integrated':
+            # We do not want to copy the queue setting for the
+            # integrated gate into projects.
+            LOG.debug('removing %s queue setting %r',
+                      pipeline, data['queue'])
+            del data['queue']
         if 'jobs' not in data:
-            LOG.debug('not normalizing %s, no jobs', pipeline)
+            LOG.debug('no jobs in %s', pipeline)
             continue
         LOG.debug('normalizing %s', pipeline)
         for job in data['jobs']:
@@ -437,10 +446,11 @@ def normalize_project_settings(entry):
                 job_settings['required-projects'] = [
                     job_settings['required-projects']
                 ]
-    if 'vars' in project and not project.get('vars'):
-        # There is no sense copying an empty vars dict.
-        LOG.debug('removing empty vars block')
-        del project['vars']
+    all_pipelines = list(project.keys())
+    for pipeline in all_pipelines:
+        if not project[pipeline]:
+            LOG.debug('removing empty %s block', pipeline)
+            del project[pipeline]
 
 
 class JobsUpdate(command.Command):
