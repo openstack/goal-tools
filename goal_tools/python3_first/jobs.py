@@ -33,6 +33,7 @@ KEEP = set([
     'periodic-jobs-with-oslo-master',
 
     'api-ref-jobs',
+    'install-guide-jobs',
 
     'release-openstack-server',
     'release-tox-docs-infra',
