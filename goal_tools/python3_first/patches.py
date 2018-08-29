@@ -44,12 +44,14 @@ def decode_json(raw):
     return decoded
 
 
-def query_gerrit(offset=0, only_open=True):
+def query_gerrit(offset=0, only_open=True, extra_query=''):
     """Query the Gerrit REST API"""
     url = 'https://review.openstack.org/changes/'
     query = 'topic:python3-first'
     if only_open:
         query = query + ' is:open'
+    if extra_query:
+        query = query + ' ' + extra_query
     LOG.debug('querying %s %r offset %s', url, query, offset)
     raw = requests.get(
         url,
@@ -71,10 +73,11 @@ def query_gerrit(offset=0, only_open=True):
     return decode_json(raw)
 
 
-def all_changes(only_open=True):
+def all_changes(only_open=True, extra_query=''):
     offset = 0
     while True:
-        changes = query_gerrit(offset, only_open=only_open)
+        changes = query_gerrit(offset, only_open=only_open,
+                               extra_query=extra_query)
 
         yield from changes
 
@@ -323,8 +326,14 @@ class PatchesCount(lister.Lister):
             subject = subject.strip()
             cleanup_changes[subject] = change
 
+        # We pass the message subject to gerrit in the query, but that
+        # does a full text search so we also want to do the exact
+        # match here in this filter.
         changes = (
-            c for c in all_changes(False)
+            c for c in all_changes(
+                False,
+                extra_query='message:"{}"'.format(self._import_subject),
+            )
             if c.get('subject') == self._import_subject
         )
 
