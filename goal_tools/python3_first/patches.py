@@ -230,6 +230,48 @@ class PatchesList(lister.Lister):
         return (columns, data)
 
 
+def search_cleanup_patches(offset=0):
+    """Query the Gerrit REST API"""
+    url = 'https://review.openstack.org/changes/'
+    query = ' '.join([
+        'project:openstack-infra/project-config',
+        'message:"remove job settings"',
+        'topic:python3-first',
+    ])
+    LOG.debug('querying %s %r offset %s', url, query, offset)
+    raw = requests.get(
+        url,
+        params={
+            'n': '100',
+            'start': offset,
+            'q': query,
+            'o': [
+                'ALL_REVISIONS',
+                'REVIEWER_UPDATES',
+                'DETAILED_ACCOUNTS',
+                'CURRENT_COMMIT',
+                'LABELS',
+                'DETAILED_LABELS',
+            ],
+        },
+        headers={'Accept': 'application/json'},
+    )
+    return decode_json(raw)
+
+
+def get_cleanup_changes():
+    offset = 0
+    while True:
+        changes = search_cleanup_patches(offset)
+
+        yield from changes
+
+        if changes and changes[-1].get('_more_changes', False):
+            offset += 100
+        else:
+            break
+
+
 class PatchesCount(lister.Lister):
     "count the patches open for each team"
 
@@ -243,15 +285,30 @@ class PatchesCount(lister.Lister):
         return parser
 
     _import_subject = 'import zuul job settings from project-config'
+    _url_base = 'https://review.openstack.org/#/c/'
 
     def take_action(self, parsed_args):
         gov_dat = governance.Governance(url=parsed_args.project_list)
+
+        LOG.debug('finding cleanup patches in project-config')
+        prefix = 'remove job settings for'
+        suffix = 'repositories'
+        cleanup_changes = {}
+        for change in get_cleanup_changes():
+            subject = change.get('subject', '').lower()
+            if subject.startswith(prefix):
+                subject = subject[len(prefix):]
+            if subject.endswith(suffix):
+                subject = subject[:-1 * len(suffix)]
+            subject = subject.strip()
+            cleanup_changes[subject] = change
 
         changes = (
             c for c in all_changes(False)
             if c.get('subject') == self._import_subject
         )
 
+        LOG.debug('counting in-tree changes')
         team_counts = collections.Counter()
         open_counts = collections.Counter()
         for c in changes:
@@ -263,10 +320,24 @@ class PatchesCount(lister.Lister):
             if c.get('status') != 'MERGED':
                 open_counts.update(item)
 
-        columns = ('Team', 'Open', 'Total', 'Done')
+        def get_done_value(team):
+            cleanup = cleanup_changes.get(team.lower())
+            if not cleanup:
+                return 'cleanup patch not found'
+            workflow_votes = count_votes(cleanup, 'Workflow')
+            if cleanup.get('status') == 'MERGED':
+                return 'yes'
+            if open_counts[team]:
+                return 'not ready for cleanup'
+            if workflow_votes.get(-1):
+                return 'need to remove WIP from {}{}'.format(
+                    self._url_base, cleanup.get('_number'))
+            return 'waiting for cleanup {}{}'.format(
+                self._url_base, cleanup.get('_number'))
+
+        columns = ('Team', 'Open', 'Total', 'Status')
         data = (
-            (team, open_counts[team], count,
-             'yes' if open_counts[team] == 0 else '')
+            (team, open_counts[team], count, get_done_value(team))
             for team, count in sorted(team_counts.items())
         )
         return (columns, data)
