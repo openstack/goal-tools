@@ -30,8 +30,15 @@ if [ -z "$team" ]; then
 fi
 
 if [ -z "$task" ]; then
-    usage
-    exit 1
+    echo
+    echo "=== Getting storyboard details ==="
+    echo
+
+    story_id=2002586
+    task_id=$(grep -e "$team" $bindir/taskids.txt | awk '{print $1}')
+
+    echo "Story: $story_id"
+    echo "Task : $task_id"
 fi
 
 enable_tox
