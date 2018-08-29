@@ -31,10 +31,10 @@ fi
 
 enable_tox
 
-commit_message="add python 3.6 unit test job
+commit_message="add python 3.5 unit test job
 
 This is a mechanically generated patch to add a unit test job running
-under Python 3.6 as part of the python3-first goal.
+under Python 3.5 as part of the python3-first goal.
 
 See the python3-first goal document for details:
 https://governance.openstack.org/tc/goals/stein/python3-first.html
