@@ -355,7 +355,7 @@ class PatchesCount(lister.Lister):
                 return 'cleanup patch not found'
             workflow_votes = count_votes(cleanup, 'Workflow')
             if cleanup.get('status') == 'MERGED':
-                return 'yes'
+                return 'DONE'
             if open_counts[team]:
                 return 'not ready for cleanup'
             if workflow_votes.get(-1):
