@@ -312,6 +312,8 @@ class PatchesCount(lister.Lister):
             if task.assignee_id:
                 user = sbc.users.get(id=task.assignee_id)
                 assignments[task.title] = user.full_name
+            else:
+                assignments[task.title] = ''
 
         LOG.debug('finding cleanup patches in project-config')
         prefix = 'remove job settings for'
@@ -337,9 +339,14 @@ class PatchesCount(lister.Lister):
             if c.get('subject') == self._import_subject
         )
 
+        count_init = {
+            team: 0
+            for team in gov_dat.get_teams()
+        }
+        team_counts = collections.Counter(count_init)
+        open_counts = collections.Counter(count_init)
+
         LOG.debug('counting in-tree changes')
-        team_counts = collections.Counter()
-        open_counts = collections.Counter()
         for c in changes:
             status = c.get('status')
             if status == 'ABANDONED':
@@ -350,6 +357,8 @@ class PatchesCount(lister.Lister):
                 open_counts.update(item)
 
         def get_done_value(team):
+            if not team_counts[team]:
+                return 'not started'
             cleanup = cleanup_changes.get(team.lower())
             if not cleanup:
                 return 'cleanup patch not found'
@@ -357,7 +366,7 @@ class PatchesCount(lister.Lister):
             if cleanup.get('status') == 'MERGED':
                 return 'DONE'
             if open_counts[team]:
-                return 'not ready for cleanup'
+                return 'migration in progress'
             if workflow_votes.get(-1):
                 return 'need to remove WIP from {}{}'.format(
                     self._url_base, cleanup.get('_number'))
@@ -366,8 +375,9 @@ class PatchesCount(lister.Lister):
 
         columns = ('Team', 'Open', 'Total', 'Status', 'Champion')
         data = (
-            (team, open_counts[team], count, get_done_value(team),
+            (team, open_counts[team], team_counts[team], get_done_value(team),
              assignments.get(team, ''))
-            for team, count in sorted(team_counts.items())
+            for team in sorted(gov_dat.get_teams(),
+                               key=lambda x: x.lower())
         )
         return (columns, data)

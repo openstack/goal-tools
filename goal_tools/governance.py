@@ -80,6 +80,13 @@ class Governance:
             for deliv in team.get('deliverables', {}).values():
                 yield from deliv['repos']
 
+    def get_teams(self):
+        return list(
+            n
+            for n in self._team_data.keys()
+            if not n.startswith('_')
+        )
+
     @functools.lru_cache()
     def get_repo_owner(self, repo_name):
         "Return the name of the team that owns the repository."
