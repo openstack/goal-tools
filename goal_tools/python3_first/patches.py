@@ -358,7 +358,8 @@ class PatchesCount(lister.Lister):
 
         def get_done_value(team):
             if not team_counts[team]:
-                return 'not started'
+                n_repos = len(list(gov_dat.get_repos_for_team(team)))
+                return 'not started, {} repos'.format(n_repos)
             cleanup = cleanup_changes.get(team.lower())
             if not cleanup:
                 return 'cleanup patch not found'
