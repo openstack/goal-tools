@@ -3,11 +3,14 @@
 import collections
 import json
 import logging
+import os.path
 
-from goal_tools import governance
-
+import appdirs
 from cliff import lister
 import requests
+
+from goal_tools import governance
+from goal_tools import storyboard
 
 LOG = logging.getLogger(__name__)
 
@@ -277,6 +280,13 @@ class PatchesCount(lister.Lister):
 
     def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)
+        config_dir = appdirs.user_config_dir('OSGoalTools', 'OpenStack')
+        config_file = os.path.join(config_dir, 'storyboard.ini')
+        parser.add_argument(
+            '--config-file',
+            default=config_file,
+            help='storyboard configuration file (%(default)s)',
+        )
         parser.add_argument(
             '--project-list',
             default=governance.PROJECTS_LIST,
@@ -289,6 +299,16 @@ class PatchesCount(lister.Lister):
 
     def take_action(self, parsed_args):
         gov_dat = governance.Governance(url=parsed_args.project_list)
+        sb_config = storyboard.get_config(parsed_args.config_file)
+
+        LOG.debug('finding champion assignments')
+        sbc = storyboard.get_client(sb_config)
+        story = sbc.stories.get(id='2002586')
+        assignments = {}
+        for task in story.tasks.get_all():
+            if task.assignee_id:
+                user = sbc.users.get(id=task.assignee_id)
+                assignments[task.title] = user.full_name
 
         LOG.debug('finding cleanup patches in project-config')
         prefix = 'remove job settings for'
@@ -335,9 +355,10 @@ class PatchesCount(lister.Lister):
             return 'waiting for cleanup {}{}'.format(
                 self._url_base, cleanup.get('_number'))
 
-        columns = ('Team', 'Open', 'Total', 'Status')
+        columns = ('Team', 'Open', 'Total', 'Status', 'Champion')
         data = (
-            (team, open_counts[team], count, get_done_value(team))
+            (team, open_counts[team], count, get_done_value(team),
+             assignments.get(team, ''))
             for team, count in sorted(team_counts.items())
         )
         return (columns, data)
