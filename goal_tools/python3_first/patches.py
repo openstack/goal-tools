@@ -109,7 +109,10 @@ def get_one_row(change, gov_dat):
     repo = change.get('project')
     url = 'https://review.openstack.org/{}'.format(change['_number'])
     branch = change.get('branch')
-    team = gov_dat.get_repo_owner(repo) or 'unknown'
+    if '_TEAM' in change:
+        team = change['_TEAM']
+    else:
+        team = gov_dat.get_repo_owner(repo) or 'unknown'
 
     v_status = 'UNKNOWN'
     verified = count_votes(change, 'Verified')
@@ -202,6 +205,20 @@ class PatchesList(lister.Lister):
         rows = list(get_one_row(c, gov_dat) for c in changes)
         LOG.debug('rows: %s', len(rows))
 
+        if not parsed_args.repo and not parsed_args.imports:
+            LOG.debug('looking for cleanup changes')
+            cleanup_changes = get_cleanup_changes_by_team()
+            to_add = []
+            if parsed_args.team:
+                if parsed_args.team.lower() in cleanup_changes:
+                    to_add.append(cleanup_changes[parsed_args.team.lower()])
+            else:
+                for team, change in cleanup_changes.items():
+                    change['_TEAM'] = team
+                    to_add.append(change)
+            if to_add:
+                rows.extend(get_one_row(c, gov_dat) for c in to_add)
+
         rows = sorted(rows, key=lambda r: (r[1], r[5], r[4]))
 
         def summarize():
@@ -278,6 +295,22 @@ def get_cleanup_changes():
             break
 
 
+def get_cleanup_changes_by_team():
+    LOG.debug('finding cleanup patches in project-config')
+    prefix = 'remove job settings for'
+    suffix = 'repositories'
+    cleanup_changes = {}
+    for change in get_cleanup_changes():
+        subject = change.get('subject', '').lower()
+        if subject.startswith(prefix):
+            subject = subject[len(prefix):]
+        if subject.endswith(suffix):
+            subject = subject[:-1 * len(suffix)]
+        subject = subject.strip()
+        cleanup_changes[subject] = change
+    return cleanup_changes
+
+
 class PatchesCount(lister.Lister):
     "count the patches open for each team"
 
@@ -315,18 +348,7 @@ class PatchesCount(lister.Lister):
             else:
                 assignments[task.title] = ''
 
-        LOG.debug('finding cleanup patches in project-config')
-        prefix = 'remove job settings for'
-        suffix = 'repositories'
-        cleanup_changes = {}
-        for change in get_cleanup_changes():
-            subject = change.get('subject', '').lower()
-            if subject.startswith(prefix):
-                subject = subject[len(prefix):]
-            if subject.endswith(suffix):
-                subject = subject[:-1 * len(suffix)]
-            subject = subject.strip()
-            cleanup_changes[subject] = change
+        cleanup_changes = get_cleanup_changes_by_team()
 
         # We pass the message subject to gerrit in the query, but that
         # does a full text search so we also want to do the exact
