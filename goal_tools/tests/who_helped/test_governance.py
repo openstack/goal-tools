@@ -59,9 +59,30 @@ Release Management:
         - openstack-dev/specs-cookiecutter
 """
 
+_sigs_data_yaml = """
+---
+# List of repositories owned by SIGs
+meta:
+  - repo: openstack/governance-sigs
+security:
+  - repo: openstack/anchor
+  - repo: openstack/ossa
+  - repo: openstack/security-analysis
+  - repo: openstack/security-doc
+  - repo: openstack/security-specs
+  - repo: openstack/syntribos
+  - repo: openstack/syntribos-openstack-templates
+  - repo: openstack/syntribos-payloads
+self-healing:
+  - repo: openstack/self-healing-sig
+operations-docs:
+  - repo: openstack/operations-guide
+"""
+
 TEAM_DATA = governance.Governance._organize_team_data(
     yaml.load(_team_data_yaml),
     {'Technical Committee': [{'repo': 'openstack/governance'}]},
+    yaml.load(_sigs_data_yaml),
 )
 
 

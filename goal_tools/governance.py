@@ -21,13 +21,19 @@ from goal_tools import apis
 
 PROJECTS_LIST = "http://git.openstack.org/cgit/openstack/governance/plain/reference/projects.yaml"  # noqa
 TC_LIST = "http://git.openstack.org/cgit/openstack/governance/plain/reference/technical-committee-repos.yaml"  # noqa
+SIGS_LIST = "http://git.openstack.org/cgit/openstack/governance/plain/reference/sigs-repos.yaml"  # noqa
 
 
 class Governance:
 
-    def __init__(self, team_data=None, url=PROJECTS_LIST, tc_url=TC_LIST):
+    def __init__(self,
+                 team_data=None,
+                 url=PROJECTS_LIST,
+                 tc_url=TC_LIST,
+                 sigs_url=SIGS_LIST):
         self._url = url
         self._tc_url = tc_url
+        self._sigs_url = sigs_url
         if team_data is None:
             team_data = self._get_team_data()
         self._team_data = team_data
@@ -38,15 +44,48 @@ class Governance:
         team_data = yaml.load(raw.text)
         tc = apis.requester(self._tc_url)
         tc_data = yaml.load(tc.text)
-        return self._organize_team_data(team_data, tc_data)
+        sigs = apis.requester(self._sigs_url)
+        sigs_data = yaml.load(sigs.text)
+        return self._organize_team_data(team_data, tc_data, sigs_data)
 
     @staticmethod
-    def _organize_team_data(team_data, tc_data):
+    def _organize_team_data(team_data, tc_data, sigs_data):
         team_data['Technical Committee'] = {
             'deliverables': {
                 repo['repo'].partition('/')[-1]: {'repos': [repo['repo']]}
                 for repo in tc_data['Technical Committee']
             }
+        }
+
+        # Treat all SIGs as one team for simplicity.
+        team_data['SIGs'] = {
+            'deliverables': {
+                name: {
+                    'repos': [r['repo'] for r in data],
+                }
+                for name, data in sigs_data.items()
+            },
+        }
+
+        # Board working groups. Inline the data because there isn't a
+        # lot and we don't want to wait for
+        # https://review.openstack.org/598350
+        team_data['Board'] = {
+            'deliverables': {
+                'interop': {
+                    'repos': [
+                        'openstack/interop',
+                        'openstack/refstack-client',
+                        'openstack/refstack',
+                        'openstack/python-tempestconf',
+                    ],
+                },
+                'transparency': {
+                    'repos': [
+                        'openstack/transparency-policy',
+                    ],
+                },
+            },
         }
 
         by_repos = {}
