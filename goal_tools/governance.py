@@ -83,6 +83,43 @@ class Governance:
             },
         }
 
+        team_data['User Committee'] = {
+            'deliverables': {
+                'Enterprise Working Group': {
+                    'repos': [
+                        'openstack/enterprise-wg',
+                        'openstack/workload-ref-archs',
+                    ],
+                },
+                'Ops Tags Team': {
+                    'repos': [
+                        'openstack/ops-tags-team',
+                    ],
+                },
+                'Product Working Group': {
+                    'repos': [
+                        'openstack/development-proposals',
+                    ],
+                },
+                'Public Cloud Working Group': {
+                    'repos': [
+                        'openstack/publiccloud-wg',
+                    ],
+                },
+                'Scientific Working Group': {
+                    'repos': [
+                        'openstack/scientific-wg',
+                    ],
+                },
+                'User Committee': {
+                    'repos': [
+                        'openstack/governance-uc',
+                        'openstack/uc-recognition',
+                    ],
+                },
+            },
+        }
+
         by_repos = {}
         for team, info in team_data.items():
             for dname, dinfo in info.get('deliverables', {}).items():
