@@ -70,7 +70,7 @@ class Governance:
         # Board working groups. Inline the data because there isn't a
         # lot and we don't want to wait for
         # https://review.openstack.org/598350
-        team_data['Board'] = {
+        team_data['InteropWG'] = {
             'deliverables': {
                 'interop': {
                     'repos': [
@@ -78,11 +78,6 @@ class Governance:
                         'openstack/refstack-client',
                         'openstack/refstack',
                         'openstack/python-tempestconf',
-                    ],
-                },
-                'transparency': {
-                    'repos': [
-                        'openstack/transparency-policy',
                     ],
                 },
             },

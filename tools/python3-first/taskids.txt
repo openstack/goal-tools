@@ -64,5 +64,5 @@
 24347 zun
 24757 Technical Committee
 24758 User Committee
-24759 Board
+24759 InteropWG
 24760 SIGs
