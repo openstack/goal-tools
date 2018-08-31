@@ -109,6 +109,7 @@ def get_one_row(change, gov_dat):
     repo = change.get('project')
     url = 'https://review.openstack.org/{}'.format(change['_number'])
     branch = change.get('branch')
+    owner = change.get('owner', {}).get('name', 'UNKNOWN')
     if '_TEAM' in change:
         team = change['_TEAM']
     else:
@@ -136,7 +137,7 @@ def get_one_row(change, gov_dat):
         elif code_review.get(1) or code_review.get(2):
             w_status = 'REVIEWED'
 
-    return (subject, repo, team, v_status, w_status, url, branch)
+    return (subject, repo, team, v_status, w_status, url, branch, owner)
 
 
 class PatchesList(lister.Lister):
@@ -221,35 +222,17 @@ class PatchesList(lister.Lister):
 
         rows = sorted(rows, key=lambda r: (r[1], r[5], r[4]))
 
-        def summarize():
-            team_counts = collections.Counter()
-            test_counts = collections.Counter()
-            w_counts = collections.Counter()
-            for row in rows:
-                team_counts.update({row[2]: 1})
-                test_counts.update({row[3]: 1})
-                w_counts.update({row[4]: 1})
-                yield row
-            yield ('', '', '', '', '', '', '')
-            team_summary = '\n'.join('{}: {}'.format(*c)
-                                     for c in sorted(team_counts.items()))
-            test_summary = '\n'.join('{}: {}'.format(*c)
-                                     for c in sorted(test_counts.items()))
-            w_summary = '\n'.join('{}: {}'.format(*c)
-                                  for c in sorted(w_counts.items()))
-            yield ('', '', team_summary, test_summary, w_summary, '', '')
-
         if parsed_args.team:
             columns = ('Subject', 'Repo',
-                       'Tests', 'Workflow', 'URL', 'Branch')
+                       'Tests', 'Workflow', 'URL', 'Branch', 'Owner')
             data = (
                 r[:2] + r[3:]
-                for r in summarize()
+                for r in rows
             )
         else:
             columns = ('Subject', 'Repo', 'Team',
-                       'Tests', 'Workflow', 'URL', 'Branch')
-            data = summarize()
+                       'Tests', 'Workflow', 'URL', 'Branch', 'Owner')
+            data = rows
         return (columns, data)
 
 
