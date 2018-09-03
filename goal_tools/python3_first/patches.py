@@ -380,10 +380,26 @@ class PatchesCount(lister.Lister):
                 self._url_base, cleanup.get('_number'))
 
         columns = ('Team', 'Open', 'Total', 'Status', 'Champion')
-        data = (
+        data = [
             (team, open_counts[team], team_counts[team], get_done_value(team),
              assignments.get(team, ''))
             for team in sorted(gov_dat.get_teams(),
                                key=lambda x: x.lower())
+        ]
+
+        total_open = sum(open_counts.values())
+        total_all = sum(team_counts.values())
+        status_counts = collections.Counter()
+        for r in data:
+            status_counts.update({r[3]: 1})
+
+        data.append(
+            ('TOTAL',
+             total_open,
+             total_all,
+             '{:2}/{:2} DONE'.format(status_counts.get('DONE'),
+                                     len(data)),
+             '')
         )
+
         return (columns, data)
