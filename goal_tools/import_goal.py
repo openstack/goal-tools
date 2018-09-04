@@ -99,7 +99,7 @@ def main():
     parser.add_argument(
         '--project-list',
         default='http://git.openstack.org/cgit/openstack/governance/plain/reference/projects.yaml',  # noqa
-        help='URL for projects.yaml',
+        help='URL for governance projects list (%(default)s)',
     )
     group = parser.add_mutually_exclusive_group()
     group.add_argument(
