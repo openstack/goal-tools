@@ -58,6 +58,10 @@ def _get_worklist_settings(tag):
 
 
 def _get_project_info(url):
+    # First check to see if it's a local path we can read.
+    if os.path.isfile(url):
+        with open(url) as f:
+            return yaml.safe_load(f)
     response = requests.get(url)
     data = yaml.safe_load(response.text)
     return data
@@ -99,7 +103,8 @@ def main():
     parser.add_argument(
         '--project-list',
         default='http://git.openstack.org/cgit/openstack/governance/plain/reference/projects.yaml',  # noqa
-        help='URL for governance projects list (%(default)s)',
+        help='URL or file path for governance projects.yaml list '
+             '(%(default)s)',
     )
     group = parser.add_mutually_exclusive_group()
     group.add_argument(
