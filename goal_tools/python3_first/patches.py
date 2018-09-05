@@ -344,9 +344,13 @@ class PatchesCount(lister.Lister):
             if c.get('subject') == self._import_subject
         )
 
+        # We aren't going to migrate the settings for the infra team.
+        interesting_teams = gov_dat.get_teams()
+        interesting_teams.remove('Infrastructure')
+
         count_init = {
             team: 0
-            for team in gov_dat.get_teams()
+            for team in interesting_teams
         }
         team_counts = collections.Counter(count_init)
         open_counts = collections.Counter(count_init)
@@ -383,7 +387,7 @@ class PatchesCount(lister.Lister):
         data = [
             (team, open_counts[team], team_counts[team], get_done_value(team),
              assignments.get(team, ''))
-            for team in sorted(gov_dat.get_teams(),
+            for team in sorted(interesting_teams,
                                key=lambda x: x.lower())
         ]
 
