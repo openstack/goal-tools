@@ -77,3 +77,10 @@ do
         set +x
     done
 done
+
+(cd "openstack-infra/project-config" &&
+        git review -y -t python3-first master)
+echo
+echo "=============================================="
+echo "SET THE WORKFLOW -1 FLAG ON THE PREVIOUS PATCH"
+echo "=============================================="
