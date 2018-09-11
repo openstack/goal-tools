@@ -347,6 +347,8 @@ class PatchesCount(lister.Lister):
         # We aren't going to migrate the settings for the infra team.
         interesting_teams = gov_dat.get_teams()
         interesting_teams.remove('Infrastructure')
+        # The loci team had no work to do.
+        interesting_teams.remove('loci')
 
         count_init = {
             team: 0
