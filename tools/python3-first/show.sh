@@ -26,12 +26,11 @@ log_output "$out_dir" show
 
 enable_tox
 
-BRANCHES="master ocata pike queens rocky"
-
 function show_changes {
-    for branch in $BRANCHES
+    for branchfile in branch-*
     do
-        for repo in $(cat $branch)
+        branch=$(echo $branchfile | sed -e 's|.*-||g')
+        for repo in $(cat $branchfile)
         do
             echo
             if [ $branch = master ]; then
@@ -41,7 +40,9 @@ function show_changes {
             fi
             (cd "$repo" &&
                     git checkout python3-first-$branch 2>/dev/null &&
+                    echo "========================================" &&
                     echo "CHANGES IN $repo $branch" &&
+                    echo "========================================" &&
                     echo &&
                     git log --patch $origin..)
         done

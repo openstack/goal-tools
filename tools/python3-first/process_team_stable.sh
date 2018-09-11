@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 bindir=$(dirname $0)
 source $bindir/functions
@@ -11,13 +11,12 @@ echo $0 $*
 echo
 
 function usage {
-    echo "process_team.sh WORKDIR TEAM BRANCH TASK"
+    echo "process_team_stable.sh WORKDIR TEAM TASK"
 }
 
 workdir=$1
 team="$2"
-branch="$3"
-task="$4"
+task="$3"
 
 if [ -z "$workdir" ]; then
     usage
@@ -29,11 +28,6 @@ if [ -z "$team" ]; then
     exit 1
 fi
 
-if [ -z "$branch" ]; then
-    usage
-    exit 1
-fi
-
 if [ -z "$task" ]; then
     usage
     exit 1
@@ -41,7 +35,9 @@ fi
 
 enable_tox
 
-for repo in $(ls -d $workdir/*/*); do
+function do_repo_branch {
+    local repo="$1"
+    local branch="$2"
 
     echo
     echo "=== $repo @ $branch ==="
@@ -49,17 +45,25 @@ for repo in $(ls -d $workdir/*/*); do
 
     # Create the branch tracking file, since some other tools assume
     # it exists. Having it empty is fine.
-    touch $workdir/branch-$(basename $branch)
+    tracking_file="$workdir/branch-$(basename $branch)"
+    touch "$tracking_file"
 
     $bindir/do_repo.sh "$repo" "$branch" "$task"
     RC=$?
     if [ $RC -eq 0 ]; then
         tracking="$(basename $(dirname $repo))/$(basename $repo)"
-        echo "$tracking" >> $workdir/branch-$(basename $branch)
+        echo "$tracking" >> "$tracking_file"
     elif [ $RC -ne 2 ]; then
         echo "FAIL"
         exit $RC
     fi
+}
+
+for repo in $(ls -d $workdir/*/*); do
+    branches=$(list_stable_branches $repo)
+    for branch in $branches; do
+        do_repo_branch "$repo" "$branch"
+    done
 done
 
 exit 0

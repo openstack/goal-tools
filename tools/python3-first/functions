@@ -37,3 +37,12 @@ function log_output {
     date
     echo $0 $@
 }
+
+function list_stable_branches {
+    local repodir="$1"
+
+    (cd $repodir &&
+            git branch --list -a |
+                grep origin/stable |
+                sed -e 's|remotes/origin/||g')
+}

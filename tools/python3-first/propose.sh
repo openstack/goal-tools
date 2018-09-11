@@ -26,18 +26,18 @@ log_output "$out_dir" propose
 
 enable_tox
 
-BRANCHES="master ocata pike queens rocky"
-
 function list_changes {
-    for branch in $BRANCHES
+    for branchfile in branch-*
     do
-        for repo in $(cat $branch)
+        branch=$(echo $branchfile | sed -e 's|.*-||g')
+        if [ "$branch" = "master" ]
+        then
+            origin=origin/master
+        else
+            origin=origin/stable/$branch
+        fi
+        for repo in $(cat $branchfile)
         do
-            if [ $branch = master ]; then
-                origin=origin/master
-            else
-                origin=origin/stable/$branch
-            fi
             (cd $repo &&
                     git checkout python3-first-$branch 2>/dev/null &&
                     git log --oneline --pretty=format:"%h %s $repo $branch%n" $origin..)
@@ -59,14 +59,18 @@ echo
 echo "Press enter to continue"
 read ignoreme
 
-for branch in $BRANCHES
+branches="master $(list_stable_branches $repo)"
+
+for branchfile in branch-*
 do
-    if [ $branch = master ]; then
+    branch=$(echo $branchfile | sed -e 's|.*-||g')
+    if [ "$branch" = "master" ]
+    then
         target=master
     else
         target=stable/$branch
     fi
-    for repo in $(cat $branch)
+    for repo in $(cat $branchfile)
     do
         echo
         echo $repo $branch

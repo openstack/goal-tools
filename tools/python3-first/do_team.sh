@@ -77,8 +77,6 @@ $bindir/update_doc_job.sh "$out_dir" "$team" $task_id
 $bindir/add_py35_job.sh "$out_dir" "$team" $task_id
 $bindir/add_py36_job.sh "$out_dir" "$team" $task_id
 $bindir/add_lib_job.sh "$out_dir" "$team" $task_id
-$bindir/process_team.sh "$out_dir" "$team" stable/ocata $task_id
-$bindir/process_team.sh "$out_dir" "$team" stable/pike $task_id
-$bindir/process_team.sh "$out_dir" "$team" stable/queens $task_id
-$bindir/process_team.sh "$out_dir" "$team" stable/rocky $task_id
+
+$bindir/process_team_stable.sh "$out_dir" "$team" $task_id
 $bindir/update_project_config.sh "$workdir" "$team" $task_id $repos
