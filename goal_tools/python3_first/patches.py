@@ -354,6 +354,7 @@ class PatchesCount(lister.Lister):
         }
         team_counts = collections.Counter(count_init)
         open_counts = collections.Counter(count_init)
+        fail_counts = collections.Counter(count_init)
 
         LOG.debug('counting in-tree changes')
         for c in changes:
@@ -364,6 +365,9 @@ class PatchesCount(lister.Lister):
             team_counts.update(item)
             if c.get('status') != 'MERGED':
                 open_counts.update(item)
+                verified_votes = count_votes(c, 'Verified')
+                if verified_votes.get(-1) or verified_votes.get(-2):
+                    fail_counts.update(item)
 
         def get_done_value(team):
             if not team_counts[team]:
@@ -383,23 +387,26 @@ class PatchesCount(lister.Lister):
             return 'waiting for cleanup {}{}'.format(
                 self._url_base, cleanup.get('_number'))
 
-        columns = ('Team', 'Open', 'Total', 'Status', 'Champion')
+        columns = ('Team', 'Open', 'Failed', 'Total', 'Status', 'Champion')
         data = [
-            (team, open_counts[team], team_counts[team], get_done_value(team),
+            (team, open_counts[team], fail_counts[team],
+             team_counts[team], get_done_value(team),
              assignments.get(team, ''))
             for team in sorted(interesting_teams,
                                key=lambda x: x.lower())
         ]
 
         total_open = sum(open_counts.values())
+        total_fail = sum(fail_counts.values())
         total_all = sum(team_counts.values())
         status_counts = collections.Counter()
         for r in data:
-            status_counts.update({r[3]: 1})
+            status_counts.update({r[4]: 1})
 
         data.append(
             ('TOTAL',
              total_open,
+             total_fail,
              total_all,
              '{:2}/{:2} DONE'.format(status_counts.get('DONE'),
                                      len(data)),
