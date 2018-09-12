@@ -311,6 +311,12 @@ class PatchesCount(lister.Lister):
             default=governance.PROJECTS_LIST,
             help='URL for projects.yaml',
         )
+        parser.add_argument(
+            '--minimal', '-m',
+            default=False,
+            action='store_true',
+            help='show less info for narrower report',
+        )
         return parser
 
     _import_subject = 'import zuul job settings from project-config'
@@ -384,8 +390,12 @@ class PatchesCount(lister.Lister):
             if open_counts[team]:
                 return 'migration in progress'
             if workflow_votes.get(-1):
+                if parsed_args.minimal:
+                    return 'ready for cleanup'
                 return 'need to remove WIP from {}{}'.format(
                     self._url_base, cleanup.get('_number'))
+            if parsed_args.minimal:
+                return 'waiting for cleanup'
             return 'waiting for cleanup {}{}'.format(
                 self._url_base, cleanup.get('_number'))
 
