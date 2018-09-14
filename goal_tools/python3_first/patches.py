@@ -386,9 +386,9 @@ class PatchesCount(lister.Lister):
                 return 'cleanup patch not found'
             workflow_votes = count_votes(cleanup, 'Workflow')
             if cleanup.get('status') == 'MERGED':
-                return 'DONE'
+                return 'MIGRATED'
             if open_counts[team]:
-                return 'migration in progress'
+                return 'in progress'
             if workflow_votes.get(-1):
                 if parsed_args.minimal:
                     return 'ready for cleanup'
@@ -420,8 +420,8 @@ class PatchesCount(lister.Lister):
              total_open,
              total_fail,
              total_all,
-             '{:2}/{:2} DONE'.format(status_counts.get('DONE'),
-                                     len(data)),
+             '{:2}/{:2} MIGRATED'.format(status_counts.get('MIGRATED'),
+                                         len(data)),
              '')
         )
 
