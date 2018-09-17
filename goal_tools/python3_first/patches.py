@@ -322,6 +322,14 @@ class PatchesCount(lister.Lister):
     _import_subject = 'import zuul job settings from project-config'
     _url_base = 'https://review.openstack.org/#/c/'
 
+    _subjects = [
+        ('Imports', ['import zuul job settings from project-config']),
+        ('tox defaults', ['fix tox python3 overrides']),
+        ('Docs', ['switch documentation job to new PTI']),
+        ('3.6 unit', ['add python 3.5 unit test job',
+                      'add python 3.6 unit test job']),
+    ]
+
     def take_action(self, parsed_args):
         gov_dat = governance.Governance(url=parsed_args.project_list)
         sb_config = storyboard.get_config(parsed_args.config_file)
@@ -339,16 +347,7 @@ class PatchesCount(lister.Lister):
 
         cleanup_changes = get_cleanup_changes_by_team()
 
-        # We pass the message subject to gerrit in the query, but that
-        # does a full text search so we also want to do the exact
-        # match here in this filter.
-        changes = (
-            c for c in all_changes(
-                False,
-                extra_query='message:"{}"'.format(self._import_subject),
-            )
-            if c.get('subject') == self._import_subject
-        )
+        changes = all_changes(False)
 
         # We aren't going to migrate the settings for the infra team.
         interesting_teams = gov_dat.get_teams()
@@ -360,9 +359,22 @@ class PatchesCount(lister.Lister):
             team: 0
             for team in interesting_teams
         }
-        team_counts = collections.Counter(count_init)
-        open_counts = collections.Counter(count_init)
+        team_counts = {
+            title: collections.Counter(count_init)
+            for title, subject in self._subjects
+        }
+        open_counts = {
+            title: collections.Counter(count_init)
+            for title, subject in self._subjects
+        }
         fail_counts = collections.Counter(count_init)
+
+        subject_lookup = {
+            subject: title
+            for title, subject_list in self._subjects
+            for subject in subject_list
+        }
+        all_titles = tuple(t for t, s in self._subjects)
 
         LOG.debug('counting in-tree changes')
         for c in changes:
@@ -370,15 +382,28 @@ class PatchesCount(lister.Lister):
             if status == 'ABANDONED':
                 continue
             item = {gov_dat.get_repo_owner(c.get('project')) or 'other': 1}
-            team_counts.update(item)
+            title = subject_lookup.get(c.get('subject'))
+            if not title:
+                continue
+            team_counts[title].update(item)
             if c.get('status') != 'MERGED':
-                open_counts.update(item)
+                open_counts[title].update(item)
                 verified_votes = count_votes(c, 'Verified')
                 if verified_votes.get(-1) or verified_votes.get(-2):
                     fail_counts.update(item)
 
-        def get_done_value(team):
-            if not team_counts[team]:
+        columns = (
+            ('Team',) +
+            all_titles +
+            ('Failing',
+             'Total',
+             'Champion')
+        )
+
+        def get_done_value(title, team, done_msg='+'):
+            if title != 'Imports':
+                return done_msg
+            if not team_counts['Imports'][team]:
                 n_repos = len(list(gov_dat.get_repos_for_team(team)))
                 return 'not started, {} repos'.format(n_repos)
             cleanup = cleanup_changes.get(team.lower())
@@ -386,8 +411,8 @@ class PatchesCount(lister.Lister):
                 return 'cleanup patch not found'
             workflow_votes = count_votes(cleanup, 'Workflow')
             if cleanup.get('status') == 'MERGED':
-                return 'MIGRATED'
-            if open_counts[team]:
+                return done_msg
+            if open_counts['Imports'][team]:
                 return 'in progress'
             if workflow_votes.get(-1):
                 if parsed_args.minimal:
@@ -399,30 +424,59 @@ class PatchesCount(lister.Lister):
             return 'waiting for cleanup {}{}'.format(
                 self._url_base, cleanup.get('_number'))
 
-        columns = ('Team', 'Open', 'Failed', 'Total', 'Status', 'Champion')
+        def format_count(title, team, done_msg='+'):
+            oc = open_counts[title].get(team, 0)
+            tc = team_counts[title].get(team, 0)
+            if tc:
+                if oc:
+                    return '{:3}/{:3}'.format(oc, tc)
+                return get_done_value(title, team, done_msg)
+            return '-'
+
         data = [
-            (team, open_counts[team], fail_counts[team],
-             team_counts[team], get_done_value(team),
-             assignments.get(team, ''))
+            (team,) +
+            tuple(format_count(t, team) for t in all_titles) + (
+                fail_counts.get(team, 0),
+                sum(v.get(team, 0) for v in team_counts.values()),
+                assignments.get(team, '')
+            )
             for team in sorted(interesting_teams,
                                key=lambda x: x.lower())
         ]
 
-        total_open = sum(open_counts.values())
+        # How many projects needed changes of this type?
+        needed_counts = {
+            title: 0
+            for title in all_titles
+        }
+        # How many projects have completed the changes of this type?
+        done_counts = {
+            title: 0
+            for title in all_titles
+        }
+        for row in data:
+            for i, t in enumerate(all_titles, 1):
+                if row[i] == '-':
+                    # ignore this row for this column
+                    continue
+                needed_counts[t] += 1
+                if row[i] == '+':
+                    done_counts[t] += 1
+
+        summary_lines = {}
+        for title, count in done_counts.items():
+            summary_lines[title] = '{:3}/{:3}'.format(
+                count, needed_counts[title])
+
         total_fail = sum(fail_counts.values())
-        total_all = sum(team_counts.values())
-        status_counts = collections.Counter()
-        for r in data:
-            status_counts.update({r[4]: 1})
+        total_all = sum(sum(v.values()) for v in team_counts.values())
 
         data.append(
-            ('TOTAL',
-             total_open,
-             total_fail,
-             total_all,
-             '{:2}/{:2} MIGRATED'.format(status_counts.get('MIGRATED'),
-                                         len(data)),
-             '')
+            ('',) +
+            tuple(summary_lines.get(t, '') for t in all_titles) + (
+                total_fail,
+                total_all,
+                '')
         )
 
         return (columns, data)
