@@ -323,7 +323,7 @@ class PatchesCount(lister.Lister):
     _url_base = 'https://review.openstack.org/#/c/'
 
     _subjects = [
-        ('Imports', ['import zuul job settings from project-config']),
+        ('zuul', ['import zuul job settings from project-config']),
         ('tox defaults', ['fix tox python3 overrides']),
         ('Docs', ['switch documentation job to new PTI']),
         ('3.6 unit', ['add python 3.5 unit test job',
@@ -401,9 +401,9 @@ class PatchesCount(lister.Lister):
         )
 
         def get_done_value(title, team, done_msg='+'):
-            if title != 'Imports':
+            if title != 'zuul':
                 return done_msg
-            if not team_counts['Imports'][team]:
+            if not team_counts['zuul'][team]:
                 n_repos = len(list(gov_dat.get_repos_for_team(team)))
                 return 'not started, {} repos'.format(n_repos)
             cleanup = cleanup_changes.get(team.lower())
@@ -412,7 +412,7 @@ class PatchesCount(lister.Lister):
             workflow_votes = count_votes(cleanup, 'Workflow')
             if cleanup.get('status') == 'MERGED':
                 return done_msg
-            if open_counts['Imports'][team]:
+            if open_counts['zuul'][team]:
                 return 'in progress'
             if workflow_votes.get(-1):
                 if parsed_args.minimal:
