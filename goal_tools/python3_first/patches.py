@@ -367,6 +367,7 @@ class PatchesCount(lister.Lister):
             title: collections.Counter(count_init)
             for title, subject in self._subjects
         }
+        unreviewed_counts = collections.Counter(count_init)
         fail_counts = collections.Counter(count_init)
 
         subject_lookup = {
@@ -391,11 +392,15 @@ class PatchesCount(lister.Lister):
                 verified_votes = count_votes(c, 'Verified')
                 if verified_votes.get(-1) or verified_votes.get(-2):
                     fail_counts.update(item)
+                reviewed_votes = count_votes(c, 'Code-Review')
+                if not (reviewed_votes.get(-1, 0) + reviewed_votes.get(1, 0)):
+                    unreviewed_counts.update(item)
 
         columns = (
             ('Team',) +
             all_titles +
             ('Failing',
+             'Unreviewed',
              'Total',
              'Champion')
         )
@@ -437,6 +442,7 @@ class PatchesCount(lister.Lister):
             (team,) +
             tuple(format_count(t, team) for t in all_titles) + (
                 fail_counts.get(team, 0),
+                unreviewed_counts.get(team, 0),
                 sum(v.get(team, 0) for v in team_counts.values()),
                 assignments.get(team, '')
             )
@@ -469,12 +475,14 @@ class PatchesCount(lister.Lister):
                 count, needed_counts[title])
 
         total_fail = sum(fail_counts.values())
+        total_unreviewed = sum(unreviewed_counts.values())
         total_all = sum(sum(v.values()) for v in team_counts.values())
 
         data.append(
             ('',) +
             tuple(summary_lines.get(t, '') for t in all_titles) + (
                 total_fail,
+                total_unreviewed,
                 total_all,
                 '')
         )
