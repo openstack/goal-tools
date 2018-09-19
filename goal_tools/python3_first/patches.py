@@ -392,8 +392,13 @@ class PatchesCount(lister.Lister):
                 verified_votes = count_votes(c, 'Verified')
                 if verified_votes.get(-1) or verified_votes.get(-2):
                     fail_counts.update(item)
+                # We count reviewers as anyone posting +/- 1 or +/- 2
+                # votes on a patch.
                 reviewed_votes = count_votes(c, 'Code-Review')
-                if not (reviewed_votes.get(-1, 0) + reviewed_votes.get(1, 0)):
+                reviewers = (
+                    sum(reviewed_votes.values()) - reviewed_votes.get(0, 0)
+                )
+                if not reviewers:
                     unreviewed_counts.update(item)
 
         columns = (
