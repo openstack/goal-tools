@@ -12,6 +12,8 @@ from cliff import lister
 LOG = logging.getLogger(__name__)
 
 ENVS = [
+    'bindep',
+    'cover',
     'docs',
     'linters',
     'lower-constraints',
