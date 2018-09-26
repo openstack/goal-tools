@@ -112,6 +112,7 @@ class ToxMissingPy3(lister.Lister):
             (team, r, env, status)
             for team, r in teams_and_repos
             for env, status in check_one(parsed_args.repo_base_dir, r)
+            if team != 'Infrastructure'
         ]
 
         if parsed_args.errors_only:
