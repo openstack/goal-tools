@@ -249,7 +249,11 @@ class ToxFixMissingPy3(command.Command):
                 shutil.rmtree(os.path.join(team_dir, r))
                 continue
 
-            fix_one(team_dir, r, bad_envs)
+            try:
+                fix_one(team_dir, r, bad_envs)
+            except Exception:
+                LOG.exception('failed to update {}'.format(r))
+                continue
 
             LOG.info('adding %s to %s', r, tracking_file)
             with open(tracking_file, 'a', encoding='utf-8') as f:
