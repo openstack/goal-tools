@@ -184,6 +184,14 @@ def fix_one(workdir, repo, bad_envs):
     for env in bad_envs:
         env_header = '[{}]\n'.format(env)
         LOG.info('updating %r', env_header.rstrip())
+        # First try to remove a python2 setting, if it is there. This
+        # won't catch everything, but it does seem to be the most
+        # common pattern.
+        tox_contents = tox_contents.replace(
+            env_header + 'basepython = python2.7\n',
+            env_header,
+        )
+        # Now try to add the python3 setting.
         tox_contents = tox_contents.replace(
             env_header,
             env_header + 'basepython = python3\n',
