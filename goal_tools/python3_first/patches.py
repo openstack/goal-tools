@@ -218,7 +218,17 @@ class PatchesList(lister.Lister):
                     change['_TEAM'] = team
                     to_add.append(change)
             if to_add:
-                rows.extend(get_one_row(c, gov_dat) for c in to_add)
+                if only_open:
+                    to_add = (
+                        c
+                        for c in to_add
+                        if c.get('status') not in ('MERGED', 'ABANDONED')
+                    )
+                extra_rows = (
+                    get_one_row(c, gov_dat)
+                    for c in to_add
+                )
+                rows.extend(extra_rows)
 
         rows = sorted(rows, key=lambda r: (r[1], r[5], r[4]))
 
