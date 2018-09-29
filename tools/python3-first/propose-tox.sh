@@ -75,15 +75,7 @@ do
         echo $repo $branch
         set -x
         (cd $repo &&
-                git checkout python3-first-$branch &&
                 git review -y -t python3-first $target)
         set +x
     done
 done
-
-(cd "openstack-infra/project-config" &&
-        git review -y -t python3-first master)
-echo
-echo "=============================================="
-echo "SET THE WORKFLOW -1 FLAG ON THE PREVIOUS PATCH"
-echo "=============================================="
