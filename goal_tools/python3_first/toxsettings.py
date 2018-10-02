@@ -10,6 +10,7 @@ import subprocess
 from cliff import command
 from cliff import lister
 
+from goal_tools import gitutils
 from goal_tools import governance
 
 LOG = logging.getLogger(__name__)
@@ -130,32 +131,6 @@ class ToxMissingPy3(lister.Lister):
         return (columns, data)
 
 
-start_dir = os.getcwd()
-tools_dir = os.path.join(start_dir, 'tools')
-
-
-def clone_repo(workdir, repo):
-    LOG.info('cloning %s', repo)
-    repo_dir = os.path.join(workdir, repo)
-    if os.path.exists(repo_dir):
-        raise RuntimeError('Found another copy of {} at {}'.format(
-            repo, repo_dir))
-    subprocess.run(
-        [os.path.join(tools_dir, 'clone_repo.sh'),
-         '--workspace', workdir,
-         repo],
-        check=True,
-    )
-
-
-def git(repo_dir, *args):
-    subprocess.run(
-        ['git'] + list(args),
-        check=True,
-        cwd=repo_dir,
-    )
-
-
 COMMIT_MESSAGE = '''\
 fix tox python3 overrides
 
@@ -176,8 +151,8 @@ Signed-off-by: Doug Hellmann <doug@doughellmann.com>
 def fix_one(workdir, repo, bad_envs):
     LOG.info('processing %s', repo)
     repo_dir = os.path.join(workdir, repo)
-    git(repo_dir, 'checkout', 'master')
-    git(repo_dir, 'checkout', '-b', 'python3-first-tox')
+    gitutils.git(repo_dir, 'checkout', 'master')
+    gitutils.git(repo_dir, 'checkout', '-b', 'python3-first-tox')
     tox_file = os.path.join(repo_dir, 'tox.ini')
     with open(tox_file, 'r', encoding='utf-8') as f:
         tox_contents = f.read()
@@ -198,11 +173,11 @@ def fix_one(workdir, repo, bad_envs):
         )
     with open(tox_file, 'w', encoding='utf-8') as f:
         f.write(tox_contents)
-    git(repo_dir, 'diff')
-    git(repo_dir, 'add', 'tox.ini')
-    git(repo_dir, 'review', '-s')
-    git(repo_dir, 'commit', '-m', COMMIT_MESSAGE)
-    git(repo_dir, 'show')
+    gitutils.git(repo_dir, 'diff')
+    gitutils.git(repo_dir, 'add', 'tox.ini')
+    gitutils.git(repo_dir, 'review', '-s')
+    gitutils.git(repo_dir, 'commit', '-m', COMMIT_MESSAGE)
+    gitutils.git(repo_dir, 'show')
 
 
 class ToxFixMissingPy3(command.Command):
@@ -244,7 +219,7 @@ class ToxFixMissingPy3(command.Command):
 
             tracking_file = os.path.join(team_dir, 'master')
 
-            clone_repo(team_dir, r)
+            gitutils.clone_repo(team_dir, r)
 
             bad_envs = [
                 env
