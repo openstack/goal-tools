@@ -50,9 +50,11 @@ def check_one(repo_base_dir, repo):
         return 'not needed'
     LOG.info('scanning %s', repo)
     config = get_setup_config(repo_dir)
-    if not config.has_option('wheel', 'universal'):
+    if config.has_option('wheel', 'universal'):
+        return 'legacy'
+    if not config.has_option('bdist_wheel', 'universal'):
         return 'not set'
-    if config['wheel']['universal']:
+    if config['bdist_wheel']['universal']:
         return 'OK'
     return 'Disabled'
 
@@ -122,6 +124,10 @@ installation under other versions of Python require extra work at
 install time. This change turns on "universal" wheel support, so that
 the wheel file will be marked as supporting both Python 2 and 3.
 
+Some projects have the flag in the legacy location in the [wheel]
+section, so this patch may simply be moving the flag to the new
+location in [bdist_wheel].
+
 Signed-off-by: Doug Hellmann <doug@doughellmann.com>
 '''
 
@@ -133,8 +139,12 @@ def fix_one(workdir, repo):
     gitutils.git(repo_dir, 'checkout', '-b', 'python3-first-wheels')
     setup_file = os.path.join(repo_dir, 'setup.cfg')
     with open(setup_file, 'r', encoding='utf-8') as f:
-        contents = f.read().rstrip()
-    contents = contents + '\n\n[wheel]\nuniversal = 1\n'
+        contents = f.read()
+    # Update the location
+    if '[wheel]' in contents:
+        contents = contents.replace('[wheel]', '[bdist_wheel]')
+    else:
+        contents = contents.rstrip() + '\n\n[bdist_wheel]\nuniversal = 1\n'
     with open(setup_file, 'w', encoding='utf-8') as f:
         f.write(contents)
     gitutils.git(repo_dir, 'diff')
