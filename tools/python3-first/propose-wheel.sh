@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "We will not need this. See https://review.openstack.org/607902"
+exit 1
+
 bindir=$(dirname $0)
 source $bindir/functions
 

@@ -171,6 +171,8 @@ class WheelFixMissingUniversal(command.Command):
         return parser
 
     def take_action(self, parsed_args):
+        raise RuntimeError('Do not use this tool. '
+                           'See https://review.openstack.org/607902')
         gov_dat = governance.Governance(url=parsed_args.project_list)
         repos = gov_dat.get_repos()
 
