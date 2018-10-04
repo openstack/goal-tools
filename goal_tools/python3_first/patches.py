@@ -84,6 +84,7 @@ def all_changes(only_open=True, extra_query=''):
         if changes and changes[-1].get('_more_changes', False):
             offset += 100
         else:
+            LOG.debug('total of %d patches', offset + len(changes))
             break
 
 
