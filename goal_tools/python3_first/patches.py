@@ -339,7 +339,6 @@ class PatchesCount(lister.Lister):
         ('Docs', ['switch documentation job to new PTI']),
         ('3.6 unit', ['add python 3.5 unit test job',
                       'add python 3.6 unit test job']),
-        ('Wheels', ['build universal wheels']),
     ]
 
     def take_action(self, parsed_args):
