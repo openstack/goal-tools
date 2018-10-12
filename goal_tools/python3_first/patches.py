@@ -334,7 +334,7 @@ class PatchesCount(lister.Lister):
     _url_base = 'https://review.openstack.org/#/c/'
 
     _subjects = [
-        ('zuul', ['import zuul job settings from project-config']),
+        # ('zuul', ['import zuul job settings from project-config']),
         ('tox defaults', ['fix tox python3 overrides']),
         ('Docs', ['switch documentation job to new PTI']),
         ('3.6 unit', ['add python 3.5 unit test job',
