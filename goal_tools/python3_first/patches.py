@@ -328,6 +328,12 @@ class PatchesCount(lister.Lister):
             action='store_true',
             help='show less info for narrower report',
         )
+        parser.add_argument(
+            '--only-open', '-o',
+            default=False,
+            action='store_true',
+            help='only show teams with open patches',
+        )
         return parser
 
     _import_subject = 'import zuul job settings from project-config'
@@ -502,5 +508,12 @@ class PatchesCount(lister.Lister):
                 total_all,
                 '')
         )
+
+        if parsed_args.only_open:
+            data = [
+                row
+                for row in data
+                if row[1:4] != ('+', '+', '+')
+            ]
 
         return (columns, data)
