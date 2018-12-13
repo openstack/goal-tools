@@ -21,3 +21,8 @@ dist/
 releasenotes/build
 /.stestr/
 /*.db
+
+# Files created when queries are run
+*.rpt*
+*.dat
+*.txt
