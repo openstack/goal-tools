@@ -513,7 +513,7 @@ class PatchesCount(lister.Lister):
             data = [
                 row
                 for row in data
-                if row[1:4] != ('+', '+', '+')
+                if ''.join(row[1:4]).strip('+-')
             ]
 
         return (columns, data)
