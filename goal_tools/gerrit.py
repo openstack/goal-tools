@@ -95,6 +95,14 @@ class Review:
         self._data = data
 
     @property
+    def id(self):
+        return self._id
+
+    @property
+    def raw_change(self):
+        return self._data
+
+    @property
     def url(self):
         return GERRIT_API_URL + self._id + '/'
 
@@ -262,3 +270,36 @@ class ReviewFactory:
         response = Review(review_id, data)
         cache_review(review_id, data, self._cache)
         return response
+
+    def query(self, query_string):
+        "Generator for changes matching the query criteria."
+        batch_size = 200
+        offset = 0
+        while True:
+            changes = query_gerrit(
+                'changes/',
+                params={
+                    'n': str(batch_size),
+                    'start': offset,
+                    'q': query_string,
+                    'o': QUERY_OPTIONS,
+                },
+            )
+            LOG.debug('%d changes', len(changes))
+
+            for change in changes:
+                review = Review(
+                    change['_number'],
+                    change,
+                )
+                cache_review(
+                    review.id,
+                    review.raw_change,
+                    self._cache,
+                )
+                yield review
+
+            if changes and changes[-1].get('_more_changes', False):
+                offset += batch_size
+            else:
+                break
