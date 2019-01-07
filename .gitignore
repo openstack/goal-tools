@@ -26,3 +26,4 @@ releasenotes/build
 *.rpt*
 *.dat
 *.txt
+/queries/*.db
