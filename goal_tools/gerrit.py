@@ -104,7 +104,7 @@ class Review:
 
     @property
     def url(self):
-        return GERRIT_API_URL + self._id + '/'
+        return GERRIT_API_URL + str(self._id) + '/'
 
     @property
     def created(self):
