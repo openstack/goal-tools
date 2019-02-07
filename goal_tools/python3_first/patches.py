@@ -13,6 +13,7 @@ from goal_tools import governance
 from goal_tools import storyboard
 
 LOG = logging.getLogger(__name__)
+BATCH_SIZE = 300
 
 
 def decode_json(raw):
@@ -56,7 +57,7 @@ def query_gerrit(offset=0, only_open=True, extra_query=''):
     raw = requests.get(
         url,
         params={
-            'n': '100',
+            'n': str(BATCH_SIZE),
             'start': offset,
             'q': query,
             'o': [
@@ -82,7 +83,7 @@ def all_changes(only_open=True, extra_query=''):
         yield from changes
 
         if changes and changes[-1].get('_more_changes', False):
-            offset += 100
+            offset += BATCH_SIZE
         else:
             LOG.debug('total of %d patches', offset + len(changes))
             break
@@ -259,7 +260,7 @@ def search_cleanup_patches(offset=0):
     raw = requests.get(
         url,
         params={
-            'n': '100',
+            'n': str(BATCH_SIZE),
             'start': offset,
             'q': query,
             'o': [
@@ -284,7 +285,7 @@ def get_cleanup_changes():
         yield from changes
 
         if changes and changes[-1].get('_more_changes', False):
-            offset += 100
+            offset += BATCH_SIZE
         else:
             break
 
