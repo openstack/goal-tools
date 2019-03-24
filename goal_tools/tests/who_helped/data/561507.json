@@ -218,7 +218,7 @@
         },
         "git": {
           "ref": "refs/changes/07/561507/2",
-          "url": "git://git.openstack.org/openstack/releases"
+          "url": "https://git.openstack.org/openstack/releases"
         }
       },
       "created": "2018-04-16 05:00:21.000000000",
@@ -240,7 +240,7 @@
         },
         "git": {
           "ref": "refs/changes/07/561507/1",
-          "url": "git://git.openstack.org/openstack/releases"
+          "url": "https://git.openstack.org/openstack/releases"
         }
       },
       "created": "2018-04-16 04:50:17.000000000",

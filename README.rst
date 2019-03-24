@@ -29,10 +29,10 @@ To set up a workspace to use the python3-first tools::
 
   $ mkdir python3-first
   $ cd python3-first
-  $ git clone git://git.openstack.org/openstack-infra/project-config
-  $ git clone git://git.openstack.org/openstack-infra/openstack-zuul-jobs
-  $ git clone git://git.openstack.org/openstack-infra/zuul-jobs
-  $ git clone git://git.openstack.org/openstack/goal-tools
+  $ git clone https://git.openstack.org/openstack-infra/project-config
+  $ git clone https://git.openstack.org/openstack-infra/openstack-zuul-jobs
+  $ git clone https://git.openstack.org/openstack-infra/zuul-jobs
+  $ git clone https://git.openstack.org/openstack/goal-tools
   $ mkdir Output
 
 Preparing Patches
@@ -157,8 +157,8 @@ copied into that branch of that project.
 
 .. code-block:: console
 
-   $ git clone git://git.openstack.org/openstack-infra/project-config
-   $ git clone git://git.openstack.org/openstack/goal-tools
+   $ git clone https://git.openstack.org/openstack-infra/project-config
+   $ git clone https://git.openstack.org/openstack/goal-tools
    $ cd goal-tools
    $ tox -e venv -- python3-first jobs extract --project-config ../project-config \
    openstack-dev/devstack stable/queens
@@ -177,7 +177,7 @@ repository to include all of the settings shown by ``jobs extract``.
 
 .. code-block:: console
 
-   $ git clone git://git.openstack.org/openstack/oslo.config
+   $ git clone https://git.openstack.org/openstack/oslo.config
    $ cd oslo.config
    $ git checkout -b python3-first
    $ cd ../goal-tools

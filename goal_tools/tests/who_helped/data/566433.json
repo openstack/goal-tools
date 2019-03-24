@@ -450,7 +450,7 @@
         },
         "git": {
           "ref": "refs/changes/33/566433/1",
-          "url": "git://git.openstack.org/openstack/releases"
+          "url": "https://git.openstack.org/openstack/releases"
         }
       },
       "kind": "REWORK",
@@ -494,7 +494,7 @@
         },
         "git": {
           "ref": "refs/changes/33/566433/2",
-          "url": "git://git.openstack.org/openstack/releases"
+          "url": "https://git.openstack.org/openstack/releases"
         }
       },
       "kind": "REWORK",

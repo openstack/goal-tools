@@ -16,7 +16,7 @@
       "created": "2018-04-10 06:07:47.000000000",
       "fetch": {
         "git": {
-          "url": "git://git.openstack.org/openstack/blazar-dashboard",
+          "url": "https://git.openstack.org/openstack/blazar-dashboard",
           "ref": "refs/changes/53/555353/2"
         },
         "anonymous http": {
@@ -38,7 +38,7 @@
       "created": "2018-04-22 02:28:56.000000000",
       "fetch": {
         "git": {
-          "url": "git://git.openstack.org/openstack/blazar-dashboard",
+          "url": "https://git.openstack.org/openstack/blazar-dashboard",
           "ref": "refs/changes/53/555353/4"
         },
         "anonymous http": {
@@ -60,7 +60,7 @@
       "created": "2018-04-20 20:29:17.000000000",
       "fetch": {
         "git": {
-          "url": "git://git.openstack.org/openstack/blazar-dashboard",
+          "url": "https://git.openstack.org/openstack/blazar-dashboard",
           "ref": "refs/changes/53/555353/3"
         },
         "anonymous http": {
@@ -82,7 +82,7 @@
       "created": "2018-03-22 16:05:45.000000000",
       "fetch": {
         "git": {
-          "url": "git://git.openstack.org/openstack/blazar-dashboard",
+          "url": "https://git.openstack.org/openstack/blazar-dashboard",
           "ref": "refs/changes/53/555353/1"
         },
         "anonymous http": {
@@ -104,7 +104,7 @@
       "created": "2018-04-26 02:59:34.000000000",
       "fetch": {
         "git": {
-          "url": "git://git.openstack.org/openstack/blazar-dashboard",
+          "url": "https://git.openstack.org/openstack/blazar-dashboard",
           "ref": "refs/changes/53/555353/5"
         },
         "anonymous http": {
