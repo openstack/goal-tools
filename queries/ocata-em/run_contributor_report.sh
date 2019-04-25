@@ -19,6 +19,13 @@ do
     who-helped --debug contributions summarize --by Team $dat_file \
         | tee ${input%.qry}.teams.rpt
 
+    # Text report, by team and org
+    who-helped --debug contributions summarize \
+               --by Organization --by Team \
+               --sort-column Organization \
+               $dat_file \
+        | tee ${input%.qry}.teams-by-org.rpt
+
     # Text report, by team, without deployment tools
     who-helped --debug contributions summarize --by Team \
                --ignore-team OpenStackAnsible \
