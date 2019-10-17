@@ -148,7 +148,7 @@ Tools
 
 ``python3-first`` is the parent command for a set of tools for
 implementing the `python3-first goal
-<https://review.openstack.org/#/c/575933/>`_.
+<https://review.opendev.org/#/c/575933/>`_.
 
 The ``jobs extract`` sub-command reads the Zuul configuration from the
 ``openstack/project-config`` repository and then for a given
