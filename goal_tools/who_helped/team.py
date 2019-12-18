@@ -37,7 +37,7 @@ class ShowTeam(lister.Lister):
         # authentication, so this uses ssh instead of REST because I
         # assume that auth is already set up.
         data = subprocess.check_output(
-            ['ssh', 'review.openstack.org', '-p', '29418',
+            ['ssh', 'review.opendev.org', '-p', '29418',
              'gerrit', 'ls-members', parsed_args.team])
         text = data.decode('utf-8')
 
