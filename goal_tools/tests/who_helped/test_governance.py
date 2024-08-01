@@ -80,9 +80,9 @@ operations-docs:
 """
 
 TEAM_DATA = governance.Governance._organize_team_data(
-    yaml.load(_team_data_yaml),
+    yaml.safe_load(_team_data_yaml),
     {'Technical Committee': [{'repo': 'openstack/governance'}]},
-    yaml.load(_sigs_data_yaml),
+    yaml.safe_load(_sigs_data_yaml),
 )
 
 

@@ -18,7 +18,7 @@ import yaml
 
 LOG = logging.getLogger(__name__)
 
-_ORG_DATA = yaml.load(
+_ORG_DATA = yaml.safe_load(
     pkgutil.get_data('goal_tools',
                      'organizations.yaml').decode('utf-8')
 )

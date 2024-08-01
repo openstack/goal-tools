@@ -1,9 +1,3 @@
 - project:
     templates:
-      - openstack-python36-jobs
-    check:
-      jobs:
-        - openstack-tox-pep8
-    gate:
-      jobs:
-        - openstack-tox-pep8
+      - openstack-python3-jobs

@@ -19,7 +19,7 @@ import yaml
 
 LOG = logging.getLogger(__name__)
 
-_SPONSOR_DATA = yaml.load(
+_SPONSOR_DATA = yaml.safe_load(
     pkgutil.get_data('goal_tools',
                      'sponsors.yaml').decode('utf-8')
 )
